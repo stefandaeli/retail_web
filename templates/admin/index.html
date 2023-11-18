@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    {% include 'componens/grid_index.html'%}
+    <title>Index</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar mb-5">
+            {% include 'componens/navbar.html' %}
+        </div>
+        <div class="messages">
+            {% include 'componens/messages.html'%}
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="sidebar">
+            {% include 'componens/sidebar.html'%}
+        </div>
+        <div class="content">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Tambah <i class="fa fa-plus-circle"></i>
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Admin</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{% url 'post_add_admins' %}" method="POST">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Masukkan Kode</label>
+                                    <input type="text" class="form-control" name="kode_admin" id="kode_admin"
+                                        aria-describedby="emailHelp" maxlength="20" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Masukkan Nama</label>
+                                    <input type="text" class="form-control" name="nama_admin" id="nama_admin"
+                                        aria-describedby="emailHelp" maxlength="50" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Masukkan Password</label>
+                                    <input type="password" class="form-control" name="password_admin"
+                                        id="password_admin" maxlength="20" required>
+                                </div>
+
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam necessitatibus officiis,
+                            et
+                            nostrum vel at est voluptatum quia, alias error iste magnam iure blanditiis dolor non dicta
+                            optio
+                            aperiam voluptas?</td>
+                        <td>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi nobis obcaecati soluta minus
+                            vel
+                            culpa mollitia vitae autem error et ex tempore, aperiam voluptate minima laboriosam
+                            voluptatibus
+                            eos
+                            impedit quam.</td>
+                        <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id earum nulla hic non magni,
+                            tempore
+                            in
+                            velit autem odit illo recusandae maxime numquam cumque facere, facilis quod. Eveniet,
+                            similique
+                            suscipit?</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td colspan="2">Larry the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</body>
+
+</html>

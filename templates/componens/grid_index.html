@@ -1,0 +1,35 @@
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 9fr;
+        grid-template-areas: "navbar navbar"
+            "messages messages"
+            "sidebar content";
+    }
+
+    .navbar {
+        grid-area: navbar;
+    }
+
+    .sidebar {
+        grid-area: sidebar;
+
+    }
+
+    .content {
+        grid-area: content;
+
+    }
+
+    .messages {
+        grid-area: messages;
+
+    }
+
+</style>
