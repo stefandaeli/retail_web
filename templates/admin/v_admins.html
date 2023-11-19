@@ -25,12 +25,11 @@
         </div>
         <div class="content">
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#add-modal">
                 Tambah <i class="fa fa-plus-circle"></i>
             </button>
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
+            <!-- Modal Add -->
+            <div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -56,59 +55,55 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Masukkan Password</label>
-                                    <input type="password" class="form-control" name="password_admin"
-                                        id="password_admin" maxlength="20" required>
+                                    <input type="text" class="form-control" name="password_admin" id="password_admin"
+                                        aria-describedby="emailHelp" maxlength="50" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Timestamp</label>
+                                    <input type="datetime" class="form-control" name="timestamp" id="timestamp"
+                                        aria-describedby="emailHelp" maxlength="50" value="{% now 'Y-m-d H:i:s' %}"
+                                        readonly>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
                                 </div>
 
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>
-
                     </div>
                 </div>
             </div>
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Kode Admin</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Aksi</th>
+
                     </tr>
                 </thead>
                 <tbody>
+                    {% for t in data_admins %}
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam necessitatibus officiis,
-                            et
-                            nostrum vel at est voluptatum quia, alias error iste magnam iure blanditiis dolor non dicta
-                            optio
-                            aperiam voluptas?</td>
-                        <td>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi nobis obcaecati soluta minus
-                            vel
-                            culpa mollitia vitae autem error et ex tempore, aperiam voluptate minima laboriosam
-                            voluptatibus
-                            eos
-                            impedit quam.</td>
-                        <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id earum nulla hic non magni,
-                            tempore
-                            in
-                            velit autem odit illo recusandae maxime numquam cumque facere, facilis quod. Eveniet,
-                            similique
-                            suscipit?</td>
+                        <th scope="row">{{t.kode_admin}}</th>
+                        <td>{{t.nama_admin}}</td>
+                        <td>{{t.password_admin}}</td>
+                        <td>{{t.timestamp}}</td>
+                        <td>
+                            <a href="{% url 'update_admins' t.kode_admin %}" class="btn btn-warning mb-1">
+                                <i class="fa fa-pencil-square"></i>
+                            </a>
+                            <a href="" class="btn btn-danger mb-1">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </td>
                     </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
             <nav aria-label="Page navigation example">
@@ -121,7 +116,7 @@
                 </ul>
             </nav>
         </div>
-
+    </div>
     </div>
 </body>
 

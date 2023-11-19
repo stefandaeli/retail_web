@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    <!-- {% include 'componens/grid_index.html'%} -->
+    <title>Document</title>
+
+</head>
+
+<body>
+    <form action="{% url 'post_update_admins' %}" method="POST">
+        {% csrf_token %}
+        <div class="d-grid gap-2 col-6 mx-auto mb-3">
+            <h5 class="modal-title">Update Admin</h5>
+            <div class="mb-3">
+                <label for="" class="form-label">Kode</label>
+                <input type="text" class="form-control" aria-label="kode_admin" aria-describedby="basic-addon1"
+                    name="kode_admin" id="kode_admin" value="{{ data_admins.kode_admin }}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Masukkan Nama</label>
+                <input type="text" class="form-control" aria-label="nama_admin" aria-describedby="basic-addon1"
+                    name="nama_admin" id="nama_admin" value="{{ data_admins.nama_admin }}" maxlength="50" required>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Masukkan Password</label>
+                <input type="text" class="form-control" aria-label="password_admin" aria-describedby="basic-addon1"
+                    name="password_admin" id="password_admin" value="{{ data_admins.password_admin }}" maxlength="20"
+                    required>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Timestamp</label>
+                <input type="text" class="form-control" aria-label="timestamp" aria-describedby="basic-addon1"
+                    name="timestamp" id="timestamp" value="{% now 'Y-m-d H:i:s' %}" maxlength="20" required>
+            </div>
+        </div>
+
+        <a href="">
+            <div class="d-grid gap-2 col-4 mx-auto mb-3">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </a>
+        <a href="{% url 'v_admins'%}">
+            <div class="d-grid gap-2 col-4 mx-auto">
+                <button type="button" class="btn btn-secondary">Kembali</button>
+            </div>
+        </a>
+        </div>
+
+    </form>
+</body>
+
+</html>
