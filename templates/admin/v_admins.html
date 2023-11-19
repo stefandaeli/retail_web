@@ -20,9 +20,7 @@
         <br>
         <br>
         <br>
-        <div class="sidebar">
-            {% include 'componens/sidebar.html'%}
-        </div>
+      
         <div class="content">
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#add-modal">
@@ -76,7 +74,7 @@
                     </div>
                 </div>
             </div>
-            <table class="table">
+            <table class="table table-success mt-2">
                 <thead>
                     <tr>
                         <th scope="col">Kode Admin</th>
@@ -89,8 +87,8 @@
                 </thead>
                 <tbody>
                     {% for t in data_admins %}
-                    <tr>
-                        <th scope="row">{{t.kode_admin}}</th>
+                    <tr class="table-light">
+                        <th>{{t.kode_admin}}</th>
                         <td>{{t.nama_admin}}</td>
                         <td>{{t.password_admin}}</td>
                         <td>{{t.timestamp}}</td>
@@ -98,7 +96,7 @@
                             <a href="{% url 'update_admins' t.kode_admin %}" class="btn btn-warning mb-1">
                                 <i class="fa fa-pencil-square"></i>
                             </a>
-                            <a href="" class="btn btn-danger mb-1">
+                            <a onclick="return confirm('apakah anda ingin menghapus admin {{t.nama_admin}} ?')" href="{% url 'delete_admins' t.kode_admin%}" class="btn btn-danger mb-1">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>

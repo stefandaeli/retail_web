@@ -5,6 +5,9 @@ from django.contrib import messages
 from django.db.models import Q
 
 # Create your views here.
+def dashboard(request):
+     return render(request, 'dashboard.html')
+
 def v_admins(request):
 #     read_admins=Admins.objects.filter(kode_admin = 'A0001')
 #     read_admins=Admins.objects.filter(kode_admin__icontains='kode_admin')
@@ -60,4 +63,11 @@ def post_update_admins(request):
      data_admins.save()
      messages.success(request, 'Berhasil update data')
      return redirect('v_admins')
+
+def delete_admins(request, kode_admin):
+     data_admins=Admins.objects.get(kode_admin=kode_admin).delete()
+     messages.success(request, 'Berhasil hapus data')
+     return redirect('v_admins')
+     
+     
      
