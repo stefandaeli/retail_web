@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    <title>update data barang</title>
+</head>
+
+<body>
+    <form action="{% url 'post_update_databarang' %}" method="POST">
+        {% csrf_token %}
+        <div class="d-grid gap-2 col-6 mx-auto mb-3">
+            <h5 class="modal-title">Update Data Barang</h5>
+            <div class="mb-3">
+                <label for="" class="form-label">Kode Data Barang</label>
+                <input type="text" class="form-control" aria-label="kode_barang" aria-describedby="basic-addon1"
+                    name="kode_barang" id="kode_barang" value="{{ data_barang.kode_barang}} " readonly>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Edit Nama Barang</label>
+                <input type="text" class="form-control" aria-label="nama_barang" aria-describedby="basic-addon1"
+                    name="nama_barang" id="nama_barang" value="{{data_barang.nama_barang}}" maxlength="50" required>
+            </div>
+            <label class="form-label">Kelompok Barang</label>
+            <select class="form-select mb-3" name="kelompok_barang" id="kelompok_barang"
+                aria-label="Default select example" required>
+                <option value="" disabled selected>{{data_barang.kelompok_barang}}</option>
+                <option value="-">-</option>
+                {% for t in data_kelompokbarang %}
+                <option value="{{t.nama_kelompok}}">{{t.nama_kelompok}}</option>
+                {% endfor %}
+            </select>
+
+            <label class="form-label">Jenis Barang</label>
+            <select class="form-select mb-3" name="jenis_barang" id="jenis_barang"
+                aria-label="Default select example" required>
+                <option value="" disabled selected>{{data_barang.jenis_barang}}</option>
+                <option value="-">-</option>
+                {% for t in data_jenisbarang %}
+                <option value="{{t.nama_jenis}}">{{t.nama_jenis}}</option>
+                {% endfor %}
+            </select>
+
+            <label class="form-label">Satuan Barang Kecil</label>
+            <select class="form-select mb-3" name="satuan_barang_small" id="satuan_barang_small"
+                aria-label="Default select example" required>
+                <option value="-" disabled selected>{{data_barang.satuan_barang_small}}</option>
+                <option value="-">-</option>
+                {% for t in data_satuanbarang %}
+                <option value="{{t.nama_satuan}}">{{t.nama_satuan}}</option>
+                {% endfor %}
+            </select>
+
+            <label class="form-label">Satuan Barang Sedang</label>
+            <select class="form-select mb-3" name="satuan_barang_medium" id="satuan_barang_medium"
+                aria-label="Default select example" required>
+                <option value="-" disabled selected>{{data_barang.satuan_barang_medium}}</option>
+                <option value="-">-</option>
+                {% for t in data_satuanbarang %}
+                <option value="{{t.nama_satuan}}">{{t.nama_satuan}}</option>
+                {% endfor %}
+            </select>
+
+            <label class="form-label">Satuan Barang Besar</label>
+            <select class="form-select mb-3" name="satuan_barang_large" id="satuan_barang_large"
+                aria-label="Default select example" required>
+                <option value="-" disabled selected>{{data_barang.satuan_barang_large}}</option>
+                <option value="-">-</option>
+                {% for t in data_satuanbarang %}
+                <option value="{{t.nama_satuan}}">{{t.nama_satuan}}</option>
+                {% endfor %}
+            </select>
+            <div class="mb-3">
+                <label for="" class="form-label">Tanggal Expire Barang ({{data_barang.tgl_expire_barang}})</label>
+                <br>
+                <p class="text-primary">Ubah?</p>
+                <input type="date" class="form-control" aria-label="tgl_expire_barang" aria-describedby="basic-addon1"
+                    name="tgl_expire_barang" id="tgl_expire_barang" maxlength="20" required>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Timestamp</label>
+                <input type="text" class="form-control" aria-label="timestamp" aria-describedby="basic-addon1"
+                    name="timestamp" id="timestamp" value="{% now 'Y-m-d H:i:s' %}" maxlength="20" required>
+            </div>
+        </div>
+
+        <a href="">
+            <div class="d-grid gap-2 col-4 mx-auto mb-3">
+                <button type="submit" class="btn btn-success">Simpan</button>
+            </div>
+        </a>
+        <a href="{% url 'v_databarang'%}">
+            <div class="d-grid gap-2 col-4 mx-auto mb-5">
+                <button type="button" class="btn btn-secondary">Kembali</button>
+            </div>
+        </a>
+        </div>
+
+</body>
+
+</html>

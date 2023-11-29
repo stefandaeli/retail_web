@@ -21,13 +21,16 @@
             Barang
           </a>
           <ul class="dropdown-menu mt-2 bg-success">
-            <li><a class="dropdown-item" href="#">Detail Barang</a></li>
             <li><a class="dropdown-item" href="{% url 'v_satuanbarang' %}">Satuan Barang</a></li>
-            <li><a class="dropdown-item" href="#">Kelompok Barang</a></li>
-            <li><a class="dropdown-item" href="#">Barang</a></li>
+            <li><a class="dropdown-item" href="{% url 'v_kelompokbarang' %}">Kelompok Barang</a></li>
+            <li><a class="dropdown-item" href="{% url 'v_gudang' %}">Gudang</a></li>
+            <li><a class="dropdown-item" href="{% url 'v_jenisbarang'%}">Jenis Barang</a></li>
+            <li><a class="dropdown-item" href="{% url 'v_databarang' %}">Data Barang</a></li>
+
             <li>
               <hr class="dropdown-divider">
             </li>
+            <li><a class="dropdown-item" href="#">Quantity Barang</a></li>
             <li><a class="dropdown-item" href="#">Harga Barang</a></li>
           </ul>
         </li>

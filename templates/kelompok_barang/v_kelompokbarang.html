@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    {% include 'componens/grid_index.html'%}
+    <title>kelompok Barang</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar mb-5">
+            {% include 'componens/navbar.html' %}
+        </div>
+        <div class="messages">
+            {% include 'componens/messages.html'%}
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="content">
+            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#add-modal">
+                Tambah <i class="fa fa-plus-circle"></i>
+            </button>
+            <div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Kelompok Barang</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{% url 'post_add_kelompokbarang' %}" method="POST">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Masukkan Kode Kelompok</label>
+                                    <input type="text" class="form-control" name="kode_kelompok" id="kode_kelompok"
+                                        aria-describedby="emailHelp" maxlength="20" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Masukkan Nama Kelompok</label>
+                                    <input type="text" class="form-control" name="nama_kelompok" id="nama_kelompok"
+                                        aria-describedby="emailHelp" maxlength="50" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Timestamp</label>
+                                    <input type="datetime" class="form-control" name="timestamp" id="timestamp"
+                                        aria-describedby="emailHelp" maxlength="50" value="{% now 'Y-m-d H:i:s' %}"
+                                        readonly>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-success">Simpan <i class="fa fa-save"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-success mt-2">
+                <thead>
+                    <tr>
+                        <th scope="col">Kode Kelompok</th>
+                        <th scope="col">Nama Kelompok</th>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Aksi</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in data_kelompokbarang %}
+                    <tr class="table-light">
+                        <th>{{t.kode_kelompok}}</th>
+                        <td>{{t.nama_kelompok}}</td>
+                        <td>{{t.timestamp}}</td>
+                        <td>
+                            <a href="{% url 'update_kelompokbarang' t.kode_kelompok %}" class="btn btn-warning mb-1">
+                                <i class="fa fa-pencil-square"></i>
+                            </a>
+                            <a onclick="return confirm('apakah anda ingin menghapus kelompok barang {{t.nama_kelompok}} ?')" 
+                            href="{% url 'delete_kelompokbarang' t.kode_kelompok%}"
+                                class="btn btn-danger mb-1">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

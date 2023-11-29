@@ -24,22 +24,21 @@ class Gudang(models.Model):
     nama_gudang = models.CharField(max_length=50)
     timestamp = models.DateTimeField(null=True)
     
-# class DataBarang(models.Model):
-#     kode_barang = models.CharField(max_length=20, primary_key=True)
-#     nama_barang = models.CharField(max_length=120)
-#     nama_kelompok = models.CharField(max_length=50)
-#     satuan_barang_small = models.CharField(max_length=20)
-#     satuan_barang_medium = models.CharField(max_length=20)
-#     satuan_barang_large = models.CharField(max_length=20)
-#     timestamp = models.DateTimeField(null=True)
+class JenisBarang(models.Model):
+    kode_jenis = models.CharField(max_length=20,primary_key=True)
+    nama_jenis = models.CharField(max_length=50)
+    timestamp = models.DateTimeField(null=True)
+    
+class DataBarang(models.Model):
+    kode_barang = models.CharField(max_length=20,primary_key=True)
+    nama_barang = models.CharField(max_length=200)
+    kelompok_barang =models.CharField(max_length=50)
+    jenis_barang = models.CharField(max_length=50)
+    satuan_barang_small = models.CharField(max_length=50)
+    satuan_barang_medium = models.CharField(max_length=50)
+    satuan_barang_large = models.CharField(max_length=50)
+    tgl_expire_barang = models.DateField(null=True)
+    timestamp = models.DateTimeField(null=True)
 
-# class QuantityBarang(models.Model):
-#     kode_quantity_barang = models.CharField(max_length=20)
-#     nama_barang = models.CharField(max_length=120)
-#     quantity_barang_small = models.CharField(max_length=20)
-#     quantity_barang_medium =models.CharField(max_length=20)
-#     quantity_barang_large = models.CharField(max_length=20)
-#     nama_gudang = models.CharField(max_length=50)
-#     tgl_masuk_gudang = models.DateTimeField(null=True)
-#     timestamp = models.DateTimeField(null=True)
+
     
