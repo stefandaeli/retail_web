@@ -74,7 +74,7 @@
                     </div>
                 </div>
             </div>
-            <table class="table table-success mt-2">
+            <table class="table table-success mt-2 table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">Kode Admin</th>
@@ -93,11 +93,11 @@
                         <td>{{t.password_admin}}</td>
                         <td>{{t.timestamp}}</td>
                         <td>
-                            <a href="{% url 'update_admins' t.kode_admin %}" class="btn btn-warning mb-1">
+                            <a href="{% url 'update_admins' t.kode_admin %}" class="btn btn-success mb-1">
                                 <i class="fa fa-pencil-square"></i>
                             </a>
                             <a onclick="return confirm('apakah anda ingin menghapus admin {{t.nama_admin}} ?')"
-                                href="{% url 'delete_admins' t.kode_admin%}" class="btn btn-danger mb-1">
+                                href="{% url 'delete_admins' t.kode_admin%}" class="btn btn-success mb-1">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>

@@ -5,6 +5,8 @@ from .views import v_kelompokbarang, add_kelompokbarang, post_add_kelompokbarang
 from .views import v_gudang,add_gudang, post_add_gudang, update_gudang, post_update_gudang, delete_gudang
 from .views import v_jenisbarang, add_jenisbarang, post_add_jenisbarang,update_jenisbarang,post_update_jenisbarang,delete_jenisbarang
 from .views import v_databarang, add_databarang, post_add_databarang, update_databarang, post_update_databarang, delete_databarang
+from .views import v_stokbarang, add_stokbarang, post_add_stokbarang, update_stokbarang, post_update_stokbarang, delete_stokbarang
+from .views import v_hargabarang, add_hargabarang, post_add_hargabarang, update_hargabarang, post_update_hargabarang, delete_hargabarang
 
 urlpatterns = [
     path('dashboard',dashboard,name='dashboard'),
@@ -61,5 +63,23 @@ urlpatterns = [
     path('post_add_databarang',post_add_databarang,name='post_add_databarang'),
     path('update_databarang<str:kode_barang>',update_databarang,name='update_databarang'),
     path('post_update_databarang',post_update_databarang,name='post_update_databarang'),
-    path('delete_databarang/<str:kode_barang>',delete_databarang,name='delete_databarang')
+    path('delete_databarang/<str:kode_barang>',delete_databarang,name='delete_databarang'),
+    
+    # StokBarang
+    
+    path('v_stokbarang',v_stokbarang,name='v_stokbarang'),
+    path('add_stokbarang',add_stokbarang,name='add_stokbarang'),
+    path('post_add_stokbarang',post_add_stokbarang,name='post_add_stokbarang'),
+    path('update_stokbarang/<str:kode_stok>',update_stokbarang,name='update_stokbarang'),
+    path('post_update_stokbarang',post_update_stokbarang,name='post_update_stokbarang'),
+    path('delete_stokbarang/<str:kode_stok>',delete_stokbarang,name='delete_stokbarang'),
+    
+    # HargaBarang
+    
+    path('v_hargabarang',v_hargabarang,name='v_hargabarang'),
+    path('add_hargabarang',add_hargabarang,name='add_hargabarang'),
+    path('post_add_hargabarang',post_add_hargabarang,name='post_add_hargabarang'),
+    path('update_hargabarang/<str:kode_harga>',update_hargabarang,name='update_hargabarang'),
+    path('post_update_hargabarang',post_update_hargabarang,name='post_update_hargabarang'),
+    path('delete_hargabarang/<str:kode_harga>',delete_hargabarang,name='delete_hargabarang')
 ]

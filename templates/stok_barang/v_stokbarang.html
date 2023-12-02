@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    {% include 'componens/grid_index.html'%}
+    <title>stok_barang</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar mb-5">
+            {% include 'componens/navbar.html' %}
+        </div>
+        <div class="messages">
+            {% include 'componens/messages.html'%}
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="content">
+            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#add-modal">
+                Tambah <i class="fa fa-plus-circle"></i>
+            </button>
+            <div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Stok Barang</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{% url 'post_add_stokbarang'%}" method="POST">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Kode Stok</label>
+                                    <input type="text" class="form-control" name="kode_stok" id="kode_stok"
+                                        aria-describedby="emailHelp" maxlength="20" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Kode Barang</label>
+                                    <input type="text" class="form-control" name="kode_barang" id="kode_barang"
+                                        aria-describedby="emailHelp" maxlength="20" required readonly>
+                                    <div id="emailHelp" class="form-text">Terisi otomatis ketika nama barang di pilih !
+                                    </div>
+                                </div>
+
+                                <label class="form-label">Nama Barang</label>
+                                <select onchange="displaySelectedValue()" class="form-select mb-3" name="nama_barang"
+                                    id="nama_barang" aria-label="Default select example">
+                                    {% for t in data_barang %}
+                                    <option
+                                        value="{{t.nama_barang}},{{t.satuan_barang_small}},{{t.satuan_barang_medium}},{{t.satuan_barang_large}},{{t.kode_barang}}">
+                                        {{t.nama_barang}}</option>
+                                    {% endfor %}
+                                </select>
+
+                                <div class="mb-3">
+                                    <label id="l_small" for="" class="form-label">Stok Satuan Kecil</label>
+                                    <input type="number" class="form-control" name="stok_satuan_small"
+                                        id="stok_satuan_small" aria-describedby="emailHelp" maxlength="20" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+
+                                <div class="mb-3">
+                                    <label id="l_medium" for="" class="form-label">Stok Satuan Sedang</label>
+                                    <input type="number" class="form-control" name="stok_satuan_medium"
+                                        id="stok_satuan_medium" aria-describedby="emailHelp" maxlength="20" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+
+                                <div class="mb-3">
+                                    <label id="l_large" for="" class="form-label">Stok Satuan Besar</label>
+                                    <input type="number" class="form-control" name="stok_satuan_large"
+                                        id="stok_satuan_large" aria-describedby="emailHelp" maxlength="20" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+
+                                <label class="form-label">Nama Gudang</label>
+                                <select class="form-select mb-3" name="nama_gudang" id="nama_gudang"
+                                    aria-label="Default select example">
+                                    <option value="-">-</option>
+                                    {% for t in data_gudang %}
+                                    <option value="{{t.nama_gudang}}">{{t.nama_gudang}}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="mb-3">
+                                    <label for="form-label" class="form-label">Timestamp</label>
+                                    <input type="datetime" class="form-control" name="timestamp" id="timestamp"
+                                        aria-describedby="emailHelp" maxlength="50" value="{% now 'Y-m-d H:i:s' %}"
+                                        readonly>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-success">Simpan <i class="fa fa-save"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-success mt-2 table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Kode Barang</th>
+                        <th scope="col">Nama Barang</th>
+                        <th scope="col">Gudang</th>
+                        <th scope="col">Stok (Kecil)</th>
+                        <th scope="col">Stok (Sedang)</th>
+                        <th scope="col">Stok (Besar)</th>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Aksi</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in data_stokbarang %}
+                    <tr class="table-light">
+                        <td>{{t.kode_barang}}</td>
+                        <td>{{t.nama_barang}}</td>
+                        <td>{{t.nama_gudang}}</td>
+                        <td>{{t.stok_satuan_small}}</td>
+                        <td>{{t.stok_satuan_medium}}</td>
+                        <td>{{t.stok_satuan_large}}</td>
+                        <td>{{t.timestamp}}</td>
+                        <td>
+                            <a href="{% url 'update_stokbarang' t.kode_stok %}" class="btn btn-warning mb-1">
+                                <i class="fa fa-pencil-square"></i>
+                            </a>
+                            <a onclick="return confirm('apakah anda ingin menghapus stok barang {{t.nama_barang}} ?')"
+                                href="{% url 'delete_stokbarang' t.kode_stok%}" class="btn btn-danger mb-1">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+<script>
+    /*mengisi input otomatis ketika option selected*/
+    function displaySelectedValue() {
+        let selectedValue = document.getElementById("nama_barang").value;
+        let space = 0 + " ";
+        let valuesArray = selectedValue.split(',');
+        document.getElementById("l_small").textContent = "Stok Satuan Kecil (" + valuesArray[1] + ")";
+        document.getElementById("l_medium").textContent = "Stok Satuan Sedang (" + valuesArray[2] + ")";
+        document.getElementById("l_large").textContent = "Stok Satuan Besar (" + valuesArray[3] + ")";
+        document.getElementById("kode_barang").value = valuesArray[4];
+    }
+</script>

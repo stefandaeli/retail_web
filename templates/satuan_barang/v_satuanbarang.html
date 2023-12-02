@@ -65,7 +65,7 @@
                     </div>
                 </div>
             </div>
-            <table class="table table-success mt-2">
+            <table class="table table-success mt-2 table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">Kode Satuan</th>
@@ -82,12 +82,12 @@
                         <td>{{t.nama_satuan}}</td>
                         <td>{{t.timestamp}}</td>
                         <td>
-                            <a href="{% url 'update_satuanbarang' t.kode_satuan %}" class="btn btn-warning mb-1">
+                            <a href="{% url 'update_satuanbarang' t.kode_satuan %}" class="btn btn-success mb-1">
                                 <i class="fa fa-pencil-square"></i>
                             </a>
                             <a onclick="return confirm('apakah anda ingin menghapus satuan {{t.nama_satuan}} ?')" 
                             href="{% url 'delete_satuanbarang' t.kode_satuan%}"
-                                class="btn btn-danger mb-1">
+                                class="btn btn-success mb-1">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>

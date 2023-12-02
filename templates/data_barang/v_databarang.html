@@ -28,7 +28,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Gudang</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Data Barang</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -118,7 +118,7 @@
                     </div>
                 </div>
             </div>
-            <table class="table table-success mt-2">
+            <table class="table table-success mt-2 table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">Kode</th>
@@ -147,11 +147,11 @@
                         <td>{{t.tgl_expire_barang}}</td>
                         <td>{{t.timestamp}}</td>
                         <td>
-                            <a href="{% url 'update_databarang' t.kode_barang %}" class="btn btn-warning mb-1">
+                            <a href="{% url 'update_databarang' t.kode_barang %}" class="btn btn-success mb-1">
                                 <i class="fa fa-pencil-square"></i>
                             </a>
                             <a onclick="return confirm('apakah anda ingin menghapus data barang {{t.nama_barang}} ?')"
-                                href="{% url 'delete_databarang' t.kode_barang %}" class="btn btn-danger mb-1">
+                                href="{% url 'delete_databarang' t.kode_barang %}" class="btn btn-success mb-1">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>

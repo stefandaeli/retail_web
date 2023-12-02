@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Admins, SatuanBarang, KelompokBarang, Gudang
-from .models import JenisBarang, DataBarang
+from .models import JenisBarang, DataBarang, StokBarang, HargaBarang
 from django.contrib import messages
 from django.db.models import Q
 from .utilities import ppn
@@ -391,3 +391,173 @@ def delete_databarang(request, kode_barang):
      data_barang = DataBarang.objects.get(kode_barang=kode_barang).delete()
      messages.success(request, 'Berhasil hapus data')
      return redirect('v_databarang')
+
+# StokBarang
+
+def v_stokbarang(request):
+     data_stokbarang = StokBarang.objects.all().order_by('kode_stok')
+     data_gudang = Gudang.objects.all().order_by('nama_gudang')
+     data_barang = DataBarang.objects.all().order_by('nama_barang')
+     context = {
+          'data_stokbarang' : data_stokbarang,
+          'data_gudang' : data_gudang,
+          'data_barang' : data_barang,
+     }
+     return render(request,'stok_barang/v_stokbarang.html',context)
+
+def add_stokbarang(request):
+     return render(request, 'stok_barang/v_stok_barang.html')
+
+def post_add_stokbarang(request):
+     kode_stok = request.POST['kode_stok']
+     kode_barang = request.POST['kode_barang']
+     nama_barang = request.POST['nama_barang']
+     stok_satuan_small = request.POST['stok_satuan_small']
+     stok_satuan_medium = request.POST['stok_satuan_medium']
+     stok_satuan_large = request.POST['stok_satuan_large']
+     nama_gudang = request.POST['nama_gudang']
+     timestamp = request.POST['timestamp']
+     
+     if StokBarang.objects.filter(kode_stok=kode_stok).exists():
+          messages.error(request, 'Kode sudah digunakan !')
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     
+     else :
+          data_stokbarang = StokBarang (
+               kode_stok = kode_stok,
+               kode_barang = kode_barang,
+               # mengambil salah satu value :
+               nama_barang = nama_barang.split(',')[0],
+               stok_satuan_small =stok_satuan_small,
+               stok_satuan_medium = stok_satuan_medium,
+               stok_satuan_large = stok_satuan_large,
+               nama_gudang = nama_gudang,
+               timestamp = timestamp
+          )
+          data_stokbarang.save()
+          messages.success(request, 'Berhasil tambah data')
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     
+def update_stokbarang(request, kode_stok):
+     data_stokbarang = StokBarang.objects.get(kode_stok=kode_stok)
+     data_gudang = Gudang.objects.all().order_by('nama_gudang')
+     data_barang = DataBarang.objects.all().order_by('nama_barang')
+     context = {
+          'data_stokbarang' : data_stokbarang,
+          'data_gudang' : data_gudang,
+          'data_barang' : data_barang
+     }
+     return render(request, 'stok_barang/u_stokbarang.html',context)
+
+def post_update_stokbarang(request):
+     kode_stok = request.POST['kode_stok']
+     kode_barang = request.POST['kode_barang']
+     nama_barang = request.POST['nama_barang']
+     stok_satuan_small = request.POST['stok_satuan_small']
+     stok_satuan_medium = request.POST['stok_satuan_medium']
+     stok_satuan_large = request.POST['stok_satuan_large']
+     nama_gudang = request.POST['nama_gudang']
+     timestamp = request.POST['timestamp']
+     
+     data_stokbarang = StokBarang.objects.get(kode_stok=kode_stok)
+     data_stokbarang.kode_barang = kode_barang
+     data_stokbarang.nama_barang = nama_barang
+     data_stokbarang.stok_satuan_small = stok_satuan_small
+     data_stokbarang.stok_satuan_medium = stok_satuan_medium
+     data_stokbarang.stok_satuan_large = stok_satuan_large
+     data_stokbarang.nama_gudang = nama_gudang
+     data_stokbarang.timestamp = timestamp
+     
+     data_stokbarang.save()
+     messages.success(request, 'Berhasil update data')
+     return redirect('v_stokbarang')
+
+def delete_stokbarang(request, kode_stok):
+     data_stokbarang = StokBarang.objects.get(kode_stok=kode_stok).delete()
+     messages.success(request, 'Berhasil hapus data')
+     return redirect('v_stokbarang')
+
+# HargaBarang
+
+def v_hargabarang(request):
+     data_hargabarang = HargaBarang.objects.all().order_by('kode_harga')
+     data_barang = DataBarang.objects.all().order_by('kode_barang')
+     
+     context = {
+          'data_hargabarang' : data_hargabarang,
+          'data_barang' : data_barang
+     }
+     return render(request,'harga_barang/v_hargabarang.html',context)
+
+def add_hargabarang(request):
+     return render(request,'harga_barang/v_hargabarang')
+
+def post_add_hargabarang(request):
+     kode_harga = request.POST['kode_harga']
+     kode_barang = request.POST['kode_barang']
+     nama_barang = request.POST['nama_barang']
+     harga_satuan_small = request.POST['harga_satuan_small']
+     harga_satuan_medium = request.POST['harga_satuan_medium']
+     harga_satuan_large = request.POST['harga_satuan_large']
+     ppn_barang = request.POST['ppn_barang']
+     diskon_barang = request.POST['diskon_barang']
+     timestamp = request.POST['timestamp']
+     
+     if HargaBarang.objects.filter(kode_harga=kode_harga).exists():
+          messages.error(request, 'Kode sudah digunakan !')
+          return redirect(request.META.get('HTTP_REFERER','/'))
+            
+     else :
+          data_hargabarang = HargaBarang(
+               kode_harga = kode_harga,
+               kode_barang = kode_barang,
+               nama_barang = nama_barang.split(',')[0],
+               harga_satuan_small = harga_satuan_small,
+               harga_satuan_medium = harga_satuan_medium,
+               harga_satuan_large = harga_satuan_large,
+               ppn_barang = ppn_barang,
+               diskon_barang =diskon_barang,
+               timestamp = timestamp
+          )
+          data_hargabarang.save()
+          messages.success(request, 'Berhasil tambah data')
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     
+def update_hargabarang(request, kode_harga):
+     data_hargabarang = HargaBarang.objects.get(kode_harga=kode_harga)
+     data_barang = DataBarang.objects.all().order_by('nama_barang')
+     
+     context = {
+          'data_hargabarang' : data_hargabarang,
+          'data_barang' : data_barang
+     }
+     return render(request,'harga_barang/u_hargabarang.html',context)
+     
+def post_update_hargabarang(request):
+     kode_harga = request.POST['kode_harga']
+     kode_barang = request.POST['kode_barang']
+     nama_barang = request.POST['nama_barang']
+     harga_satuan_small = request.POST['harga_satuan_small']
+     harga_satuan_medium = request.POST['harga_satuan_medium']
+     harga_satuan_large = request.POST['harga_satuan_large']
+     ppn_barang = request.POST['ppn_barang']
+     diskon_barang = request.POST['diskon_barang']
+     timestamp = request.POST['timestamp']
+     
+     data_hargabarang = HargaBarang.objects.get(kode_harga=kode_harga)
+     data_hargabarang.kode_barang = kode_barang
+     data_hargabarang.nama_barang = nama_barang
+     data_hargabarang.harga_satuan_small = harga_satuan_small
+     data_hargabarang.harga_satuan_medium = harga_satuan_medium
+     data_hargabarang.harga_satuan_large = harga_satuan_large
+     data_hargabarang.ppn_barang = ppn_barang
+     data_hargabarang.diskon_barang = diskon_barang
+     data_hargabarang.timestamp = timestamp
+     data_hargabarang.save()
+     messages.success(request, 'Berhasil update data')
+     return redirect('v_hargabarang')
+
+def delete_hargabarang(request, kode_harga):
+     data_hargabarang = HargaBarang.objects.get(kode_harga=kode_harga).delete()
+     messages.success(request, 'Berhasil hapus data')
+     return redirect('v_hargabarang')

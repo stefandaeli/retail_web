@@ -9,6 +9,7 @@
 </head>
 
 <body>
+
     <form action="{% url 'post_update_databarang' %}" method="POST">
         {% csrf_token %}
         <div class="d-grid gap-2 col-6 mx-auto mb-3">
@@ -34,8 +35,8 @@
             </select>
 
             <label class="form-label">Jenis Barang</label>
-            <select class="form-select mb-3" name="jenis_barang" id="jenis_barang"
-                aria-label="Default select example" required>
+            <select class="form-select mb-3" name="jenis_barang" id="jenis_barang" aria-label="Default select example"
+                required>
                 <option value="" disabled selected>{{data_barang.jenis_barang}}</option>
                 <option value="-">-</option>
                 {% for t in data_jenisbarang %}
@@ -97,6 +98,7 @@
             </div>
         </a>
         </div>
+    </form>
 
 </body>
 

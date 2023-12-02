@@ -64,7 +64,7 @@
                     </div>
                 </div>
             </div>
-            <table class="table table-success mt-2">
+            <table class="table table-success mt-2 table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">Kode Jenis</th>
@@ -81,12 +81,12 @@
                         <td>{{t.nama_jenis}}</td>
                         <td>{{t.timestamp}}</td>
                         <td>
-                            <a href="{% url 'update_jenisbarang' t.kode_jenis %}" class="btn btn-warning mb-1">
+                            <a href="{% url 'update_jenisbarang' t.kode_jenis %}" class="btn btn-success mb-1">
                                 <i class="fa fa-pencil-square"></i>
                             </a>
                             <a onclick="return confirm('apakah anda ingin menghapus jenis barang {{t.nama_jenis}} ?')" 
                             href="{% url 'delete_jenisbarang' t.kode_jenis%}"
-                                class="btn btn-danger mb-1">
+                                class="btn btn-success mb-1">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>

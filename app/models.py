@@ -40,5 +40,24 @@ class DataBarang(models.Model):
     tgl_expire_barang = models.DateField(null=True)
     timestamp = models.DateTimeField(null=True)
 
-
+class StokBarang(models.Model):
+   kode_stok = models.CharField(max_length=20, primary_key=True)
+   kode_barang = models.CharField(max_length=20,null=True)
+   nama_barang = models.CharField(max_length=120, null=True)
+   stok_satuan_small = models.CharField(max_length=20)
+   stok_satuan_medium = models.CharField(max_length=20)
+   stok_satuan_large = models.CharField(max_length=20)
+   nama_gudang = models.CharField(max_length=50)
+   timestamp = models.DateTimeField(null=True)
+    
+class HargaBarang(models.Model):
+    kode_harga = models.CharField(max_length=20,primary_key=True)
+    kode_barang = models.CharField(max_length=20,null=True)
+    nama_barang = models.CharField(max_length=120)
+    harga_satuan_small = models.IntegerField()
+    harga_satuan_medium = models.IntegerField()
+    harga_satuan_large = models.IntegerField()
+    ppn_barang = models.IntegerField(null=True)
+    diskon_barang = models.IntegerField()
+    timestamp = models.DateTimeField(null=True)
     

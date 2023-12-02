@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    {% include 'componens/grid_index.html'%}
+    <title>update stok barang</title>
+</head>
+
+<body>
+    <form action="{% url 'post_update_stokbarang' %}" method="POST">
+        {% csrf_token %}
+        <div class="d-grid gap-2 col-6 mx-auto mb-3">
+            <h5 class="modal-title">Update Stok Barang</h5>
+            <div class="mb-3">
+                <label for="" class="form-label">Kode Stok</label>
+                <input type="text" class="form-control" aria-label="kode_stok" aria-describedby="basic-addon1"
+                    name="kode_stok" id="kode_stok" value="{{data_stokbarang.kode_stok}}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Kode Barang</label>
+                <input type="text" class="form-control" aria-label="kode_barang" aria-describedby="basic-addon1"
+                    name="kode_barang" id="kode_barang" value="{{data_stokbarang.kode_barang}}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Nama Barang</label>
+                <input type="text" class="form-control" aria-label="nama_barang" aria-describedby="basic-addon1"
+                    name="nama_barang" id="nama_barang" value="{{data_stokbarang.nama_barang}}" maxlength="50" required
+                    readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="" id="l_small" class="form-label">Stok Satuan Kecil</label>
+                <input type="number" class="form-control" aria-label="stok_satuan_small" aria-describedby="basic-addon1"
+                    name="stok_satuan_small" id="stok_satuan_small" value="{{data_stokbarang.stok_satuan_small}}"
+                    maxlength="50" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="" id="l_medium" class="form-label">Stok Satuan Sedang</label>
+                <input type="text" class="form-control" aria-label="stok_satuan_medium" aria-describedby="basic-addon1"
+                    name="stok_satuan_medium" id="stok_satuan_medium" value="{{data_stokbarang.stok_satuan_medium}}"
+                    maxlength="50" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="" id="l_large" class="form-label">Stok Satuan Besar</label>
+                <input type="number" class="form-control" aria-label="stok_satuan_large" aria-describedby="basic-addon1"
+                    name="stok_satuan_large" id="stok_satuan_large" value="{{data_stokbarang.stok_satuan_large}}"
+                    maxlength="50" required>
+            </div>
+
+            <label class="form-label">Nama Gudang</label>
+            <select class="form-select mb-3" name="nama_gudang" id="nama_gudang" aria-label="Default select example" required>
+                <option value="-" disabled selected>{{data_stokbarang.nama_gudang}}</option>
+                <option value="-">-</option>
+                {% for t in data_gudang %}
+                <option value="{{t.nama_gudang}}">{{t.nama_gudang}}</option>
+                {% endfor %}
+            </select>
+
+
+            <div class="mb-3">
+                <label for="" class="form-label">Timestamp</label>
+                <input type="text" class="form-control" aria-label="timestamp" aria-describedby="basic-addon1"
+                    name="timestamp" id="timestamp" value="{% now 'Y-m-d H:i:s' %}" maxlength="20" required>
+            </div>
+        </div>
+
+        </div>
+        <a href="">
+            <div class="d-grid gap-2 col-4 mx-auto mb-3">
+                <button type="submit" class="btn btn-success">Simpan</button>
+            </div>
+        </a>
+        <a href="{% url 'v_stokbarang'%}">
+            <div class="d-grid gap-2 col-4 mx-auto mb-5">
+                <button type="button" class="btn btn-secondary">Kembali</button>
+            </div>
+        </a>
+        </div>
+    </form>
+
+</body>
+
+</html>
+
+<script>
+    /*mengisi input otomatis ketika option selected*/
+    function displaySelectedValue() {
+        let selectedValue = document.getElementById("nama_barang").value;
+        let space = 0 + " ";
+        let valuesArray = selectedValue.split(',');
+        document.getElementById("l_small").textContent = "Stok Satuan Kecil (" + valuesArray[1] + ")";
+        document.getElementById("l_medium").textContent = "Stok Satuan Sedang (" + valuesArray[2] + ")";
+        document.getElementById("l_large").textContent = "Stok Satuan Besar (" + valuesArray[3] + ")";
+        document.getElementById("kode_stok").value = valuesArray[4];
+    }
+</script>
