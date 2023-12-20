@@ -2,9 +2,13 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Admins, SatuanBarang, KelompokBarang, Gudang
 from .models import JenisBarang, DataBarang, StokBarang, HargaBarang
+from .models import JenisCustomers,Customers, Sopir, SalesTransactions
+from .models import SuperAdmins
 from django.contrib import messages
 from django.db.models import Q
 from .utilities import ppn
+from .decorators import login_required
+import json
 
 # Create your views here.
 
@@ -14,11 +18,40 @@ from .utilities import ppn
 #      hasil = ppn(nilai)
 #      return HttpResponse(hasil)
 
+#Login
+
+def superadmin_login(request):
+     return render(request, 'login/superadmin_login.html')
+
+def post_superadmin_login(request):
+     kode_superadmin = request.POST['kode_superadmin'].upper()
+     password_superadmin = request.POST['password_superadmin'].upper()
+     
+     if SuperAdmins.objects.filter(kode_superadmin=kode_superadmin).exists():
+          superadmin = SuperAdmins.objects.get(kode_superadmin=kode_superadmin)
+          if password_superadmin == superadmin.password_superadmin:
+               #simpan data session
+               request.session['nama_superadmin'] = superadmin.nama_superadmin
+               request.session['kode_superadmin'] = superadmin.kode_superadmin
+               request.session['status_login'] = 'Super Admin'
+               request.session.save()
+               messages.success(request, 'Berhasil Login !')
+               return redirect('dashboard')
+          else:
+            messages.error(request, 'Password Salah !')
+     else:
+            messages.error(request, 'Superadmin Tidak Ditemukan !')
+     return redirect(request.META.get('HTTP_REFERER','/'))
+
+#Dashboard
+
+@login_required()
 def dashboard(request):
      return render(request, 'dashboard.html')
 
 # Admins
 
+@login_required()
 def v_admins(request):
 #     read_admins=Admins.objects.filter(kode_admin = 'A0001')
 #     read_admins=Admins.objects.filter(kode_admin__icontains='kode_admin')
@@ -30,6 +63,7 @@ def v_admins(request):
      }
      return render(request,'admin/v_admins.html', context)
 
+@login_required()
 def add_admins(request):
      return render(request, 'admin/v_admin.html')
 
@@ -53,7 +87,8 @@ def post_add_admins(request):
           add_admins.save()
           messages.success(request, 'Berhasil tambah data')
           return redirect(request.META.get('HTTP_REFERER','/'))
-     
+
+@login_required()   
 def update_admins(request,kode_admin):
      data_admins=Admins.objects.get(kode_admin=kode_admin)
      context = {
@@ -561,3 +596,303 @@ def delete_hargabarang(request, kode_harga):
      data_hargabarang = HargaBarang.objects.get(kode_harga=kode_harga).delete()
      messages.success(request, 'Berhasil hapus data')
      return redirect('v_hargabarang')
+
+# JenisCustomers
+
+def v_jeniscustomers(request):
+     data_jeniscustomers = JenisCustomers.objects.all().order_by("kode_jenis_customers")
+     context = {
+          'data_jeniscustomers' : data_jeniscustomers
+     }
+     return render(request,'jenis_customers/v_jeniscustomers.html',context)
+
+def add_jeniscustomers(request):
+     return render(request,'jenis_customers/v_jeniscustomers.html')
+
+def post_add_jeniscustomer(request):
+     kode_jenis_customers = request.POST['kode_jenis_customers']
+     nama_jenis_customers = request.POST['nama_jenis_customers']
+     timestamp = request.POST['timestamp']
+     
+     if JenisCustomers.objects.filter(kode_jenis_customers=kode_jenis_customers).exists():
+          messages.error(request, "Kode sudah ada!")
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     else :
+          data_jeniscustomers = JenisCustomers(
+               kode_jenis_customers = kode_jenis_customers,
+               nama_jenis_customers = nama_jenis_customers,
+               timestamp = timestamp
+          )
+          data_jeniscustomers.save()
+          messages.success(request, 'Berhasil tambah data')
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     
+def update_jeniscustomers(request, kode_jenis_customers):
+     data_jeniscustomers = JenisCustomers.objects.get(kode_jenis_customers=kode_jenis_customers)
+     context = {
+          'data_jeniscustomers' : data_jeniscustomers
+     }
+     return render(request,'jenis_customers/u_jeniscutomers.html',context)
+
+def post_update_jeniscustomers(request):
+     kode_jenis_customers = request.POST['kode_jenis_customers']
+     nama_jenis_customers = request.POST['nama_jenis_customers']
+     timestamp = request.POST['timestamp']
+     
+     data_jeniscustomers = JenisCustomers.objects.get(kode_jenis_customers=kode_jenis_customers)
+     data_jeniscustomers.nama_jenis_customers =nama_jenis_customers
+     data_jeniscustomers.timestamp = timestamp
+     
+     data_jeniscustomers.save()
+     messages.success(request, 'Berhasil update data')
+     return redirect('v_jeniscustomers')
+
+def delete_jeniscustomers(request, kode_jenis_customers):
+     data_jeniscustomers = JenisCustomers.objects.get(kode_jenis_customers=kode_jenis_customers).delete()
+     messages.success(request, 'Berhasil hapus data')
+     return redirect('v_jeniscustomers')
+
+# Customers
+     
+def v_customers(request):
+     data_customers = Customers.objects.all().order_by('kode_customers')
+     data_jeniscustomers = JenisCustomers.objects.all().order_by('kode_jenis_customers')
+     context = {
+          'data_customers' : data_customers,
+          'data_jeniscustomers' : data_jeniscustomers
+     }
+     return render(request,'customers/v_customers.html',context)
+
+def post_add_customers(request):
+     kode_customers = request.POST['kode_customers']
+     nama_customers = request.POST['nama_customers']
+     jenis_customers = request.POST['jenis_customers']
+     alamat_customers = request.POST['alamat_customers']
+     wa_customer = request.POST['wa_customer']
+     email_customers = request.POST['email_customers']
+     timestamp = request.POST['timestamp']
+     
+     if Customers.objects.filter(kode_customers=kode_customers).exists():
+          messages.error(request, "Kode sudah ada!")
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     else :
+          data_customers = Customers(
+               kode_customers = kode_customers,
+               nama_customers = nama_customers,
+               jenis_customers = jenis_customers,
+               alamat_customers = alamat_customers,
+               wa_customer = wa_customer,
+               email_customers =email_customers,
+               timestamp = timestamp
+          )
+          data_customers.save()
+          messages.success(request, 'Berhasil tambah data')
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     
+def update_customers(request,kode_customers):
+     data_customers = Customers.objects.get(kode_customers=kode_customers)
+     data_jeniscustomers = JenisCustomers.objects.all().order_by('nama_jenis_customers')
+     context = {
+          'data_customers' : data_customers,
+          'data_jeniscustomers' : data_jeniscustomers
+     }
+     return render(request, 'customers/u_customers.html',context)
+
+def post_update_customers(request):
+     kode_customers = request.POST['kode_customers']
+     nama_customers = request.POST['nama_customers']
+     jenis_customers = request.POST['jenis_customers']
+     alamat_customers = request.POST['alamat_customers']
+     wa_customer = request.POST['wa_customer']
+     email_customers = request.POST['email_customers']
+     timestamp = request.POST['timestamp']
+     
+     data_customers = Customers.objects.get(kode_customers=kode_customers)
+     data_customers.nama_customers = nama_customers
+     data_customers.jenis_customers = jenis_customers
+     data_customers.alamat_customers = alamat_customers
+     data_customers.wa_customer = wa_customer
+     data_customers.email_customers = email_customers
+     data_customers.timestamp = timestamp
+     data_customers.save()
+     messages.success(request, 'Berhasil update data')
+     return redirect('v_customers')
+
+def delete_customers(request, kode_customers):
+     data_customers = Customers.objects.get(kode_customers=kode_customers).delete()
+     messages.success(request, 'Berhasil hapus data')
+     return redirect('v_customers')
+
+# Sopir
+
+def v_sopir(request):
+     data_sopir = Sopir.objects.all().order_by('kode_sopir')
+     context = {
+          'data_sopir' : data_sopir
+     }
+     return render(request,'sopir/v_sopir.html',context)
+
+def post_add_sopir(request):
+     kode_sopir = request.POST['kode_sopir']
+     nama_sopir = request.POST['nama_sopir']
+     alamat_sopir = request.POST['alamat_sopir']
+     wa_sopir = request.POST['wa_sopir']
+     email_sopir = request.POST['email_sopir']
+     timestamp = request.POST['timestamp']
+     
+     if Sopir.objects.filter(kode_sopir=kode_sopir).exists():
+          messages.error(request, "Kode sudah ada!")
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     else :
+          data_sopir = Sopir(
+               kode_sopir = kode_sopir,
+               nama_sopir = nama_sopir,
+               alamat_sopir = alamat_sopir,
+               wa_sopir = wa_sopir,
+               email_sopir = email_sopir,
+               timestamp = timestamp
+          )
+          data_sopir.save()
+          messages.success(request, 'Berhasil tambah data')
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     
+def update_sopir(request, kode_sopir):
+     data_sopir  = Sopir.objects.get(kode_sopir=kode_sopir)
+     context = {
+          'data_sopir' : data_sopir
+     }
+     return render(request,'sopir/u_sopir.html',context)
+
+def post_update_sopir(request):
+     kode_sopir = request.POST['kode_sopir']
+     nama_sopir = request.POST['nama_sopir']
+     alamat_sopir = request.POST['alamat_sopir']
+     wa_sopir = request.POST['wa_sopir']
+     email_sopir = request.POST['email_sopir']
+     timestamp = request.POST['timestamp']
+     
+     data_sopir = Sopir.objects.get(kode_sopir=kode_sopir)
+     data_sopir.nama_sopir = nama_sopir
+     data_sopir.alamat_sopir = alamat_sopir
+     data_sopir.wa_sopir = wa_sopir
+     data_sopir.email_sopir = email_sopir
+     data_sopir.timestamp = timestamp
+     data_sopir.save()
+     messages.success(request, 'Berhasil update data')
+     return redirect('v_sopir')
+
+def delete_sopir(request,kode_sopir):
+     data_sopir = Sopir.objects.get(kode_sopir=kode_sopir).delete()
+     messages.success(request, 'Berhasil hapus data')
+     return redirect('v_sopir')
+
+# SalesTransactions
+
+def v_salestransactions(request):
+     data_sales = SalesTransactions.objects.all().order_by('kode_sales')
+     context = {
+          'data_sales' : data_sales
+     }
+     return render(request,'sales_transactions/v_salestransactions.html',context)
+
+def add_salestransactions(request):
+     data_sales = SalesTransactions.objects.all().order_by('kode_sales')
+     data_customers = Customers.objects.all().order_by('nama_customers')
+     data_sopir = Sopir.objects.all().order_by('nama_sopir')
+     data_barang = DataBarang.objects.all().order_by('kode_barang')
+     data_hargabarang = HargaBarang.objects.all().order_by('kode_harga')
+     merged_data = []
+
+     for barang, harga_barang in zip(data_barang, data_hargabarang):
+        merged_data.append({
+            'kode_barang': barang.kode_barang,
+            'nama_barang': barang.nama_barang,
+            'satuan_barang_small' : barang.satuan_barang_small,
+            'satuan_barang_medium' : barang.satuan_barang_medium,
+            'satuan_barang_large' : barang.satuan_barang_large,
+            'harga_satuan_small': harga_barang.harga_satuan_small,
+            'harga_satuan_medium' : harga_barang.harga_satuan_medium,
+            'harga_satuan_large': harga_barang.harga_satuan_large
+     })
+     context = {
+          'data_sales' : data_sales,
+          'data_customers' : data_customers,
+          'data_sopir' : data_sopir,
+          'data_mergebarang' : merged_data
+     }
+     return render(request,'sales_transactions/add_salestransactions.html',context)
+
+def post_add_salestransactions(request):
+     kode_sales = request.POST['kode_sales']
+     nama_customers = request.POST['nama_customers']
+     kode_customers = request.POST['kode_customers']
+     nama_sopir = request.POST['nama_sopir']
+     kode_sopir = request.POST['kode_sopir']
+     nama_barang = request.POST['nama_barang']
+     kode_barang = request.POST['kode_barang']
+     nama_satuan = request.POST['nama_satuan']
+     harga_barang = request.POST['harga_barang']
+     quantity_sales = request.POST['quantity_sales']
+     diskon_sales = request.POST['diskon_sales']
+     biaya_pengiriman = request.POST['biaya_pengiriman']
+     sub_total_sales = request.POST['sub_total_sales']
+     grand_total_sales = request.POST['grand_total_sales']
+     jenis_pembayaran = request.POST['jenis_pembayaran']
+     total_pembayaran_sales = request.POST['total_pembayaran_sales']
+     sisa_tagihan = request.POST['sisa_tagihan']
+     status = request.POST['status']
+     timestamp = request.POST['timestamp']
+     
+     if SalesTransactions.objects.filter(kode_sales=kode_sales).exists():
+          messages.error(request, "Kode sudah ada!")
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     else :
+          data_sales = SalesTransactions (
+               kode_sales = kode_sales,
+               nama_customers =nama_customers,
+               kode_customers = kode_customers,
+               nama_sopir = nama_sopir,
+               kode_sopir = kode_sopir,
+               nama_barang = nama_barang.split(';'),
+               kode_barang = kode_barang,
+               nama_satuan = nama_satuan,
+               harga_barang = harga_barang,
+               quantity_sales = quantity_sales,
+               diskon_sales = diskon_sales,
+               biaya_pengiriman = biaya_pengiriman,
+               sub_total_sales = sub_total_sales,
+               grand_total_sales = grand_total_sales,
+               jenis_pembayaran = jenis_pembayaran,
+               total_pembayaran_sales = total_pembayaran_sales,
+               sisa_tagihan = sisa_tagihan,
+               status = status,
+               timestamp = timestamp
+          )
+          data_sales.save()
+          # item_values = nama_barang.split('|')
+          # kode = item_values[0]
+          # nama = item_values[1]
+          # description = item_values[2]
+          # quantity = int(item_values[4])
+
+          # try:
+          #     with SalesTransactions.atomic():
+          #         stok = StokBarang.objects.get(kode_barang=kode, stok_satuan_small=description)
+          #         # Pastikan stok tidak menjadi negatif
+          #         if stok.stok_satuan_small - quantity >= 0:
+          #             stok.stok_satuan_small -= quantity
+          #             stok.save()
+          #         else:
+          #             # Handle kasus ketika pengurangan stok membuat nilai negatif
+          #             # Misalnya, lemparkan exception atau lakukan tindakan yang sesuai
+          #             pass
+          # except StokBarang.DoesNotExist:
+          #     # Handle ketika objek tidak ditemukan
+          #     pass
+          # except StokBarang.MultipleObjectsReturned:
+          #     # Handle ketika lebih dari satu objek ditemukan
+          #     pass
+          messages.success(request, 'Berhasil tambah data')
+          return redirect(request.META.get('HTTP_REFERER','/'))
+          
+     

@@ -20,10 +20,12 @@
         <br>
         <br>
         <br>
-        <div class="content">
-            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#add-modal">
+        <div class="nav-btn">
+            <button type="button" class="add-btn btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#add-modal">
                 Tambah <i class="fa fa-plus-circle"></i>
             </button>
+        </div>
+        <div class="content">
             <div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -137,7 +139,7 @@
                 <tbody>
                     {% for t in data_barang %}
                     <tr class="table-light">
-                        <th>{{t.kode_barang}}</th>
+                        <td>{{t.kode_barang}}</td>
                         <td>{{t.nama_barang}}</td>
                         <td>{{t.kelompok_barang}}</td>
                         <td>{{t.jenis_barang}}</td>

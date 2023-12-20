@@ -1,5 +1,13 @@
 from django.db import models
 
+#SuperAdmins
+
+class SuperAdmins(models.Model):
+    kode_superadmin = models.CharField(max_length=20,primary_key=True)
+    nama_superadmin = models.CharField(max_length=120)
+    password_superadmin = models.CharField(max_length=50)
+    timestamp = models.DateTimeField(null=True)
+
 #Admins
 class Admins(models.Model):
     kode_admin = models.CharField(max_length=20,primary_key=True)
@@ -60,4 +68,57 @@ class HargaBarang(models.Model):
     ppn_barang = models.IntegerField(null=True)
     diskon_barang = models.IntegerField()
     timestamp = models.DateTimeField(null=True)
+    
+class JenisCustomers(models.Model):
+    kode_jenis_customers = models.CharField(max_length=20,primary_key=True)
+    nama_jenis_customers = models.CharField(max_length=120)
+    timestamp = models.DateTimeField(null=True)
+    
+class Customers(models.Model):
+    kode_customers = models.CharField(max_length=20,primary_key=True)
+    nama_customers = models.CharField(max_length=120)
+    jenis_customers = models.CharField(max_length=120)
+    alamat_customers = models.CharField(max_length=120,null=True)
+    wa_customer = models.CharField(max_length=20,null=True)
+    email_customers = models.CharField(max_length=120,null=True)
+    timestamp = models.DateTimeField(null=True)
+    
+class Sopir(models.Model):
+    kode_sopir = models.CharField(max_length=20,primary_key=True)
+    nama_sopir = models.CharField(max_length=120)
+    alamat_sopir = models.CharField(max_length=120)
+    wa_sopir = models.CharField(max_length=20)
+    email_sopir = models.CharField(max_length=120,null=True)
+    timestamp = models.DateTimeField(null=True)
+    
+class SalesTransactions(models.Model):
+    kode_sales = models.CharField(max_length=120,primary_key=True)
+    nama_customers = models.CharField(max_length=120,null=True)
+    kode_customers = models.CharField(max_length=20,null=True)
+    nama_sopir = models.CharField(max_length=120,null=True)
+    kode_sopir = models.CharField(max_length=20,null=True)
+    nama_barang = models.CharField(max_length=120,null=True)
+    kode_barang = models.CharField(max_length=20,null=True)
+    nama_satuan = models.CharField(max_length=120,null=True)
+    harga_barang = models.IntegerField(null=True)
+    quantity_sales = models.IntegerField(null=True)
+    diskon_sales = models.IntegerField(null=True)
+    biaya_pengiriman = models.IntegerField(null=True)
+    sub_total_sales = models.IntegerField(null=True)
+    grand_total_sales = models.IntegerField(null=True)
+    jenis_pembayaran = models.CharField(max_length=120,null=True)
+    total_pembayaran_sales = models.IntegerField(null=True)
+    sisa_tagihan = models.IntegerField(null=True)
+    status = models.CharField(max_length=120,null=True)
+    timestamp = models.DateTimeField(null=True)
+    
+
+    
+    
+    
+    
+
+
+
+
     

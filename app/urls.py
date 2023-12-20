@@ -1,4 +1,5 @@
 from django.urls import path
+from .views import superadmin_login, post_superadmin_login
 from .views import dashboard, v_admins, add_admins,post_add_admins, update_admins, post_update_admins, delete_admins
 from .views import v_satuanbarang, add_satuanbarang, post_add_satuanbarang, update_satuanbarang, post_update_satuanbarang, delete_satuanbarang
 from .views import v_kelompokbarang, add_kelompokbarang, post_add_kelompokbarang, update_kelompokbarang, post_update_kelompokbarang, delete_kelompokbarang
@@ -7,8 +8,19 @@ from .views import v_jenisbarang, add_jenisbarang, post_add_jenisbarang,update_j
 from .views import v_databarang, add_databarang, post_add_databarang, update_databarang, post_update_databarang, delete_databarang
 from .views import v_stokbarang, add_stokbarang, post_add_stokbarang, update_stokbarang, post_update_stokbarang, delete_stokbarang
 from .views import v_hargabarang, add_hargabarang, post_add_hargabarang, update_hargabarang, post_update_hargabarang, delete_hargabarang
+from .views import v_jeniscustomers, add_jeniscustomers, post_add_jeniscustomer, update_jeniscustomers, post_update_jeniscustomers, delete_jeniscustomers
+from .views import v_customers,post_add_customers, update_customers, post_update_customers,delete_customers
+from .views import v_sopir, post_add_sopir, update_sopir, post_update_sopir, delete_admins, delete_sopir
+from .views import v_salestransactions, add_salestransactions, post_add_salestransactions
 
 urlpatterns = [
+    
+    #Login
+    path('superadmin_login',superadmin_login,name='superadmin_login'),
+    path('post_superadmin_login',post_superadmin_login,name='post_superadmin_login'),
+    
+    #Dashboard
+    
     path('dashboard',dashboard,name='dashboard'),
     
     # Admins
@@ -81,5 +93,36 @@ urlpatterns = [
     path('post_add_hargabarang',post_add_hargabarang,name='post_add_hargabarang'),
     path('update_hargabarang/<str:kode_harga>',update_hargabarang,name='update_hargabarang'),
     path('post_update_hargabarang',post_update_hargabarang,name='post_update_hargabarang'),
-    path('delete_hargabarang/<str:kode_harga>',delete_hargabarang,name='delete_hargabarang')
+    path('delete_hargabarang/<str:kode_harga>',delete_hargabarang,name='delete_hargabarang'),
+    
+    # JenisCustomers
+    
+    path('v_jeniscustomers',v_jeniscustomers,name='v_jeniscustomers'),
+    path('add_jeniscustomers',add_jeniscustomers,name='add_jeniscustomers'),
+    path('post_add_jeniscustomer',post_add_jeniscustomer,name='post_add_jeniscustomer'),
+    path('update_jeniscustomers/<str:kode_jenis_customers>',update_jeniscustomers,name='update_jeniscustomers'),
+    path('post_update_jeniscustomers',post_update_jeniscustomers,name='post_update_jeniscustomers'),
+    path('delete_jeniscustomers/<str:kode_jenis_customers>',delete_jeniscustomers,name='delete_jeniscustomers'),
+    
+    # Customers
+    
+    path('v_customers',v_customers,name='v_customers'),
+    path('post_add_customers',post_add_customers,name='post_add_customers'),
+    path('update_customers/<str:kode_customers>',update_customers,name='update_customers'),
+    path('post_update_customers',post_update_customers,name='post_update_customers'),
+    path('delete_customers/<str:kode_customers>',delete_customers,name='delete_customers'),
+    
+    # Sopir
+    
+    path('v_sopir',v_sopir,name='v_sopir'),
+    path('post_add_sopir',post_add_sopir,name='post_add_sopir'),
+    path('update_sopir/<str:kode_sopir>',update_sopir,name='update_sopir'),
+    path('post_update_sopir',post_update_sopir,name='post_update_sopir'),
+    path('delete_sopir/<str:kode_sopir>',delete_sopir,name='delete_sopir'),
+    
+    # SalesTransactions
+    
+    path('v_salestransactions',v_salestransactions,name='v_salestransactions'),
+    path('add_salestransactions',add_salestransactions,name='add_salestransactions'),
+    path('post_add_salestransactions',post_add_salestransactions,name='post_add_salestransactions')
 ]

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    {% include 'componens/grid_index.html'%}
+    <title>transaksi pnejualan</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar mb-5">
+            {% include 'componens/navbar.html' %}
+        </div>
+        <div class="messages">
+            {% include 'componens/messages.html'%}
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="content">
+            <a href="{% url 'add_salestransactions'%}">
+                <button class="btn btn-primary mt-3">
+                    Tambah <i class="fa fa-plus-circle"></i>
+                </button>
+            </a>
+            <a href="">
+                <button class="btn btn-success mt-3">
+                    Excel <i class="fa fa-file-excel-o"></i>
+                </button>
+            </a>
+            <table class="table table-success mt-2 table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Kode</th>
+                        <th scope="col">Customer</th>
+                        <th scope="col">Nama Barang</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Aksi</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in data_sales %}
+                    <tr class="table-light">
+                        <th>{{t.kode_sales}}</th>
+                        <td>{{t.nama_customers}}</td>
+                        <td>{{t.nama_barang}}</td>
+                        <td>{{t.quantity_sales}}</td>
+                        <td>{{t.grand_total_sales}}</td>
+                        <td>{{t.status}}</td>
+                        <td>{{t.timestamp}}</td>
+                        <td>
+                            <a href="" class="btn btn-success mb-1">
+                                <i class="fa fa-folder"></i>
+                            </a>
+                            <a onclick="return confirm('apakah anda ingin menghapus data customer {{t.nama_customers}} ?')"
+                                href="" class="btn btn-success mb-1">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

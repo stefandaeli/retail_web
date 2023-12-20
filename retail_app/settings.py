@@ -26,12 +26,17 @@ SECRET_KEY = 'django-insecure-^cj4g7tjl_wymlhl00_f2p8--kyxtavan*k4k6gpmic9ab9t+9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'funky-amoeba-precious.ngrok-free.app', 'localhost']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://funky-amoeba-precious.ngrok-free.app'
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    <title>Document</title>
+</head>
+<body>
+    <form action="{% url 'post_update_customers' %}" method="POST">
+        {% csrf_token %}
+        <div class="d-grid gap-2 col-6 mx-auto mb-3">
+            <h5 class="modal-title">Update Data Barang</h5>
+            <div class="mb-3">
+                <label for="" class="form-label">Kode Customers</label>
+                <input type="text" class="form-control" aria-label="kode_customers" aria-describedby="basic-addon1"
+                    name="kode_customers" id="kode_customers" value="{{ data_customers.kode_customers}} " readonly>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Nama Customers</label>
+                <input type="text" class="form-control" aria-label="nama_customers" aria-describedby="basic-addon1"
+                    name="nama_customers" id="nama_customers" value="{{data_customers.nama_customers}}" maxlength="50" required>
+            </div>
+
+            <label class="form-label">Jenis Barang</label>
+            <select class="form-select mb-3" name="jenis_customers" id="jenis_customers" aria-label="Default select example"
+                required>
+                <option value="" disabled selected>{{data_customers.jenis_customers}}</option>
+                <option value="-">-</option>
+                {% for t in data_jeniscustomers %}
+                <option value="{{t.nama_jenis_customers}}">{{t.nama_jenis_customers}}</option>
+                {% endfor %}
+            </select>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Alamat</label>
+                <input type="text" class="form-control" aria-label="alamat_customers" aria-describedby="basic-addon1"
+                    name="alamat_customers" id="alamat_customers" value="{{data_customers.alamat_customers}}" maxlength="50" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Telepon/Wa</label>
+                <input type="tlp" class="form-control" aria-label="wa_customer" aria-describedby="basic-addon1"
+                    name="wa_customer" id="wa_customer" value="{{data_customers.wa_customer}}" maxlength="50" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Email</label>
+                <input type="email" class="form-control" aria-label="email_customers" aria-describedby="basic-addon1"
+                    name="email_customers" id="email_customers" value="{{data_customers.email_customers}}" maxlength="50" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="" class="form-label">Timestamp</label>
+                <input type="text" class="form-control" aria-label="timestamp" aria-describedby="basic-addon1"
+                    name="timestamp" id="timestamp" value="{% now 'Y-m-d H:i:s' %}" maxlength="20" required>
+            </div>
+        </div>
+
+        <a href="">
+            <div class="d-grid gap-2 col-4 mx-auto mb-3">
+                <button type="submit" class="btn btn-success">Simpan</button>
+            </div>
+        </a>
+        <a href="{% url 'v_customers'%}">
+            <div class="d-grid gap-2 col-4 mx-auto mb-5">
+                <button type="button" class="btn btn-secondary">Kembali</button>
+            </div>
+        </a>
+        </div>
+    </form>
+</body>
+</html>

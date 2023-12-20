@@ -8,16 +8,28 @@
     {% include 'componens/grid_index.html'%}
     <title>Document</title>
 </head>
+<style>
+    p {
+        text-align: center;
+    }
+</style>
 
 <body>
     <div class="container">
         <div class="navbar mb-5">
             {% include 'componens/navbar.html' %}
         </div>
+        <div class="messages">
+            {% include 'componens/messages.html'%}
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="content">
+            <p>Ini Adalah halaman dashboard</p>
+            <p>progres 70%</p>
+        </div>
     </div>
-    <br>
-    <br>
-    <br>
 </body>
 
 </html>

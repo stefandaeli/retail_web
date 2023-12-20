@@ -52,12 +52,12 @@
             Customer
           </a>
           <ul class="dropdown-menu mt-2 bg-success">
-            <li><a class="dropdown-item" href="#">Data Customer</a></li>
-            <li><a class="dropdown-item" href="#">Jenis Customer</a></li>
+            <li><a class="dropdown-item" href="{% url 'v_jeniscustomers' %}">Jenis Customer</a></li>
+            <li><a class="dropdown-item" href="{% url 'v_customers'%}">Data Customer</a></li>
           </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">Data Sopir</a>
+          <a class="nav-link" aria-current="page" href="{% url 'v_sopir' %}">Data Sopir</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
@@ -65,7 +65,7 @@
             Transaksi
           </a>
           <ul class="dropdown-menu mt-2 bg-success">
-            <li><a class="dropdown-item" href="#">Transaksi Penjualan</a></li>
+            <li><a class="dropdown-item" href="{% url 'v_salestransactions'%}">Transaksi Penjualan</a></li>
             <li><a class="dropdown-item" href="#">Transaksi Pembelian</a></li>
           </ul>
         </li>

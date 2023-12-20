@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include 'componens/bootstrapt.html' %}
     {% include 'componens/grid_index.html'%}
-    <title>admins</title>
+    <title>jenis customers</title>
 </head>
 
 <body>
@@ -26,45 +26,33 @@
             </button>
         </div>
         <div class="content">
-            <!-- Modal Add -->
             <div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Admin</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Jenis Customers</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{% url 'post_add_admins' %}" method="POST">
+                            <form action="{% url 'post_add_jeniscustomer'%}" method="POST">
                                 {% csrf_token %}
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Masukkan Kode</label>
-                                    <input type="text" class="form-control" name="kode_admin" id="kode_admin"
-                                        aria-describedby="emailHelp" maxlength="20" required>
-                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                                    </div> -->
+                                    <label for="" class="form-label">Masukkan Kode Jenis Customers</label>
+                                    <input type="text" class="form-control" name="kode_jenis_customers"
+                                        id="kode_jenis_customers" aria-describedby="emailHelp" maxlength="20" required>
+
                                 </div>
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Masukkan Nama</label>
-                                    <input type="text" class="form-control" name="nama_admin" id="nama_admin"
-                                        aria-describedby="emailHelp" maxlength="50" required>
-                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                                    </div> -->
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Masukkan Password</label>
-                                    <input type="text" class="form-control" name="password_admin" id="password_admin"
-                                        aria-describedby="emailHelp" maxlength="50" required>
-                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                                    </div> -->
+                                    <label for="" class="form-label">Masukkan Nama Jenis Customers</label>
+                                    <input type="text" class="form-control" name="nama_jenis_customers"
+                                        id="nama_jenis_customers" aria-describedby="emailHelp" maxlength="50" required>
+
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Timestamp</label>
                                     <input type="datetime" class="form-control" name="timestamp" id="timestamp"
                                         aria-describedby="emailHelp" maxlength="50" value="{% now 'Y-m-d H:i:s' %}"
                                         readonly>
-                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                                    </div> -->
                                 </div>
 
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -77,27 +65,27 @@
             <table class="table table-success mt-2 table-bordered">
                 <thead>
                     <tr>
-                        <th scope="col">Kode Admin</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Password</th>
+                        <th scope="col">Kode Jenis Customers</th>
+                        <th scope="col">Nama Jenis Customers</th>
                         <th scope="col">Timestamp</th>
                         <th scope="col">Aksi</th>
 
                     </tr>
                 </thead>
                 <tbody>
-                    {% for t in data_admins %}
+                    {% for t in data_jeniscustomers %}
                     <tr class="table-light">
-                        <th>{{t.kode_admin}}</th>
-                        <td>{{t.nama_admin}}</td>
-                        <td>{{t.password_admin}}</td>
+                        <th>{{t.kode_jenis_customers}}</th>
+                        <td>{{t.nama_jenis_customers}}</td>
                         <td>{{t.timestamp}}</td>
                         <td>
-                            <a href="{% url 'update_admins' t.kode_admin %}" class="btn btn-success mb-1">
+                            <a href="{% url 'update_jeniscustomers' t.kode_jenis_customers %}"
+                                class="btn btn-success mb-1">
                                 <i class="fa fa-pencil-square"></i>
                             </a>
-                            <a onclick="return confirm('apakah anda ingin menghapus admin {{t.nama_admin}} ?')"
-                                href="{% url 'delete_admins' t.kode_admin%}" class="btn btn-success mb-1">
+                            <a onclick="return confirm('apakah anda ingin menghapus jenis customer {{t.nama_jenis_customers}} ?')"
+                                href="{% url 'delete_jeniscustomers' t.kode_jenis_customers %}"
+                                class="btn btn-success mb-1">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>
@@ -106,7 +94,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
     </div>
 </body>
 

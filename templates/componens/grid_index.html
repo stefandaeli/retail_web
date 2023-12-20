@@ -9,8 +9,13 @@
         display: grid;
         grid-template-columns: 1fr;
         grid-template-areas: "navbar navbar"
+            "nav_btn nav_btn"
             "messages messages"
             "content content";
+    }
+
+    .nav-btn {
+        grid-area: nav_btn;
     }
 
     .navbar {
@@ -24,6 +29,9 @@
 
     .content {
         grid-area: content;
+        max-height: 60vh;
+        overflow-x: auto;
+        overflow-y: auto;
     }
 
     .messages {
@@ -31,4 +39,13 @@
 
     }
 
+    a {
+        text-decoration: none;
+    }
+
+    table {
+        max-height: 60vh;
+        overflow-x: auto;
+        overflow-y: auto;
+    }
 </style>
