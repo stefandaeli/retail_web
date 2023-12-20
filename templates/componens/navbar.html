@@ -27,12 +27,13 @@
             <li><a class="dropdown-item" href="{% url 'v_gudang' %}">Gudang</a></li>
             <li><a class="dropdown-item" href="{% url 'v_jenisbarang'%}">Jenis Barang</a></li>
             <li><a class="dropdown-item" href="{% url 'v_databarang' %}">Data Barang</a></li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" href="{% url 'v_stokbarang' %}">Stok Barang</a></li>
-            <li><a class="dropdown-item" href="{% url 'v_hargabarang' %}">Harga Barang</a></li>
+            {% if request.session.status_login == 'Super Admin' %}
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="{% url 'v_stokbarang' %}">Stok Barang</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_hargabarang' %}">Harga Barang</a></li>
+            {% endif %} 
           </ul>
         </li>
         <li class="nav-item dropdown">
