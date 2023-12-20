@@ -1,23 +1,13 @@
 from django.urls import path
-from .views import superadmin_login, post_superadmin_login
-from .views import dashboard, v_admins, add_admins,post_add_admins, update_admins, post_update_admins, delete_admins
-from .views import v_satuanbarang, add_satuanbarang, post_add_satuanbarang, update_satuanbarang, post_update_satuanbarang, delete_satuanbarang
-from .views import v_kelompokbarang, add_kelompokbarang, post_add_kelompokbarang, update_kelompokbarang, post_update_kelompokbarang, delete_kelompokbarang
-from .views import v_gudang,add_gudang, post_add_gudang, update_gudang, post_update_gudang, delete_gudang
-from .views import v_jenisbarang, add_jenisbarang, post_add_jenisbarang,update_jenisbarang,post_update_jenisbarang,delete_jenisbarang
-from .views import v_databarang, add_databarang, post_add_databarang, update_databarang, post_update_databarang, delete_databarang
-from .views import v_stokbarang, add_stokbarang, post_add_stokbarang, update_stokbarang, post_update_stokbarang, delete_stokbarang
-from .views import v_hargabarang, add_hargabarang, post_add_hargabarang, update_hargabarang, post_update_hargabarang, delete_hargabarang
-from .views import v_jeniscustomers, add_jeniscustomers, post_add_jeniscustomer, update_jeniscustomers, post_update_jeniscustomers, delete_jeniscustomers
-from .views import v_customers,post_add_customers, update_customers, post_update_customers,delete_customers
-from .views import v_sopir, post_add_sopir, update_sopir, post_update_sopir, delete_admins, delete_sopir
-from .views import v_salestransactions, add_salestransactions, post_add_salestransactions
+from .views import *
+
 
 urlpatterns = [
     
     #Login
     path('superadmin_login',superadmin_login,name='superadmin_login'),
     path('post_superadmin_login',post_superadmin_login,name='post_superadmin_login'),
+    path('logout',logout,name='logout'),
     
     #Dashboard
     
