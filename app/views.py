@@ -40,9 +40,27 @@ def post_superadmin_login(request):
           else:
             messages.error(request, 'Password Salah !')
      else:
-            messages.error(request, 'Superadmin Tidak Ditemukan !')
+          #Login untuk admin
+          if Admins.objects.filter(kode_admin=kode_superadmin).exists():
+               admin = Admins.objects.get(kode_admin=kode_superadmin)
+               if password_superadmin == admin.password_admin:
+                    #simpan data session
+                    request.session['nama_admin'] = admin.nama_admin
+                    request.session['kode_admin'] = admin.kode_admin
+                    request.session['status_login'] = 'Admin'
+                    request.session.save() 
+                    messages.error(request, 'Berhasil Login !')
+                    return redirect('dashboard')
+               else:
+                    messages.error(request, 'Password Salah !')
+          else:
+             messages.error(request, 'Admin Tidak Ditemukan !')  
      return redirect(request.META.get('HTTP_REFERER','/'))
 
+def logout(request):
+     request.session.flush()
+     messages.success(request, 'Berhasil Logout')
+     return redirect('superadmin_login')
 #Dashboard
 
 @login_required()
