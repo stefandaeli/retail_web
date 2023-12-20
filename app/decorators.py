@@ -2,7 +2,7 @@ from functools import wraps
 from django.contrib import messages
 from django.shortcuts import redirect
 
-# Pengecekan login
+# Pengecekan login Super Admin
 def login_required():
     def decorator(view_func):
         @wraps(view_func)
@@ -11,9 +11,13 @@ def login_required():
                 # Jika pengguna memiliki session id_admin (sudah login)
                 return view_func(request, *args, **kwargs)
             else:
-                # Jika pengguna tidak memiliki session userid (belum login)
-                messages.error(request, "Anda tidak memiliki akses ke halaman ini !")
-                return redirect('superadmin_login')
+                if request.session.get('kode_admin'):
+                  return view_func(request, *args, **kwargs)  
+                else:
+                    # Jika peng
+                    # guna tidak memiliki session userid (belum login)
+                    messages.error(request, "Anda tidak memiliki akses ke halaman ini !")
+                    return redirect('superadmin_login')
         return wrapper
     return decorator
 

@@ -112,6 +112,22 @@ class SalesTransactions(models.Model):
     status = models.CharField(max_length=120,null=True)
     timestamp = models.DateTimeField(null=True)
     
+#Supplier
+
+class DataSupplier(models.Model):
+    kode_supplier = models.CharField(max_length=120,primary_key=True)
+    nama_supplier = models.CharField(max_length=120,null=True)
+    alamat_supplier = models.CharField(max_length=120,null=True)
+    npwp_supplier = models.CharField(max_length=50,null=True)
+    tlp_supplier = models.CharField(max_length=13,null=True)
+    email_supplier = models.CharField(max_length=120,null=True)
+    wa_supplier = models.CharField(max_length=13,null=True)
+    nama_bank_supplier = models.CharField(max_length=20,null=True)
+    no_rek_supplier = models.CharField(max_length=20,null=True)
+    ket_supplier = models.CharField(max_length=250,null=True)
+    status_aktif_supplier = models.CharField(max_length=120,null=True)
+    timestamp = models.DateTimeField(null=True)
+    
 
     
     
