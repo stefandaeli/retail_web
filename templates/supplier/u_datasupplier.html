@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    {% include 'componens/grid_index.html'%}
+    <title>Document</title>
+</head>
+<body>
+    <form action="post_update_datasupplier" method="POST">
+        {% csrf_token %}
+        <div class="d-grid gap-2 col-6 mx-auto mb-3">
+            <h5 class="modal-title">Update Data Supplier</h5>
+            <div class="mb-3">
+                <label for="" class="form-label">Kode Supplier</label>
+                <input type="text" class="form-control" aria-label="kode_supplier" aria-describedby="basic-addon1"
+                    name="kode_supplier" id="kode_supplier" value="{{data_supplier.kode_supplier}}" required>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Nama Supplier</label>
+                <input type="text" class="form-control" aria-label="nama_supplier" aria-describedby="basic-addon1"
+                    name="nama_supplier" id="nama_supplier" value="{{data_supplier.nama_supplier}}" required>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Alamat Supplier</label>
+                <input type="text" class="form-control" aria-label="alamat_supplier" aria-describedby="basic-addon1"
+                    name="alamat_supplier" id="alamat_supplier" value="{{data_supplier.alamat_supplier}}" maxlength="50" required
+                    readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Npwp Supplier</label>
+                <input type="number" class="form-control" aria-label="npwp_supplier" aria-describedby="basic-addon1"
+                    name="npwp_supplier" id="npwp_supplier" value="{{data_supplier.npwp_supplier}}"
+                    maxlength="50" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Telepon Supplier</label>
+                <input type="number" class="form-control" aria-label="tlp_supplier" aria-describedby="basic-addon1"
+                    name="tlp_supplier" id="tlp_supplier" value="{{data_supplier.tlp_supplier}}"
+                    maxlength="50" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Email Supplier</label>
+                <input type="email" class="form-control" aria-label="email_supplier" aria-describedby="basic-addon1"
+                    name="email_supplier" id="email_supplier" value="{{data_supplier.email_supplier}}"
+                    maxlength="50" required>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Whatsapp Supplier</label>
+                <input type="number" class="form-control" aria-label="wa_supplier" aria-describedby="basic-addon1"
+                    name="wa_supplier" id="wa_supplier" value="{{data_supplier.wa_supplier}}"
+                    maxlength="50" required>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Nama Bank Supplier</label>
+                <input type="text" class="form-control" aria-label="nama_bank_supplier" aria-describedby="basic-addon1"
+                    name="nama_bank_supplier" id="nama_bank_supplier" value="{{data_supplier.nama_bank_supplier}}"
+                    maxlength="50" required>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Nomor Rekening Supplier</label>
+                <input type="number" class="form-control" aria-label="no_rek_supplier" aria-describedby="basic-addon1"
+                    name="no_rek_supplier" id="no_rek_supplier" value="{{data_supplier.no_rek_supplier}}"
+                    maxlength="50" required>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Keterangan Supplier</label>
+                <input type="text" class="form-control" aria-label="ket_supplier" aria-describedby="basic-addon1"
+                    name="ket_supplier" id="ket_supplier" value="{{data_supplier.ket_supplier}}"
+                    maxlength="50" required>
+            </div>
+
+            <div class="form-check form-switch mb-3">
+                <input name="status_aktif_supplier" class="form-check-input" type="checkbox" id="status_aktif_supplier">
+                <label class="form-check-label" for="status_aktif_supplier">Y</label>
+                <input type="hidden" name="status_aktif_supplier" id="status_aktif_supplier2" value="T">
+            </div>
+   
+
+            <div class="mb-3">
+                <label for="" class="form-label">Timestamp</label>
+                <input type="text" class="form-control" aria-label="timestamp" aria-describedby="basic-addon1"
+                    name="timestamp" id="timestamp" value="{% now 'Y-m-d H:i:s' %}" maxlength="20" required>
+            </div>
+        </div>
+
+        </div>
+        <a href="">
+            <div class="d-grid gap-2 col-4 mx-auto mb-3">
+                <button type="submit" class="btn btn-success">Simpan</button>
+            </div>
+        </a>
+        <a href="{% url 'v_hargabarang'%}">
+            <div class="d-grid gap-2 col-4 mx-auto mb-5">
+                <button type="button" class="btn btn-secondary">Kembali</button>
+            </div>
+        </a>
+        </div>
+    </form>
+</body>
+</html>
+<script>
+    /*mengisi input otomatis ketika option selected*/
+    function displaySelectedValue() {
+        let selectedValue = document.getElementById("nama_barang").value;
+        let space = 0 + " ";
+        let valuesArray = selectedValue.split(',');
+        document.getElementById("l_small").textContent = "Harga Satuan (" + valuesArray[1] + ")";
+        document.getElementById("l_medium").textContent = "Harga Satuan (" + valuesArray[2] + ")";
+        document.getElementById("l_large").textContent = "Harga Satuan (" + valuesArray[3] + ")";
+        document.getElementById("kode_barang").value = valuesArray[4];
+    }
+    /*jika di swithces maka akan mengubah nilai ppn_barang*/
+    $(document).ready(function () {
+        let switchValue = document.getElementById("status_aktif_supplier");
+        $('#status_aktif_supplier').change(function () {
+            if ($(this).prop('checked')) {
+                switchValue.value = 'Y';
+            } else {
+                switchValue.value = 'T';
+            }
+           document.getElementById("status_aktif_supplier2").value = switchValue.value;
+        });
+    });
+</script>

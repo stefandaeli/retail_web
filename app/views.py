@@ -1,9 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Admins, SatuanBarang, KelompokBarang, Gudang
-from .models import JenisBarang, DataBarang, StokBarang, HargaBarang
-from .models import JenisCustomers,Customers, Sopir, SalesTransactions
-from .models import SuperAdmins
+from .models import *
 from django.contrib import messages
 from django.db.models import Q
 from .utilities import ppn
@@ -912,5 +909,102 @@ def post_add_salestransactions(request):
           #     pass
           messages.success(request, 'Berhasil tambah data')
           return redirect(request.META.get('HTTP_REFERER','/'))
-          
+
+# DataSupplier
+
+def v_datasupplier(request):
+     data_supplier = DataSupplier.objects.all().order_by('kode_supplier')   
+     context = {
+          'data_supplier' : data_supplier
+     }
+     return render(request,'supplier/v_datasupplier.html',context)
+
+def add_datasupplier(request):
+     return render(request,'supplier/add_datasupplier.html')
+
+def post_add_datasupplier(request):
+     kode_supplier = request.POST['kode_supplier']
+     nama_supplier = request.POST['nama_supplier']
+     alamat_supplier = request.POST['alamat_supplier']
+     npwp_supplier = request.POST['npwp_supplier']
+     tlp_supplier = request.POST['tlp_supplier']
+     email_supplier = request.POST['email_supplier']
+     wa_supplier = request.POST['wa_supplier']
+     nama_bank_supplier = request.POST['nama_bank_supplier']
+     no_rek_supplier = request.POST['no_rek_supplier']
+     ket_supplier = request.POST['ket_supplier']
+     status_aktif_supplier = request.POST['status_aktif_supplier']
+     timestamp = request.POST['timestamp']
      
+     if DataSupplier.objects.filter(kode_supplier=kode_supplier).exists():
+          messages.error(request, "Kode sudah ada!")
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     else :
+          data_supplier = DataSupplier(
+               kode_supplier = kode_supplier,
+               nama_supplier = nama_supplier,
+               alamat_supplier = alamat_supplier,
+               npwp_supplier = npwp_supplier,
+               tlp_supplier = tlp_supplier,
+               email_supplier = email_supplier,
+               wa_supplier = wa_supplier,
+               nama_bank_supplier = nama_bank_supplier,
+               no_rek_supplier = no_rek_supplier,
+               ket_supplier = ket_supplier,
+               status_aktif_supplier = status_aktif_supplier,
+               timestamp = timestamp,
+          )
+          data_supplier.save()
+          messages.success(request, 'Berhasil tambah data')
+          return redirect(request.META.get('HTTP_REFERER','/'))
+
+def update_datasupplier(request,kode_supplier):
+     data_supplier = DataSupplier.objects.get(kode_supplier=kode_supplier)
+     context = {
+          'data_supplier' : data_supplier
+     }
+     return render(request, 'supplier/u_datasupplier.html',context)
+     
+def post_update_datasupplier(request):
+     kode_supplier = request.POST['kode_supplier']
+     nama_supplier = request.POST['nama_supplier']
+     alamat_supplier = request.POST['alamat_supplier']
+     npwp_supplier = request.POST['npwp_supplier']
+     tlp_supplier = request.POST['tlp_supplier']
+     email_supplier = request.POST['email_supplier']
+     wa_supplier = request.POST['wa_supplier']
+     nama_bank_supplier = request.POST['nama_bank_supplier']
+     no_rek_supplier = request.POST['no_rek_supplier']
+     ket_supplier = request.POST['ket_supplier']
+     status_aktif_supplier = request.POST['status_aktif_supplier']
+     timestamp = request.POST['timestamp']
+     
+     data_supplier = DataSupplier.objects.get(kode_supplier=kode_supplier)
+     data_supplier.nama_supplier = nama_supplier
+     data_supplier.alamat_supplier = alamat_supplier
+     data_supplier.npwp_supplier = npwp_supplier
+     data_supplier.tlp_supplier = tlp_supplier
+     data_supplier.email_supplier = email_supplier
+     data_supplier.wa_supplier = wa_supplier
+     data_supplier.nama_bank_supplier = nama_bank_supplier
+     data_supplier.no_rek_supplier = no_rek_supplier
+     data_supplier.ket_supplier = ket_supplier
+     data_supplier.status_aktif_supplier = status_aktif_supplier
+     data_supplier.timestamp = timestamp
+     data_supplier.save()
+     messages.success(request, 'Berhasil update data')
+     return redirect('v_datasupplier')
+     
+def delete_datasupplier(request,kode_supplier):
+     DataSupplier.objects.get(kode_supplier=kode_supplier).delete()
+     messages.success(request, 'Berhasil hapus data')
+     return redirect('v_datasupplier')
+
+# BarangSupplier
+
+def v_barangsupplier(request):
+     data_barangsupplier = BarangSupplier.objects.select_related('kode_supplier').all()
+     context = {
+          'data_barangsupplier' : data_barangsupplier
+     }
+     return render(request,'barangsupplier/v_barangsupplier.html',context)
