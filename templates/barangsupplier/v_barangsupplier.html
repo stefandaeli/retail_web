@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    {% include 'componens/grid_index.html'%}
+    <title>Data Supplier</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar mb-5">
+            {% include 'componens/navbar.html' %}
+        </div>
+        <div class="messages">
+            {% include 'componens/messages.html'%}
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="content">
+            <div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Data Supplier</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Masukkan Kode Supplier</label>
+                                    <input type="text" class="form-control" name="kode_supplier" id="kode_supplier"
+                                        aria-describedby="emailHelp" maxlength="20" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Masukkan Nama Supplier</label>
+                                    <input type="text" class="form-control" name="nama_supplier" id="nama_supplier"
+                                        aria-describedby="emailHelp" maxlength="50" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Alamat Supplier</label>
+                                    <input type="text" class="form-control" name="alamat_supplier" id="nama_supplier"
+                                        aria-describedby="emailHelp" maxlength="50" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Npwp Supplier</label>
+                                    <input type="text" class="form-control" name="npwp_supplier" id="npwp_supplier"
+                                        aria-describedby="emailHelp" maxlength="50" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Telepon Supplier</label>
+                                    <input type="number" class="form-control" name="tlp_supplier" id="tlp_supplier"
+                                        aria-describedby="emailHelp" maxlength="50" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Email Supplier</label>
+                                    <input type="email" class="form-control" name="email_supplier" id="email_supplier"
+                                        aria-describedby="emailHelp" maxlength="50" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Whatsapp Supplier</label>
+                                    <input type="number" class="form-control" name="wa_supplier" id="wa_supplier"
+                                        aria-describedby="emailHelp" maxlength="50" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Nama Bank Supplier</label>
+                                    <input type="text" class="form-control" name="nama_bank_supplier" id="nama_bank_supplier"
+                                        aria-describedby="emailHelp" maxlength="50" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Nomor Rekening Supplier</label>
+                                    <input type="text" class="form-control" name="no_rek_supplier" id="no_rek_supplier"
+                                        aria-describedby="emailHelp" maxlength="50" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Keterangan Supplier</label>
+                                    <input type="text" class="form-control" name="ket_supplier" id="ket_supplier"
+                                        aria-describedby="emailHelp" maxlength="500" required>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input name="status_aktif_supplier" class="form-check-input" type="checkbox" id="status_aktif_supplier">
+                                    <label class="form-check-label" for="status_aktif_supplier">Y</label>
+                                    <input type="hidden" name="status_aktif_supplier" id="status_aktif_supplier2" value="0">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Timestamp</label>
+                                    <input type="datetime" class="form-control" name="timestamp" id="timestamp"
+                                        aria-describedby="emailHelp" maxlength="50" value="{% now 'Y-m-d H:i:s' %}"
+                                        readonly>
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                    </div> -->
+                                </div>
+
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-success">Simpan <i class="fa fa-save"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-btn">
+                <button type="button" class="add-btn btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#add-modal">
+                    Tambah <i class="fa fa-plus-circle"></i>
+                </button>
+            
+                <a href="">
+                    <button class="btn btn-success mt-3">
+                        Excel <i class="fa fa-file-excel-o"></i>
+                    </button>
+                </a>
+            </div>
+            <table class="table table-success mt-2 table-bordered">
+                <thead class="text-center">
+                    <tr>
+                        <th scope="col">Nama Barang</th>
+                        <th scope="col">Nama Supplier</th>
+                        <th scope="col">Quantity Satuan Small</th>
+                        <th scope="col">Quantity Satuan Medium</th>
+                        <th scope="col">Quantity Satuan Large</th>
+                        <th scope="col">Satuan Harga Small</th>
+                        <th scope="col">Satuan Harga Medium</th>
+                        <th scope="col">Satuan Harga Large</th>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Aksi</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in data_barangsupplier %}
+                    <tr class="table-light">
+                        <td>{{t.nama_barang}}</td>
+                        <th>{{t.kode_supplier.nama_supplier}}</th>
+                        <td>{{t.quantity_satuan_small}}</td>
+                        <td>{{t.quantity_satuan_medium}}</td>
+                        <td>{{t.quantity_satuan_large}}</td>
+                        <td>{{t.satuan_harga_small}}</td>
+                        <td>{{t.satuan_harga_medium}}</td>
+                        <td>{{t.satuan_harga_large}}</td>
+                        <td>{{t.timestamp}}</td>
+                        <td>
+                            <a href="" class="btn btn-success mb-1">
+                                <i class="fa fa-folder"></i>
+                            </a>
+                            <a onclick="return confirm('apakah anda ingin menghapus data barang supplier {{t.nama_barang}} ?')"
+                                href="" class="btn btn-success mb-1">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
+<script>
+    /*jika di swithces maka akan mengubah nilai ppn_barang*/
+    $(document).ready(function () {
+        let switchValue = document.getElementById("status_aktif_supplier");
+        $('#status_aktif_supplier').change(function () {
+            if ($(this).prop('checked')) {
+                switchValue.value = 'Y';
+            } else {
+                switchValue.value = 'T';
+            }
+            document.getElementById("status_aktif_supplier2").value = switchValue.value;
+        });
+    });
+</script>

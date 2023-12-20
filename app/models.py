@@ -128,6 +128,16 @@ class DataSupplier(models.Model):
     status_aktif_supplier = models.CharField(max_length=120,null=True)
     timestamp = models.DateTimeField(null=True)
     
+class BarangSupplier(models.Model):
+    kode_supplier = models.ForeignKey(DataSupplier,on_delete=models.CASCADE)
+    nama_barang = models.CharField(max_length=120,null=True)
+    quantity_satuan_small = models.IntegerField(null=True)
+    quantity_satuan_medium = models.IntegerField(null=True)
+    quantity_satuan_large = models.IntegerField(null=True)
+    satuan_harga_small = models.IntegerField(null=True)
+    satuan_harga_medium = models.IntegerField(null=True)
+    satuan_harga_large = models.IntegerField(null=True)
+    timestamp = models.DateTimeField(null=True)
 
     
     

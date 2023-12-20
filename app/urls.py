@@ -114,7 +114,17 @@ urlpatterns = [
     
     path('v_salestransactions',v_salestransactions,name='v_salestransactions'),
     path('add_salestransactions',add_salestransactions,name='add_salestransactions'),
-    path('post_add_salestransactions',post_add_salestransactions,name='post_add_salestransactions')
+    path('post_add_salestransactions',post_add_salestransactions,name='post_add_salestransactions'),
     
-    # Supplier
+    # DataSupplier
+    path('v_datasupplier',v_datasupplier,name='v_datasupplier'),
+    path('add_datasupplier',add_datasupplier,name='add_datasupplier'),
+    path('post_add_datasupplier',post_add_datasupplier,name='post_add_datasupplier'),
+    path('update_datasupplier<str:kode_supplier>',update_datasupplier,name='update_datasupplier'),
+    path('post_update_datasupplier',post_update_datasupplier,name='post_update_datasupplier'),
+    path('delete_datasupplier<str:kode_supplier>',delete_datasupplier,name='delete_datasupplier'),
+    
+    #BarangSupllier
+    path('v_barangsupplier',v_barangsupplier,name='v_barangsupplier'),
+
 ]
