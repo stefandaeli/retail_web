@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.db.models import Q
 from .utilities import ppn
 from .decorators import login_required
+from datetime import datetime, timedelta, date
 import json
 
 # Create your views here.
@@ -62,7 +63,20 @@ def logout(request):
 
 @login_required()
 def dashboard(request):
-     return render(request, 'dashboard.html')
+     today = date.today()
+     start_of_day = datetime.combine(today, datetime.min.time())
+     end_of_day = datetime.combine(today + timedelta(days=1), datetime.min.time()) - timedelta(seconds=1)
+
+     jumlah_transaksi_hari_ini = SalesTransactions.objects.filter(timestamp__range=(start_of_day, end_of_day)).count()
+     total_data_barang = DataBarang.objects.count()
+     
+     context = {
+          'total_data_barang' : total_data_barang,
+          'jumlah_transaksi_hari_ini' : jumlah_transaksi_hari_ini
+     }
+     
+     
+     return render(request, 'dashboard.html',context)
 
 # Admins
 
