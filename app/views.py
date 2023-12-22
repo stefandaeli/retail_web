@@ -6,6 +6,7 @@ from django.db.models import Q
 from .utilities import ppn
 from .decorators import login_required
 from datetime import datetime, timedelta, date
+from django.db.models import Sum
 import json
 
 # Create your views here.
@@ -66,17 +67,18 @@ def dashboard(request):
      today = date.today()
      start_of_day = datetime.combine(today, datetime.min.time())
      end_of_day = datetime.combine(today + timedelta(days=1), datetime.min.time()) - timedelta(seconds=1)
-
+     
      jumlah_transaksi_hari_ini = SalesTransactions.objects.filter(timestamp__range=(start_of_day, end_of_day)).count()
      total_data_barang = DataBarang.objects.count()
+     total_penjualan_hari_ini = SalesTransactions.objects.filter(timestamp__range=(start_of_day, end_of_day)).aggregate(Sum('grand_total_sales'))['grand_total_sales__sum'] or 0
      
      context = {
-          'total_data_barang' : total_data_barang,
-          'jumlah_transaksi_hari_ini' : jumlah_transaksi_hari_ini
+         'total_data_barang': total_data_barang,
+         'jumlah_transaksi_hari_ini': jumlah_transaksi_hari_ini,
+         'total_penjualan_hari_ini': total_penjualan_hari_ini,
      }
-     
-     
-     return render(request, 'dashboard.html',context)
+      
+     return render(request, 'dashboard.html', context)
 
 # Admins
 
