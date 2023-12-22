@@ -901,9 +901,13 @@ def post_add_salestransactions(request):
           )
           data_sales.save()
           messages.success(request, 'Berhasil tambah data')
-          return redirect('sales_transaction')
+          return redirect('v_salestransactions')
 
-
+def delete_salestransactions(request,kode_sales):
+     data_sales = SalesTransactions.objects.get(kode_sales=kode_sales).delete()
+     messages.success(request, 'Berhasil hapus data')
+     return redirect('v_salestransactions')
+     
 # DataSupplier
 
 def v_datasupplier(request):

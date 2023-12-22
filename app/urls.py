@@ -115,6 +115,7 @@ urlpatterns = [
     path('v_salestransactions',v_salestransactions,name='v_salestransactions'),
     path('add_salestransactions',add_salestransactions,name='add_salestransactions'),
     path('post_add_salestransactions',post_add_salestransactions,name='post_add_salestransactions'),
+    path('delete_salestransactions/<str:kode_sales>',delete_salestransactions,name='delete_salestransactions'),
     
     # DataSupplier
     path('v_datasupplier',v_datasupplier,name='v_datasupplier'),

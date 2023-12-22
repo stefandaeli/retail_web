@@ -20,7 +20,7 @@
         <br>
         <br>
         <br>
-        <div class="content">
+        <div class="nav-btn">
             <a href="{% url 'add_salestransactions'%}">
                 <button class="btn btn-primary mt-3">
                     Tambah <i class="fa fa-plus-circle"></i>
@@ -31,6 +31,9 @@
                     Excel <i class="fa fa-file-excel-o"></i>
                 </button>
             </a>
+        </div>
+        <div class="content">
+            
             <table class="table table-success mt-2 table-bordered">
                 <thead>
                     <tr>
@@ -50,7 +53,7 @@
                     <tr class="table-light">
                         <th>{{t.kode_sales}}</th>
                         <td>{{t.nama_customers}}</td>
-                        <td>{{t.nama_barang}}</td>
+                        <td>{{t.nama_sopir}}</td>
                         <td>{{t.quantity_sales}}</td>
                         <td>{{t.grand_total_sales}}</td>
                         <td>{{t.status}}</td>
@@ -59,8 +62,8 @@
                             <a href="" class="btn btn-success mb-1">
                                 <i class="fa fa-folder"></i>
                             </a>
-                            <a onclick="return confirm('apakah anda ingin menghapus data customer {{t.nama_customers}} ?')"
-                                href="" class="btn btn-success mb-1">
+                            <a onclick="return confirm('apakah anda ingin menghapus data transaksi {{t.kode_sales}} ?')"
+                                href="{% url 'delete_salestransactions' t.kode_sales %}" class="btn btn-success mb-1">
                                 <i class="fa fa-trash-o"></i>
                             </a>
 

@@ -18,6 +18,30 @@
         border-radius: 5px;
 
     }
+
+    h5 {
+        text-align: center;
+    }
+
+    @media screen and (max-width:568px) {
+        .select-box {
+            grid-template-columns: 1fr;
+        }
+
+        td {
+
+            min-width: 200px;
+        }
+
+        .td-nama-barang {
+            min-width: 300px;
+
+        }
+
+        .medium-col {
+            min-width: 100px;
+        }
+    }
 </style>
 
 <body>
@@ -28,8 +52,11 @@
         <br>
         <br>
         <br>
-        <div class="content">
+        <div class="nav-btn">
+
             <h5 class="mb-3">Tambah Transaksi Penjualan</h5>
+        </div>
+        <div class="nav-btn">
             <form action="{% url 'post_add_salestransactions'%}" method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
@@ -98,85 +125,90 @@
                 <input type="hidden" name="" id="nama_barang_value" value="">
                 <input type="hidden" id="hidden_table_data" name="nama_barang" value="">
 
+                <div class="content">
+                    <table class="table table-success mt-2 table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Kode</th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">Satuan</th>
+                                <th scope="col">Harga</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Harga Total</th>
 
-                <table class="table table-success mt-2 table-bordered">
-                    <thead>
-                        <tr>
-                            <th scope="col">Kode</th>
-                            <th scope="col">Nama</th>
-                            <th scope="col">Satuan</th>
-                            <th scope="col">Harga</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Harga Total</th>
+                            </tr>
+                        </thead>
 
-                        </tr>
-                    </thead>
+                        <tbody id="myTableBody">
 
-                    <tbody id="myTableBody">
+                        </tbody>
+                    </table>
 
-                    </tbody>
-                </table>
-                <button type="button" id="tombol_tambah">Tambah</button>
-                <table class="table table-success mt-2 table-bordered">
-                    <thead>
-                        <tr>
-                            <th scope="col">Diskon</th>
-                            <th scope="col">Biaya Pengiriman</th>
-                            <th scope="col">TOTAL</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input oninput="calculateTotal()" type="number" class="form-control" name="diskon_sales"
-                                    aria-describedby="emailHelp" id="diskon_sales" maxlength="20" required>
-                            </td>
-                            <td>
-                                <input oninput="calculateTotal()" type="number" class="form-control"
-                                    name="biaya_pengiriman" aria-describedby="emailHelp" id="biaya_pengiriman"
-                                    maxlength="20" required>
-                            </td>
-                            <td>
-                                <input type="number" class="form-control" name="grand_total_sales"
-                                    aria-describedby="emailHelp" id="grand_total_sales" maxlength="20" required
-                                    readonly>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <button type="button" class="btn btn-primary" id="tombol_tambah">Tambah</button>
 
-                <table class="table table-success mt-2 table-bordered">
-                    <thead>
-                        <tr>
-                            <th scope="col">Jenis Pembayaran</th>
-                            <th scope="col">Total Pembayaran</th>
-                            <th scope="col">Sisa Tagihan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <select class="form-select mb-3" name="jenis_pembayaran" id="jenis_pembayaran"
-                                    aria-label="Default select example">
-                                    <option value="-">-</option>
-                                    <option value="cash">CASH</option>
-                                    <option value="transfer">TRANSFER</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input oninput="calculateTotal()" type="number" class="form-control"
-                                    name="total_pembayaran_sales" aria-describedby="emailHelp"
-                                    id="total_pembayaran_sales" maxlength="20" required>
-                            </td>
-                            <td>
-                                <input type="number" class="form-control" name="sisa_tagihan"
-                                    aria-describedby="emailHelp" id="sisa_tagihan" maxlength="20" required readonly>
-                            </td>
+                    <table class="table table-success mt-2 table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Diskon</th>
+                                <th scope="col">Biaya Pengiriman</th>
+                                <th scope="col">TOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input oninput="calculateTotal()" type="number" class="form-control"
+                                        name="diskon_sales" aria-describedby="emailHelp" id="diskon_sales"
+                                        maxlength="20" required>
+                                </td>
+                                <td>
+                                    <input oninput="calculateTotal()" type="number" class="form-control"
+                                        name="biaya_pengiriman" aria-describedby="emailHelp" id="biaya_pengiriman"
+                                        maxlength="20" required>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" name="grand_total_sales"
+                                        aria-describedby="emailHelp" id="grand_total_sales" maxlength="20" required
+                                        readonly>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                        </tr>
-                    </tbody>
-                </table>
+                    <table class="table table-success mt-2 table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Jenis Pembayaran</th>
+                                <th scope="col">Total Pembayaran</th>
+                                <th scope="col">Sisa Tagihan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select class="form-select mb-3" name="jenis_pembayaran" id="jenis_pembayaran"
+                                        aria-label="Default select example">
+                                        <option value="-">-</option>
+                                        <option value="cash">CASH</option>
+                                        <option value="transfer">TRANSFER</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input oninput="calculateTotal()" type="number" class="form-control"
+                                        name="total_pembayaran_sales" aria-describedby="emailHelp"
+                                        id="total_pembayaran_sales" maxlength="20" required>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" name="sisa_tagihan"
+                                        aria-describedby="emailHelp" id="sisa_tagihan" maxlength="20" required readonly>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <button type="submit" class="btn btn-success">Simpan</button>
+
             </form>
 
         </div>
@@ -215,58 +247,6 @@
             status.value = "Belum Lunas";
         }
     }
-
-    //tambah innerhtml
-    // Inisialisasi array untuk menyimpan nilai terpilih
-    /*let selectedValuesArray = [];
-
-    function displaySelectedValue() {
-        let selectElement = document.getElementById("nama_barang");
-        let selectedValue = selectElement.value;
-
-        if (selectedValuesArray.indexOf(selectedValue) === -1) {
-            // Jika nilai belum ada dalam array, tambahkan ke array
-            selectedValuesArray.push(selectedValue);
-
-            // Tampilkan nilai terpilih di dalam input
-            document.getElementById("nama_barang_value").value = selectedValuesArray.join('|');
-
-            // Buat dan tambahkan baris baru ke dalam tabel
-            let valuesArray = selectedValue.split(',');
-            let newRow = document.createElement("tr");
-            let uniqueIdentifier = Date.now();
-            newRow.innerHTML = `
-            <td>
-                <input type="text" class="form-control" name="kode_barang" value="${valuesArray[1]}" aria-describedby="emailHelp" maxlength="20" required readonly>
-            </td>
-            <td>
-                <input type="text" class="form-control" name="" value="${valuesArray[0]}" id="nama_barang_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
-            </td>
-            <td>
-                <select onchange="satuanSelectedValue(this, '${uniqueIdentifier}')" class="form-select mb-3" name="nama_satuan" id="nama_satuan_${uniqueIdentifier}" aria-label="Default select example">
-                    <option value="-">-</option>
-                    <option>${valuesArray[2]}</option>
-                    <option>${valuesArray[3]}</option>
-                    <option>${valuesArray[4]}</option>
-                </select>
-            </td>
-            <td>
-                <input type="number" class="form-control" name="harga_barang" id="harga_barang_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
-            </td>
-            <td>
-                <input oninput="subTotalSales(this, '${uniqueIdentifier}')" type="number" class="form-control" name="quantity_sales" id="quantity_sales_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required>
-            </td>
-            <td>
-                <input type="number" class="form-control" name="sub_total_sales" id="sub_total_sales_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
-            </td>
-        `;
-            document.getElementById("myTableBody").appendChild(newRow);
-        }
-    }
-
-    // Menambahkan event listener untuk mendengarkan perubahan pada elemen <select>
-    document.getElementById("nama_barang_value").addEventListener("change", displaySelectedValue);
-    */
     let rowDataArray = []; // Variabel untuk menyimpan data dari setiap baris
 
     function displaySelectedValue() {
@@ -288,10 +268,10 @@
                 <td>
                     <input type="text" class="form-control" name="kode_barang" value="${valuesArray[1]}" aria-describedby="emailHelp" maxlength="20" required readonly>
                 </td>
-                <td>
+                <td class="td-nama-barang">
                     <input type="text" class="form-control" name="" value="${valuesArray[0]}" id="nama_barang_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
                 </td>
-                <td>
+                <td class="medium-col">
                     <select onchange="satuanSelectedValue(this, '${uniqueIdentifier}')" class="form-select mb-3" name="nama_satuan" id="nama_satuan_${uniqueIdentifier}" aria-label="Default select example">
                         <option value="-">-</option>
                         <option>${valuesArray[2]}</option>
@@ -302,7 +282,7 @@
                 <td>
                     <input type="number" class="form-control" name="harga_barang" id="harga_barang_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
                 </td>
-                <td>
+                <td class="medium-col">
                     <input oninput="subTotalSales(this, '${uniqueIdentifier}')" type="number" class="form-control" name="quantity_sales" id="quantity_sales_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required>
                 </td>
                 <td>
@@ -396,7 +376,7 @@
         var currentTime = new Date();
 
         // Atur zona waktu ke Asia/Jakarta
-        currentTime.toLocaleString('en-US', {timeZone: 'Asia/Jakarta'});
+        currentTime.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' });
 
         // Dapatkan komponen waktu
         var year = currentTime.getFullYear();
