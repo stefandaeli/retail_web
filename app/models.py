@@ -130,7 +130,7 @@ class DataSupplier(models.Model):
     
 class BarangSupplier(models.Model):
     kode_supplier = models.ForeignKey(DataSupplier,on_delete=models.CASCADE)
-    kode_barang = models.ForeignKey(DataBarang,on_delete=models.CASCADE)
+    kode_barang = models.ForeignKey(DataBarang,on_delete=models.CASCADE,null=True)
     quantity_satuan_small = models.IntegerField(null=True)
     quantity_satuan_medium = models.IntegerField(null=True)
     quantity_satuan_large = models.IntegerField(null=True)

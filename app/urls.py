@@ -130,6 +130,12 @@ urlpatterns = [
     path('post_add_barangsupplier',post_add_barangsupplier,name='post_add_barangsupplier'),
     path('update_barangsupplier/<str:kode_supplier>',update_barangsupplier,name='update_barangsupplier'),
     path('post_update_barangsupplier',post_update_barangsupplier,name='post_update_barangsupplier'),
-    path('delete_barangsupplier/<str:kode_supplier>',delete_barangsupplier,name='delete_barangsupplier')
+    path('delete_barangsupplier/<str:kode_supplier>',delete_barangsupplier,name='delete_barangsupplier'),
+    
+    #Excel
+    path('detail_barang_excel/', detail_barang_excel, name='detail_barang_excel'),
+    
+    #DetailBarang
+    path('detail_barang',detail_barang,name='detail_barang')
 
 ]
