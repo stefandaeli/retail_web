@@ -900,31 +900,9 @@ def post_add_salestransactions(request):
                timestamp = timestamp
           )
           data_sales.save()
-          # item_values = nama_barang.split('|')
-          # kode = item_values[0]
-          # nama = item_values[1]
-          # description = item_values[2]
-          # quantity = int(item_values[4])
-
-          # try:
-          #     with SalesTransactions.atomic():
-          #         stok = StokBarang.objects.get(kode_barang=kode, stok_satuan_small=description)
-          #         # Pastikan stok tidak menjadi negatif
-          #         if stok.stok_satuan_small - quantity >= 0:
-          #             stok.stok_satuan_small -= quantity
-          #             stok.save()
-          #         else:
-          #             # Handle kasus ketika pengurangan stok membuat nilai negatif
-          #             # Misalnya, lemparkan exception atau lakukan tindakan yang sesuai
-          #             pass
-          # except StokBarang.DoesNotExist:
-          #     # Handle ketika objek tidak ditemukan
-          #     pass
-          # except StokBarang.MultipleObjectsReturned:
-          #     # Handle ketika lebih dari satu objek ditemukan
-          #     pass
           messages.success(request, 'Berhasil tambah data')
-          return redirect(request.META.get('HTTP_REFERER','/'))
+          return redirect('sales_transaction')
+
 
 # DataSupplier
 
