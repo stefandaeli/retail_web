@@ -1003,8 +1003,87 @@ def delete_datasupplier(request,kode_supplier):
 # BarangSupplier
 
 def v_barangsupplier(request):
+     data_supplier = DataSupplier.objects.all().order_by('nama_supplier')
+     data_barang = DataBarang.objects.all().order_by('nama_barang')
      data_barangsupplier = BarangSupplier.objects.select_related('kode_supplier').all()
      context = {
-          'data_barangsupplier' : data_barangsupplier
+          'data_barangsupplier' : data_barangsupplier,
+          'data_supplier' : data_supplier,
+          'data_barang' : data_barang
      }
      return render(request,'barangsupplier/v_barangsupplier.html',context)
+
+def post_add_barangsupplier(request):
+     kode_supplier = request.POST['kode_supplier']
+     kode_barang = request.POST['kode_barang']
+     quantity_satuan_small = request.POST['quantity_satuan_small']
+     quantity_satuan_medium = request.POST['quantity_satuan_medium']
+     quantity_satuan_large = request.POST['quantity_satuan_large']
+     satuan_harga_small = request.POST['satuan_harga_small']
+     satuan_harga_medium = request.POST['satuan_harga_medium']
+     satuan_harga_large = request.POST['satuan_harga_large']
+     timestamp = request.POST['timestamp']
+     data_supplier, created = DataSupplier.objects.get_or_create(kode_supplier=kode_supplier)
+     data_barang, created = DataBarang.objects.get_or_create(kode_barang=kode_barang)
+
+     if DataBarang.objects.filter(kode_barang=data_barang).exists():
+          messages.error(request, "Kode barang sudah ada!")
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     else:
+          barang_supplier = BarangSupplier(
+               kode_supplier = data_supplier,
+               kode_barang = data_barang,
+               quantity_satuan_small = quantity_satuan_small,
+               quantity_satuan_medium = quantity_satuan_medium,
+               quantity_satuan_large = quantity_satuan_large,
+               satuan_harga_small = satuan_harga_small,
+               satuan_harga_medium = satuan_harga_medium,
+               satuan_harga_large = satuan_harga_large,
+               timestamp = timestamp,
+          ) 
+          barang_supplier.save()  
+          messages.success(request, 'Berhasil tambah data')
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     
+def update_barangsupplier(request,kode_supplier):
+     barang_supplier = BarangSupplier.objects.select_related('kode_supplier','kode_barang').get(kode_supplier=kode_supplier)
+     data_supplier = DataSupplier.objects.all().order_by('nama_supplier')
+     data_barang = DataBarang.objects.all().order_by('nama_barang')
+     context = {
+          'data_barangsupplier' : barang_supplier,
+          'data_supplier' : data_supplier,
+          'data_barang' : data_barang
+     }
+     return render(request, 'barangsupplier/u_barangsupplier.html',context)
+
+def post_update_barangsupplier(request):
+     kode_supplier = request.POST['kode_supplier']
+     kode_barang = request.POST['kode_barang']
+     quantity_satuan_small = request.POST['quantity_satuan_small']
+     quantity_satuan_medium = request.POST['quantity_satuan_medium']
+     quantity_satuan_large = request.POST['quantity_satuan_large']
+     satuan_harga_small = request.POST['satuan_harga_small']
+     satuan_harga_medium = request.POST['satuan_harga_medium']
+     satuan_harga_large = request.POST['satuan_harga_large']
+     timestamp = request.POST['timestamp']
+     data_supplier, created = DataSupplier.objects.get_or_create(kode_supplier=kode_supplier)
+     data_barang, created = DataBarang.objects.get_or_create(kode_barang=kode_barang)
+     
+     data_barangsupplier1 = BarangSupplier.objects.get(kode_supplier=data_supplier)
+     data_barangsupplier1.kode_barang = data_barang
+     data_barangsupplier1.quantity_satuan_small = quantity_satuan_small
+     data_barangsupplier1.quantity_satuan_medium = quantity_satuan_medium
+     data_barangsupplier1.quantity_satuan_large = quantity_satuan_large
+     data_barangsupplier1.satuan_harga_small = satuan_harga_small
+     data_barangsupplier1.satuan_harga_medium = satuan_harga_medium
+     data_barangsupplier1.satuan_harga_large = satuan_harga_large
+     data_barangsupplier1.timestamp = timestamp
+     
+     data_barangsupplier1.save()
+     messages.success(request, 'Berhasil update data')
+     return redirect('v_barangsupplier')
+
+def delete_barangsupplier(request,kode_supplier):
+     BarangSupplier.objects.get(kode_supplier=kode_supplier).delete()
+     messages.success(request, 'Berhasil hapus data')
+     return redirect('v_barangsupplier')

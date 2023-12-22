@@ -25,86 +25,73 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Data Supplier</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Barang Supplier</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="" method="POST">
+                            <form action="{% url 'post_add_barangsupplier' %}" method="POST">
                                 {% csrf_token %}
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Masukkan Kode Supplier</label>
-                                    <input type="text" class="form-control" name="kode_supplier" id="kode_supplier"
-                                        aria-describedby="emailHelp" maxlength="20" required>
-                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                                    </div> -->
+                                    <label for="" class="form-label">Masukan Nama Suppplier</label>
+                                    <select class="form-select mb-3" name="kode_supplier" id="kode_supplier"
+                                        aria-label="Default select example">
+                                        <option value="-">-</option>
+                                        {% for t in data_supplier %}
+                                        <option value="{{t.kode_supplier}}">{{t.nama_supplier}}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Masukkan Nama Supplier</label>
-                                    <input type="text" class="form-control" name="nama_supplier" id="nama_supplier"
+                                    <label for="" class="form-label">Masukan Nama Barang</label>
+                                    <select class="form-select mb-3" name="kode_barang" id="kode_barang"
+                                        aria-label="Default select example">
+                                        <option value="-">-</option>
+                                        {% for t in data_barang %}
+                                        <option value="{{t.kode_barang}}">{{t.nama_barang}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Masukkan Quantity Satuan Small</label>
+                                    <input type="text" class="form-control" name="quantity_satuan_small" id="quantity_satuan_small"
                                         aria-describedby="emailHelp" maxlength="50" required>
                                     <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
                                     </div> -->
                                 </div>
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Alamat Supplier</label>
-                                    <input type="text" class="form-control" name="alamat_supplier" id="nama_supplier"
+                                    <label for="" class="form-label">Masukkan Quantity Satuan Medium</label>
+                                    <input type="text" class="form-control" name="quantity_satuan_medium" id="quantity_satuan_medium"
                                         aria-describedby="emailHelp" maxlength="50" required>
                                     <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
                                     </div> -->
                                 </div>
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Npwp Supplier</label>
-                                    <input type="text" class="form-control" name="npwp_supplier" id="npwp_supplier"
+                                    <label for="" class="form-label">Masukkan Quantity Satuan Lerge</label>
+                                    <input type="text" class="form-control" name="quantity_satuan_large" id="quantity_satuan_large"
                                         aria-describedby="emailHelp" maxlength="50" required>
                                     <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
                                     </div> -->
                                 </div>
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Telepon Supplier</label>
-                                    <input type="number" class="form-control" name="tlp_supplier" id="tlp_supplier"
+                                    <label for="" class="form-label">Satuan Harga Small</label>
+                                    <input type="number" class="form-control" name="satuan_harga_small" id="satuan_harga_small"
                                         aria-describedby="emailHelp" maxlength="50" required>
                                     <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
                                     </div> -->
                                 </div>
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Email Supplier</label>
-                                    <input type="email" class="form-control" name="email_supplier" id="email_supplier"
+                                    <label for="" class="form-label">Satuan Harga Medium</label>
+                                    <input type="number" class="form-control" name="satuan_harga_medium" id="satuan_harga_medium"
                                         aria-describedby="emailHelp" maxlength="50" required>
                                     <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
                                     </div> -->
                                 </div>
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Whatsapp Supplier</label>
-                                    <input type="number" class="form-control" name="wa_supplier" id="wa_supplier"
+                                    <label for="" class="form-label">Satuan Harga Large</label>
+                                    <input type="number" class="form-control" name="satuan_harga_large" id="satuan_harga_large"
                                         aria-describedby="emailHelp" maxlength="50" required>
                                     <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
                                     </div> -->
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Nama Bank Supplier</label>
-                                    <input type="text" class="form-control" name="nama_bank_supplier" id="nama_bank_supplier"
-                                        aria-describedby="emailHelp" maxlength="50" required>
-                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                                    </div> -->
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Nomor Rekening Supplier</label>
-                                    <input type="text" class="form-control" name="no_rek_supplier" id="no_rek_supplier"
-                                        aria-describedby="emailHelp" maxlength="50" required>
-                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                                    </div> -->
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Keterangan Supplier</label>
-                                    <input type="text" class="form-control" name="ket_supplier" id="ket_supplier"
-                                        aria-describedby="emailHelp" maxlength="500" required>
-                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                                    </div> -->
-                                </div>
-                                <div class="form-check form-switch mb-3">
-                                    <input name="status_aktif_supplier" class="form-check-input" type="checkbox" id="status_aktif_supplier">
-                                    <label class="form-check-label" for="status_aktif_supplier">Y</label>
-                                    <input type="hidden" name="status_aktif_supplier" id="status_aktif_supplier2" value="0">
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Timestamp</label>
@@ -152,7 +139,7 @@
                 <tbody>
                     {% for t in data_barangsupplier %}
                     <tr class="table-light">
-                        <td>{{t.nama_barang}}</td>
+                        <td>{{t.kode_barang.nama_barang}}</td>
                         <th>{{t.kode_supplier.nama_supplier}}</th>
                         <td>{{t.quantity_satuan_small}}</td>
                         <td>{{t.quantity_satuan_medium}}</td>
@@ -162,11 +149,11 @@
                         <td>{{t.satuan_harga_large}}</td>
                         <td>{{t.timestamp}}</td>
                         <td>
-                            <a href="" class="btn btn-success mb-1">
+                            <a href="{% url 'update_barangsupplier' t.kode_supplier.kode_supplier %}" class="btn btn-success mb-1">
                                 <i class="fa fa-folder"></i>
                             </a>
-                            <a onclick="return confirm('apakah anda ingin menghapus data barang supplier {{t.nama_barang}} ?')"
-                                href="" class="btn btn-success mb-1">
+                            <a onclick="return confirm('apakah anda ingin menghapus data barang supplier {{t.kode_barang.nama_barang}} ?')"
+                                href="{% url 'delete_barangsupplier' t.kode_supplier.kode_supplier %}" class="btn btn-success mb-1">
                                 <i class="fa fa-trash-o"></i>
                             </a>
 

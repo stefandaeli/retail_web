@@ -120,11 +120,15 @@ urlpatterns = [
     path('v_datasupplier',v_datasupplier,name='v_datasupplier'),
     path('add_datasupplier',add_datasupplier,name='add_datasupplier'),
     path('post_add_datasupplier',post_add_datasupplier,name='post_add_datasupplier'),
-    path('update_datasupplier<str:kode_supplier>',update_datasupplier,name='update_datasupplier'),
+    path('update_datasupplier/<str:kode_supplier>',update_datasupplier,name='update_datasupplier'),
     path('post_update_datasupplier',post_update_datasupplier,name='post_update_datasupplier'),
     path('delete_datasupplier<str:kode_supplier>',delete_datasupplier,name='delete_datasupplier'),
     
     #BarangSupllier
     path('v_barangsupplier',v_barangsupplier,name='v_barangsupplier'),
+    path('post_add_barangsupplier',post_add_barangsupplier,name='post_add_barangsupplier'),
+    path('update_barangsupplier/<str:kode_supplier>',update_barangsupplier,name='update_barangsupplier'),
+    path('post_update_barangsupplier',post_update_barangsupplier,name='post_update_barangsupplier'),
+    path('delete_barangsupplier/<str:kode_supplier>',delete_barangsupplier,name='delete_barangsupplier')
 
 ]

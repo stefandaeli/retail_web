@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    {% include 'componens/grid_index.html'%}
+    <title>Document</title>
+</head>
+<body>
+    <form action="{% url 'post_update_barangsupplier' %}" method="POST">
+        {% csrf_token %}
+        <div class="d-grid gap-2 col-6 mx-auto mb-3">
+            <h5 class="modal-title">Update Barang Supplier</h5>
+            <div class="mb-3">
+                <label for="" class="form-label">Masukan Nama Suppplier</label>
+                <select class="form-select mb-3" name="kode_supplier" id="kode_supplier"
+                    aria-label="Default select example">
+                    <option value="{{ data_barangsupplier.kode_supplier.kode_supplier }}">{{ data_barangsupplier.kode_supplier.nama_supplier }}</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Masukan Nama Barang</label>
+                <select class="form-select mb-3" name="kode_barang" id="kode_barang"
+                    aria-label="Default select example">
+                    <option disabled value="{{ data_barangsupplier.kode_barang.kode_barang }}">{{ data_barangsupplier.kode_barang.nama_barang }}</option>
+                    {% for t in data_barang %}
+                    <option value="{{t.kode_barang}}">{{t.nama_barang}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Masukkan Quantity Satuan Small</label>
+                <input type="text" class="form-control" name="quantity_satuan_small" id="quantity_satuan_small" value="{{ data_barangsupplier.quantity_satuan_small }}"
+                    aria-describedby="emailHelp" maxlength="50" required>
+                <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                </div> -->
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Masukkan Quantity Satuan Medium</label>
+                <input type="text" class="form-control" name="quantity_satuan_medium" id="quantity_satuan_medium" value="{{ data_barangsupplier.quantity_satuan_medium }}"
+                    aria-describedby="emailHelp" maxlength="50" required>
+                <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                </div> -->
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Masukkan Quantity Satuan Lerge</label>
+                <input type="text" class="form-control" name="quantity_satuan_large" id="quantity_satuan_large" value="{{ data_barangsupplier.quantity_satuan_large }}"
+                    aria-describedby="emailHelp" maxlength="50" required>
+                <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                </div> -->
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Satuan Harga Small</label>
+                <input type="number" class="form-control" name="satuan_harga_small" id="satuan_harga_small" value="{{ data_barangsupplier.satuan_harga_small }}"
+                    aria-describedby="emailHelp" maxlength="50" required>
+                <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                </div> -->
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Satuan Harga Medium</label>
+                <input type="number" class="form-control" name="satuan_harga_medium" id="satuan_harga_medium" value="{{ data_barangsupplier.satuan_harga_medium }}"
+                    aria-describedby="emailHelp" maxlength="50" required>
+                <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                </div> -->
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Satuan Harga Large</label>
+                <input type="number" class="form-control" name="satuan_harga_large" id="satuan_harga_large" value="{{ data_barangsupplier.satuan_harga_large }}"
+                    aria-describedby="emailHelp" maxlength="50" required>
+                <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                </div> -->
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Timestamp</label>
+                <input type="text" class="form-control" aria-label="timestamp" aria-describedby="basic-addon1"
+                    name="timestamp" id="timestamp" value="{% now 'Y-m-d H:i:s' %}" maxlength="20" required>
+            </div>
+        </div>
+
+        <a href="">
+            <div class="d-grid gap-2 col-4 mx-auto mb-3">
+                <button type="submit" class="btn btn-success">Simpan</button>
+            </div>
+        </a>
+        <a href="{% url 'v_hargabarang'%}">
+            <div class="d-grid gap-2 col-4 mx-auto mb-5">
+                <button type="button" class="btn btn-secondary">Kembali</button>
+            </div>
+        </a>
+    </form>
+
+
+</body>
+</html>
+<script>
+    /*mengisi input otomatis ketika option selected*/
+    function displaySelectedValue() {
+        let selectedValue = document.getElementById("nama_barang").value;
+        let space = 0 + " ";
+        let valuesArray = selectedValue.split(',');
+        document.getElementById("l_small").textContent = "Harga Satuan (" + valuesArray[1] + ")";
+        document.getElementById("l_medium").textContent = "Harga Satuan (" + valuesArray[2] + ")";
+        document.getElementById("l_large").textContent = "Harga Satuan (" + valuesArray[3] + ")";
+        document.getElementById("kode_barang").value = valuesArray[4];
+    }
+    /*jika di swithces maka akan mengubah nilai ppn_barang*/
+    $(document).ready(function () {
+        let switchValue = document.getElementById("status_aktif_supplier");
+        $('#status_aktif_supplier').change(function () {
+            if ($(this).prop('checked')) {
+                switchValue.value = 'Y';
+            } else {
+                switchValue.value = 'T';
+            }
+           document.getElementById("status_aktif_supplier2").value = switchValue.value;
+        });
+    });
+</script>
