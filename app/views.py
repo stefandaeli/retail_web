@@ -961,6 +961,7 @@ def add_salestransactions(request):
      data_sopir = Sopir.objects.all().order_by('nama_sopir')
      data_barang = DataBarang.objects.all().order_by('kode_barang')
      data_hargabarang = HargaBarang.objects.all().order_by('kode_harga')
+     data_satuan = SatuanBarang.objects.all().order_by('nama_satuan')
      merged_data = []
 
      for barang, harga_barang in zip(data_barang, data_hargabarang):
@@ -978,7 +979,8 @@ def add_salestransactions(request):
           'data_sales' : data_sales,
           'data_customers' : data_customers,
           'data_sopir' : data_sopir,
-          'data_mergebarang' : merged_data
+          'data_mergebarang' : merged_data,
+          'data_satuan' : data_satuan
      }
      return render(request,'sales_transactions/add_salestransactions.html',context)
 
@@ -988,11 +990,10 @@ def post_add_salestransactions(request):
      kode_customers = request.POST['kode_customers']
      nama_sopir = request.POST['nama_sopir']
      kode_sopir = request.POST['kode_sopir']
-     nama_barang = request.POST['nama_barang']
-     kode_barang = request.POST['kode_barang']
-     nama_satuan = request.POST['nama_satuan']
-     harga_barang = request.POST['harga_barang']
-     quantity_sales = request.POST['quantity_sales']
+     kode_barang_list = request.POST.getlist('kode_barang[]')
+     nama_satuan_list = request.POST.getlist('nama_satuan[]')
+     harga_barang_list = request.POST.getlist('harga_barang[]')
+     quantity_sales_list = request.POST.getlist('quantity_sales[]')
      diskon_sales = request.POST['diskon_sales']
      biaya_pengiriman = request.POST['biaya_pengiriman']
      sub_total_sales = request.POST['sub_total_sales']
@@ -1013,11 +1014,6 @@ def post_add_salestransactions(request):
                kode_customers = kode_customers,
                nama_sopir = nama_sopir,
                kode_sopir = kode_sopir,
-               nama_barang = nama_barang.split(';'),
-               kode_barang = kode_barang,
-               nama_satuan = nama_satuan,
-               harga_barang = harga_barang,
-               quantity_sales = quantity_sales,
                diskon_sales = diskon_sales,
                biaya_pengiriman = biaya_pengiriman,
                sub_total_sales = sub_total_sales,
@@ -1029,8 +1025,30 @@ def post_add_salestransactions(request):
                timestamp = timestamp
           )
           data_sales.save()
-          messages.success(request, 'Berhasil tambah data')
-          return redirect('v_salestransactions')
+
+          for i in range(len(kode_barang_list)):
+               data_barang, created = DataBarang.objects.get_or_create(kode_barang=kode_barang_list[i])
+               data_sales, created = SalesTransactions.objects.get_or_create(kode_sales=kode_sales)
+               DetailTransaksi.objects.create(
+                    kode_sales=data_sales,
+                    kode_barang=data_barang,
+                    nama_satuan = nama_satuan_list[i],
+                    harga_barang=harga_barang_list[i],
+                    quantity_sales=quantity_sales_list[i],
+               
+               # Coba ambil queryset MyModel berdasarkan nomor nota penjualan dan kode barang
+          )
+          my_model_instances = StokBarang.objects.filter(kode_barang=kode_barang_list[i])
+          for instance in my_model_instances:
+               quantity_sales = int(quantity_sales_list[i])
+               if instance.stok_satuan_small > quantity_sales:
+                    instance.stok_satuan_small -= quantity_sales
+                    instance.save()
+               else:
+                    messages.success(request, 'Stock kurang')
+                    return redirect('v_salestransactions')
+     messages.success(request, 'Berhasil tambah data')
+     return redirect('v_salestransactions')
 
 def delete_salestransactions(request,kode_sales):
      data_sales = SalesTransactions.objects.get(kode_sales=kode_sales).delete()
@@ -1214,3 +1232,91 @@ def delete_barangsupplier(request,kode_supplier):
      BarangSupplier.objects.get(kode_supplier=kode_supplier).delete()
      messages.success(request, 'Berhasil hapus data')
      return redirect('v_barangsupplier')
+
+     # BarangSupplier
+
+def v_transaksipembelian(request):
+     data_transaksipembelian = TransaksiPembelian.objects.select_related('kode_supplier','kode_barang','kode_satuan').all()
+     context = {
+          'data_transaksipembelian' : data_transaksipembelian
+     }
+     return render(request,'transaksipembelian/v_transaksipembelian.html',context)
+
+def add_transaksipembelian(request):
+     data_supplier = DataSupplier.objects.all().order_by('nama_supplier')
+     data_barang = DataBarang.objects.all().order_by('nama_barang')
+     data_hrgbarang = HargaBarang.objects.all().order_by('nama_barang')
+     data_satuan = SatuanBarang.objects.all().order_by('nama_satuan')
+     merged_data = []
+     
+     for barang, harga_barang in zip(data_barang, data_hrgbarang):
+        merged_data.append({
+            'kode_barang': barang.kode_barang,
+            'nama_barang': barang.nama_barang,
+            'satuan_barang_small' : barang.satuan_barang_small,
+            'satuan_barang_medium' : barang.satuan_barang_medium,
+            'satuan_barang_large' : barang.satuan_barang_large,
+            'harga_satuan_small': harga_barang.harga_satuan_small,
+            'harga_satuan_medium' : harga_barang.harga_satuan_medium,
+            'harga_satuan_large': harga_barang.harga_satuan_large
+     })
+     context = {
+          'data_supplier' : data_supplier,
+          'data_barang' : data_barang,
+          'data_satuan' : data_satuan,
+          'data_hrgbarang' : merged_data
+     }
+     return render(request, 'transaksipembelian/add_transaksipembelian.html',context)
+
+def post_add_transaksipembelian(request):
+     kode_transaksi_pembelian = request.POST['kode_transaksi_pembelian']
+     kode_supplier = request.POST['kode_supplier']
+     kode_barang = request.POST['kode_barang']
+     kode_satuan = request.POST['kode_satuan']
+     harga_pembelian = request.POST['harga_barang']
+     quantity = request.POST['quantity_sales']
+     ppn_barang_transaksi = request.POST['ppn_barang_transaksi']
+     diskon_transaksi = request.POST['diskon_transaksi']
+     biaya_pengiriman = request.POST['biaya_pengiriman']
+     total_pembelian = request.POST['total_pembelian']
+     jenis_pembayaran = request.POST['jenis_pembayaran']
+     total_pembayaran = request.POST['total_pembayaran']
+     sisa_tagihan = request.POST['sisa_tagihan']
+     status = request.POST['status']
+     timestamp = request.POST['timestamp']
+     data_supplier, created = DataSupplier.objects.get_or_create(kode_supplier=kode_supplier)
+     data_barang, created = DataBarang.objects.get_or_create(kode_barang=kode_barang)
+     data_satuan, created = SatuanBarang.objects.get_or_create(kode_satuan=kode_satuan)
+     
+     
+     if TransaksiPembelian.objects.filter(kode_transaksi_pembelian=kode_transaksi_pembelian).exists():
+          messages.error(request, "Kode sudah ada!")
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     else :
+          data_transaksipembelian = TransaksiPembelian(
+               kode_transaksi_pembelian = kode_transaksi_pembelian,
+               kode_supplier = data_supplier,
+               kode_barang = data_barang,
+               kode_satuan = data_satuan,
+               harga_pembelian = harga_pembelian,
+               quantity = quantity,
+               ppn_barang_transaksi = ppn_barang_transaksi,
+               diskon_transaksi = diskon_transaksi,
+               biaya_pengiriman = biaya_pengiriman,
+               total_pembelian = total_pembelian,
+               jenis_pembayaran = jenis_pembayaran,
+               total_pembayaran = total_pembayaran,
+               sisa_tagihan = sisa_tagihan,
+               status = status,
+               timestamp = timestamp
+          )
+          data_transaksipembelian.save()
+          messages.success(request, 'Berhasil tambah data')
+          return redirect('v_transaksipembelian')
+     
+def delete_transaksipembelian(request, kode_transaksi_pembelian):
+     TransaksiPembelian.objects.get(kode_transaksi_pembelian=kode_transaksi_pembelian).delete()
+     messages.success(request, 'Berhasil hapus data')
+     return redirect('v_transaksipembelian')
+     
+

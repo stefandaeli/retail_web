@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include 'componens/bootstrapt.html' %}
     {% include 'componens/grid_index.html'%}
-    <title>transaksi pnejualan</title>
+    <title>Transaksi Pembelian</title>
 </head>
 
 <body>
@@ -20,8 +20,8 @@
         <br>
         <br>
         <br>
-        <div class="nav-btn">
-            <a href="{% url 'add_salestransactions'%}">
+        <div class="content">
+            <a href="{% url 'add_transaksipembelian' %}">
                 <button class="btn btn-primary mt-3">
                     Tambah <i class="fa fa-plus-circle"></i>
                 </button>
@@ -31,15 +31,18 @@
                     Excel <i class="fa fa-file-excel-o"></i>
                 </button>
             </a>
-        </div>
-        <div class="content">
-            
             <table class="table table-success mt-2 table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">Kode</th>
-                        <th scope="col">Customer</th>
-                        <th scope="col">Total</th>
+                        <th scope="col">Nama Supplier</th>
+                        <th scope="col">Nama Barang</th>
+                        <th scope="col">Nama Satuan</th>
+                        <th scope="col">Harga Pembelian</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Diskon Transaksi</th>
+                        <th scope="col">Total Pembelian</th>
+                        <th scope="col">Total Pembayaran</th>
                         <th scope="col">Status</th>
                         <th scope="col">Timestamp</th>
                         <th scope="col">Aksi</th>
@@ -47,19 +50,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for t in data_sales %}
+                    {% for t in data_transaksipembelian %}
                     <tr class="table-light">
-                        <th>{{t.kode_sales}}</th>
-                        <td>{{t.nama_customers}}</td>
-                        <td>{{t.grand_total_sales}}</td>
+                        <td>{{t.kode_transaksi_pembelian}}</td>
+                        <td>{{t.kode_supplier.nama_supplier}}</td>
+                        <td>{{t.kode_barang.nama_barang}}</td>
+                        <td>{{t.kode_satuan.nama_satuan}}</td>
+                        <td>{{t.harga_pembelian}}</td>
+                        <td>{{t.quantity}}</td>
+                        <td>{{t.diskon_transaksi}}</td>
+                        <td>{{t.total_pembelian}}</td>
+                        <td>{{t.total_pembayaran}}</td>
                         <td>{{t.status}}</td>
                         <td>{{t.timestamp}}</td>
                         <td>
                             <a href="" class="btn btn-success mb-1">
                                 <i class="fa fa-folder"></i>
                             </a>
-                            <a onclick="return confirm('apakah anda ingin menghapus data transaksi {{t.kode_sales}} ?')"
-                                href="{% url 'delete_salestransactions' t.kode_sales %}" class="btn btn-success mb-1">
+                            <a onclick="return confirm('apakah anda ingin menghapus data Transaksi {{t.kode_supplier.nama_supplier}} ?')"
+                                href="{% url 'delete_transaksipembelian' t.kode_transaksi_pembelian %}" class="btn btn-success mb-1">
                                 <i class="fa fa-trash-o"></i>
                             </a>
 
