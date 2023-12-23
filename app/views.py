@@ -10,6 +10,17 @@ from django.db.models import Sum
 import json
 from openpyxl import Workbook
 from pytz import utc
+import matplotlib.pyplot as plt
+from io import BytesIO
+from django.db.models.functions import TruncMonth
+from django.http import FileResponse
+import os
+from io import BytesIO
+import base64
+from django.template import loader
+from django.utils import timezone
+
+
 
 
 #Covert To Excel
@@ -147,15 +158,22 @@ def dashboard(request):
      today = date.today()
      start_of_day = datetime.combine(today, datetime.min.time())
      end_of_day = datetime.combine(today + timedelta(days=1), datetime.min.time()) - timedelta(seconds=1)
+     today = timezone.now()
+     start_of_month = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+     end_of_month = (start_of_month + timedelta(days=32)).replace(day=1, hour=0, minute=0, second=0, microsecond=0) - timedelta(seconds=1)
+    
      
      jumlah_transaksi_hari_ini = SalesTransactions.objects.filter(timestamp__range=(start_of_day, end_of_day)).count()
      total_data_barang = DataBarang.objects.count()
      total_penjualan_hari_ini = SalesTransactions.objects.filter(timestamp__range=(start_of_day, end_of_day)).aggregate(Sum('grand_total_sales'))['grand_total_sales__sum'] or 0
      
+     total_penjualan_per_bulan = SalesTransactions.objects.filter(timestamp__range=(start_of_month, end_of_month)).aggregate(Sum('grand_total_sales'))['grand_total_sales__sum'] or 0
+     
      context = {
          'total_data_barang': total_data_barang,
          'jumlah_transaksi_hari_ini': jumlah_transaksi_hari_ini,
          'total_penjualan_hari_ini': total_penjualan_hari_ini,
+         'total_penjualan_per_bulan':total_penjualan_per_bulan
      }
       
      return render(request, 'dashboard.html', context)
@@ -225,55 +243,6 @@ def delete_admins(request, kode_admin):
      data_admins=Admins.objects.get(kode_admin=kode_admin).delete()
      messages.success(request, 'Berhasil hapus data')
      return redirect('v_admins')
-
-#DetailBarang
-
-def detail_barang(request):
-    # Mengambil data dari tiga tabel
-    data_barang = DataBarang.objects.all()
-    stok_barang = StokBarang.objects.all()
-    harga_barang = HargaBarang.objects.all()
-
-    # Gabungkan data menggunakan primary key (kode_barang)
-    merged_data = []
-
-    for barang in data_barang:
-        stok = stok_barang.filter(kode_barang=barang.kode_barang)
-        harga = harga_barang.filter(kode_barang=barang.kode_barang)
-
-        if stok.exists() and harga.exists():
-            # Ambil semua objek yang sesuai dari stok dan harga
-            stok_data = list(stok.values())
-            harga_data = list(harga.values())
-
-            # Gabungkan data stok dan harga menjadi satu dictionary
-            merged_data.append({
-                'kode_barang': barang.kode_barang,
-                'nama_barang': barang.nama_barang,
-                'kelompok_barang': barang.kelompok_barang,
-                'jenis_barang': barang.jenis_barang,
-                'satuan_barang_small': barang.satuan_barang_small,
-                'satuan_barang_medium': barang.satuan_barang_medium,
-                'satuan_barang_large': barang.satuan_barang_large,
-                'tgl_expire_barang': barang.tgl_expire_barang,
-                'timestamp': barang.timestamp,
-                'stok_satuan_small': stok_data[0]['stok_satuan_small'],  # Misalkan mengambil data pertama
-                'stok_satuan_medium': stok_data[0]['stok_satuan_medium'],
-                'stok_satuan_large': stok_data[0]['stok_satuan_large'],
-                'nama_gudang': stok_data[0]['nama_gudang'],
-                'harga_satuan_small': harga_data[0]['harga_satuan_small'],
-                'harga_satuan_medium': harga_data[0]['harga_satuan_medium'],
-                'harga_satuan_large': harga_data[0]['harga_satuan_large'],
-                'ppn_barang': harga_data[0]['ppn_barang'],
-                'diskon_barang': harga_data[0]['diskon_barang'],
-            })
-
-    context = {
-        'merged_data': merged_data,
-    }
-
-    return render(request, 'data_barang/detail_barang.html', context)
-
 
 # SatuanBarang
 
@@ -1214,3 +1183,86 @@ def delete_barangsupplier(request,kode_supplier):
      BarangSupplier.objects.get(kode_supplier=kode_supplier).delete()
      messages.success(request, 'Berhasil hapus data')
      return redirect('v_barangsupplier')
+
+#DetailBarang
+
+def detail_barang(request):
+    # Mengambil data dari tiga tabel
+    data_barang = DataBarang.objects.all()
+    stok_barang = StokBarang.objects.all()
+    harga_barang = HargaBarang.objects.all()
+
+    # Gabungkan data menggunakan primary key (kode_barang)
+    merged_data = []
+
+    for barang in data_barang:
+        stok = stok_barang.filter(kode_barang=barang.kode_barang)
+        harga = harga_barang.filter(kode_barang=barang.kode_barang)
+
+        if stok.exists() and harga.exists():
+            # Ambil semua objek yang sesuai dari stok dan harga
+            stok_data = list(stok.values())
+            harga_data = list(harga.values())
+
+            # Gabungkan data stok dan harga menjadi satu dictionary
+            merged_data.append({
+                'kode_barang': barang.kode_barang,
+                'nama_barang': barang.nama_barang,
+                'kelompok_barang': barang.kelompok_barang,
+                'jenis_barang': barang.jenis_barang,
+                'satuan_barang_small': barang.satuan_barang_small,
+                'satuan_barang_medium': barang.satuan_barang_medium,
+                'satuan_barang_large': barang.satuan_barang_large,
+                'tgl_expire_barang': barang.tgl_expire_barang,
+                'timestamp': barang.timestamp,
+                'stok_satuan_small': stok_data[0]['stok_satuan_small'],  # Misalkan mengambil data pertama
+                'stok_satuan_medium': stok_data[0]['stok_satuan_medium'],
+                'stok_satuan_large': stok_data[0]['stok_satuan_large'],
+                'nama_gudang': stok_data[0]['nama_gudang'],
+                'harga_satuan_small': harga_data[0]['harga_satuan_small'],
+                'harga_satuan_medium': harga_data[0]['harga_satuan_medium'],
+                'harga_satuan_large': harga_data[0]['harga_satuan_large'],
+                'ppn_barang': harga_data[0]['ppn_barang'],
+                'diskon_barang': harga_data[0]['diskon_barang'],
+            })
+
+    context = {
+        'merged_data': merged_data,
+    }
+
+    return render(request, 'data_barang/detail_barang.html', context)
+
+def hutang_piutang(request):
+     data_hutang_piutang = SalesTransactions.objects.filter(status='Belum Lunas')
+     context = {
+          'data_hutang_piutang' : data_hutang_piutang
+     }
+     return render(request, 'laporan/hutang_piutang.html',context)
+
+#Grafik
+
+# def total_sales_per_month(request):
+#     # Ambil data transaksi dan hitung total penjualan per bulan
+#     data = SalesTransactions.objects.annotate(month=TruncMonth('timestamp')).values('month').annotate(total_sales=Sum('grand_total_sales'))
+
+#     # Buat grafik menggunakan matplotlib
+#     plt.bar([entry['month'] for entry in data], [entry['total_sales'] for entry in data])
+#     plt.xlabel('Bulan')
+#     plt.ylabel('Total Penjualan')
+#     plt.title('Total Penjualan per Bulan')
+
+#     # Simpan grafik ke dalam BytesIO object
+#     image_stream = BytesIO()
+#     plt.savefig(image_stream, format='png')
+#     plt.close()
+
+#     # Konversi gambar ke dalam format base64
+#     image_base64 = base64.b64encode(image_stream.getvalue()).decode('utf-8')
+
+#     # Render template dengan gambar base64
+#     template = loader.get_template('dashboard.html')  # Sesuaikan dengan nama template yang sesuai
+#     context = {'image_base64': image_base64}
+#     rendered_template = template.render(context)
+
+#     # Kembalikan template sebagai HttpResponse
+#     return HttpResponse(rendered_template)

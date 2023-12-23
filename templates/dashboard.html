@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include 'componens/bootstrapt.html' %}
     {% include 'componens/grid_index.html'%}
+    
     <title>Document</title>
 </head>
 <style>
@@ -75,9 +76,20 @@
                         </div>
                     </div>
                 </div>
+                <div class="col">
+                    <div class="card h-100 bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">TOTAL PENJUALAN BULAN INI <i class="fa fa-money"></i></h5>
+                            <p class="card-text fs-1">
+                                Rp. {{total_penjualan_per_bulan}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
+
     </div>
     </div>
 </body>

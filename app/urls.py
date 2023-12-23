@@ -135,7 +135,9 @@ urlpatterns = [
     #Excel
     path('detail_barang_excel/', detail_barang_excel, name='detail_barang_excel'),
     
-    #DetailBarang
-    path('detail_barang',detail_barang,name='detail_barang')
+    #Others
+    path('detail_barang',detail_barang,name='detail_barang'),
+    path('hutang_piutang',hutang_piutang,name='hutang_piutang'),
+    # path('total_sales_per_month',total_sales_per_month,name='total_sales_per_month')
 
 ]
