@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    {% include 'componens/grid_index.html'%}
+    <title>kelompok Barang</title>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar mb-5">
+            {% include 'componens/navbar.html' %}
+        </div>
+        <div class="messages">
+            {% include 'componens/messages.html'%}
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="nav-btn">
+            <h5 class="text-success mt-4 mb-4">HUTANG PIUTANG (CUSTOMERS)</h5>
+        </div>
+        <div class="content">
+            <table id="dataTable" class="table table-success mt-2 table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Kode Transaction</th>
+                        <th scope="col">Nama Customer</th>
+                        <th scope="col">Total Pembelian</th>
+                        <th scope="col">Jenis Pembayaran</th>
+                        <th scope="col">Total Pembayaran</th>
+                        <th scope="col">Sisa Tagihan</th>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Aksi</th>
+
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in data_hutang_piutang %}
+                    <tr class="table-light">
+                        <th>{{t.kode_sales}}</th>
+                        <td>{{t.nama_customers}}</td>
+                        <td>{{t.grand_total_sales}}</td>
+                        <td>{{t.jenis_pembayaran}}</td>
+                        <td>{{t.total_pembayaran_sales}}</td>
+                        <td>{{t.sisa_tagihan}}</td>
+                        <td>{{t.timestamp}}</td>
+                        <td>
+                            <a href="">
+                                <button class="btn btn-primary"><i class="fa fa-info-circle"></i></button>
+                            </a>
+                        </td>
+
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>

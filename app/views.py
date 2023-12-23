@@ -1317,5 +1317,13 @@ def delete_transaksipembelian(request, kode_transaksi_pembelian):
      TransaksiPembelian.objects.get(kode_transaksi_pembelian=kode_transaksi_pembelian).delete()
      messages.success(request, 'Berhasil hapus data')
      return redirect('v_transaksipembelian')
+
+#Lainnya
+def hutang_piutang(request):
+     data_hutang_piutang = SalesTransactions.objects.filter(status='Belum Lunas')
+     context = {
+          'data_hutang_piutang' : data_hutang_piutang
+     }
+     return render(request, 'laporan/hutang_piutang.html',context)
      
 
