@@ -132,6 +132,13 @@ urlpatterns = [
     path('post_update_barangsupplier',post_update_barangsupplier,name='post_update_barangsupplier'),
     path('delete_barangsupplier/<str:kode_supplier>',delete_barangsupplier,name='delete_barangsupplier'),
     
+
+    #TransaksiPembelian
+    path('v_transaksipembelian',v_transaksipembelian,name='v_transaksipembelian'),
+    path('add_transaksipembelian',add_transaksipembelian,name='add_transaksipembelian'),
+    path('post_add_transaksipembelian',post_add_transaksipembelian,name="post_add_transaksipembelian"),
+    path('delete_transaksipembelian/<str:kode_transaksi_pembelian>',delete_transaksipembelian,name="delete_transaksipembelian")
+
     #Excel
     path('detail_barang_excel/', detail_barang_excel, name='detail_barang_excel'),
     
@@ -139,5 +146,6 @@ urlpatterns = [
     path('detail_barang',detail_barang,name='detail_barang'),
     path('hutang_piutang',hutang_piutang,name='hutang_piutang'),
     # path('total_sales_per_month',total_sales_per_month,name='total_sales_per_month')
+
 
 ]

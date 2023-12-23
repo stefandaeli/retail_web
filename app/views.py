@@ -930,6 +930,7 @@ def add_salestransactions(request):
      data_sopir = Sopir.objects.all().order_by('nama_sopir')
      data_barang = DataBarang.objects.all().order_by('kode_barang')
      data_hargabarang = HargaBarang.objects.all().order_by('kode_harga')
+     data_satuan = SatuanBarang.objects.all().order_by('nama_satuan')
      merged_data = []
 
      for barang, harga_barang in zip(data_barang, data_hargabarang):
@@ -947,7 +948,8 @@ def add_salestransactions(request):
           'data_sales' : data_sales,
           'data_customers' : data_customers,
           'data_sopir' : data_sopir,
-          'data_mergebarang' : merged_data
+          'data_mergebarang' : merged_data,
+          'data_satuan' : data_satuan
      }
      return render(request,'sales_transactions/add_salestransactions.html',context)
 
@@ -957,11 +959,10 @@ def post_add_salestransactions(request):
      kode_customers = request.POST['kode_customers']
      nama_sopir = request.POST['nama_sopir']
      kode_sopir = request.POST['kode_sopir']
-     nama_barang = request.POST['nama_barang']
-     kode_barang = request.POST['kode_barang']
-     nama_satuan = request.POST['nama_satuan']
-     harga_barang = request.POST['harga_barang']
-     quantity_sales = request.POST['quantity_sales']
+     kode_barang_list = request.POST.getlist('kode_barang[]')
+     nama_satuan_list = request.POST.getlist('nama_satuan[]')
+     harga_barang_list = request.POST.getlist('harga_barang[]')
+     quantity_sales_list = request.POST.getlist('quantity_sales[]')
      diskon_sales = request.POST['diskon_sales']
      biaya_pengiriman = request.POST['biaya_pengiriman']
      sub_total_sales = request.POST['sub_total_sales']
@@ -982,11 +983,6 @@ def post_add_salestransactions(request):
                kode_customers = kode_customers,
                nama_sopir = nama_sopir,
                kode_sopir = kode_sopir,
-               nama_barang = nama_barang.split(';'),
-               kode_barang = kode_barang,
-               nama_satuan = nama_satuan,
-               harga_barang = harga_barang,
-               quantity_sales = quantity_sales,
                diskon_sales = diskon_sales,
                biaya_pengiriman = biaya_pengiriman,
                sub_total_sales = sub_total_sales,
@@ -998,8 +994,30 @@ def post_add_salestransactions(request):
                timestamp = timestamp
           )
           data_sales.save()
-          messages.success(request, 'Berhasil tambah data')
-          return redirect('v_salestransactions')
+
+          for i in range(len(kode_barang_list)):
+               data_barang, created = DataBarang.objects.get_or_create(kode_barang=kode_barang_list[i])
+               data_sales, created = SalesTransactions.objects.get_or_create(kode_sales=kode_sales)
+               DetailTransaksi.objects.create(
+                    kode_sales=data_sales,
+                    kode_barang=data_barang,
+                    nama_satuan = nama_satuan_list[i],
+                    harga_barang=harga_barang_list[i],
+                    quantity_sales=quantity_sales_list[i],
+               
+               # Coba ambil queryset MyModel berdasarkan nomor nota penjualan dan kode barang
+          )
+          my_model_instances = StokBarang.objects.filter(kode_barang=kode_barang_list[i])
+          for instance in my_model_instances:
+               quantity_sales = int(quantity_sales_list[i])
+               if instance.stok_satuan_small > quantity_sales:
+                    instance.stok_satuan_small -= quantity_sales
+                    instance.save()
+               else:
+                    messages.success(request, 'Stock kurang')
+                    return redirect('v_salestransactions')
+     messages.success(request, 'Berhasil tambah data')
+     return redirect('v_salestransactions')
 
 def delete_salestransactions(request,kode_sales):
      data_sales = SalesTransactions.objects.get(kode_sales=kode_sales).delete()
@@ -1183,86 +1201,3 @@ def delete_barangsupplier(request,kode_supplier):
      BarangSupplier.objects.get(kode_supplier=kode_supplier).delete()
      messages.success(request, 'Berhasil hapus data')
      return redirect('v_barangsupplier')
-
-#DetailBarang
-
-def detail_barang(request):
-    # Mengambil data dari tiga tabel
-    data_barang = DataBarang.objects.all()
-    stok_barang = StokBarang.objects.all()
-    harga_barang = HargaBarang.objects.all()
-
-    # Gabungkan data menggunakan primary key (kode_barang)
-    merged_data = []
-
-    for barang in data_barang:
-        stok = stok_barang.filter(kode_barang=barang.kode_barang)
-        harga = harga_barang.filter(kode_barang=barang.kode_barang)
-
-        if stok.exists() and harga.exists():
-            # Ambil semua objek yang sesuai dari stok dan harga
-            stok_data = list(stok.values())
-            harga_data = list(harga.values())
-
-            # Gabungkan data stok dan harga menjadi satu dictionary
-            merged_data.append({
-                'kode_barang': barang.kode_barang,
-                'nama_barang': barang.nama_barang,
-                'kelompok_barang': barang.kelompok_barang,
-                'jenis_barang': barang.jenis_barang,
-                'satuan_barang_small': barang.satuan_barang_small,
-                'satuan_barang_medium': barang.satuan_barang_medium,
-                'satuan_barang_large': barang.satuan_barang_large,
-                'tgl_expire_barang': barang.tgl_expire_barang,
-                'timestamp': barang.timestamp,
-                'stok_satuan_small': stok_data[0]['stok_satuan_small'],  # Misalkan mengambil data pertama
-                'stok_satuan_medium': stok_data[0]['stok_satuan_medium'],
-                'stok_satuan_large': stok_data[0]['stok_satuan_large'],
-                'nama_gudang': stok_data[0]['nama_gudang'],
-                'harga_satuan_small': harga_data[0]['harga_satuan_small'],
-                'harga_satuan_medium': harga_data[0]['harga_satuan_medium'],
-                'harga_satuan_large': harga_data[0]['harga_satuan_large'],
-                'ppn_barang': harga_data[0]['ppn_barang'],
-                'diskon_barang': harga_data[0]['diskon_barang'],
-            })
-
-    context = {
-        'merged_data': merged_data,
-    }
-
-    return render(request, 'data_barang/detail_barang.html', context)
-
-def hutang_piutang(request):
-     data_hutang_piutang = SalesTransactions.objects.filter(status='Belum Lunas')
-     context = {
-          'data_hutang_piutang' : data_hutang_piutang
-     }
-     return render(request, 'laporan/hutang_piutang.html',context)
-
-#Grafik
-
-# def total_sales_per_month(request):
-#     # Ambil data transaksi dan hitung total penjualan per bulan
-#     data = SalesTransactions.objects.annotate(month=TruncMonth('timestamp')).values('month').annotate(total_sales=Sum('grand_total_sales'))
-
-#     # Buat grafik menggunakan matplotlib
-#     plt.bar([entry['month'] for entry in data], [entry['total_sales'] for entry in data])
-#     plt.xlabel('Bulan')
-#     plt.ylabel('Total Penjualan')
-#     plt.title('Total Penjualan per Bulan')
-
-#     # Simpan grafik ke dalam BytesIO object
-#     image_stream = BytesIO()
-#     plt.savefig(image_stream, format='png')
-#     plt.close()
-
-#     # Konversi gambar ke dalam format base64
-#     image_base64 = base64.b64encode(image_stream.getvalue()).decode('utf-8')
-
-#     # Render template dengan gambar base64
-#     template = loader.get_template('dashboard.html')  # Sesuaikan dengan nama template yang sesuai
-#     context = {'image_base64': image_base64}
-#     rendered_template = template.render(context)
-
-#     # Kembalikan template sebagai HttpResponse
-#     return HttpResponse(rendered_template)
