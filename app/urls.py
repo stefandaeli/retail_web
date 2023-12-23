@@ -144,8 +144,12 @@ urlpatterns = [
     
     #DetailBarang
     path('detail_barang',detail_barang,name='detail_barang'),
+<<<<<<< Updated upstream
     
     #Lainnya
     path('hutang_piutang',hutang_piutang,name='hutang_piutang')
+=======
+    path('detail_transaksi/<str:kode_sales>',detail_transaksi,name='detail_transaksi')
+>>>>>>> Stashed changes
 
 ]

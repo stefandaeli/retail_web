@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    {% include 'componens/grid_index.html'%}
+    <title>Detail Transaksi Penjualan</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar mb-5">
+            {% include 'componens/navbar.html' %}
+        </div>
+        <div class="messages">
+            {% include 'componens/messages.html'%}
+        </div>
+        <br>
+        <br>
+        <br>
+        
+        <div class="content">
+            
+            <table class="table table-success mt-2 table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Nama Sales</th>
+                        <th scope="col">Nama Barang</th>
+                        <th scope="col">Nama Satuan</th>
+                        <th scope="col">Harga Barang</th>
+                        <th scope="col">Quantity Sales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in data_detail %}
+                    <tr class="table-light">
+                        <th>{{t.kode_sales.kode_sales}}</th>
+                        <td>{{t.kode_barang.nama_barang}}</td>
+                        <td>{{t.nama_satuan}}</td>
+                        <td>{{t.harga_barang}}</td>
+                        <td>{{t.quantity_sales}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

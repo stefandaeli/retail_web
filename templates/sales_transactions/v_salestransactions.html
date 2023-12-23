@@ -55,14 +55,13 @@
                         <td>{{t.status}}</td>
                         <td>{{t.timestamp}}</td>
                         <td>
-                            <a href="" class="btn btn-success mb-1">
-                                <i class="fa fa-folder"></i>
-                            </a>
                             <a onclick="return confirm('apakah anda ingin menghapus data transaksi {{t.kode_sales}} ?')"
                                 href="{% url 'delete_salestransactions' t.kode_sales %}" class="btn btn-success mb-1">
                                 <i class="fa fa-trash-o"></i>
                             </a>
-
+                            <a href="{% url 'detail_transaksi' t.kode_sales %}" class="btn btn-success mb-1">
+                                <i class="fa fa-info-circle"></i>
+                            </a>
                         </td>
                     </tr>
                     {% endfor %}
