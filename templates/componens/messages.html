@@ -2,10 +2,22 @@
   {% if messages %}
   {% for message in messages%}
   <div class="alert alert-success" role="alert">
-    {{message}}
+    {{message}} <i class="fa fa-check "></i>
   </div>
   {% endfor %}
   {% endif %}
 </div>
-<style>
-</style>
+
+<script>
+  // Menentukan waktu penundaan (3 detik)
+  var delayInMilliseconds = 2000;
+
+  // Mengambil elemen dengan kelas "messages"
+  var messagesDiv = document.querySelector('.messages');
+
+  // Menunggu selama 3 detik, kemudian menyembunyikan elemen
+  setTimeout(function() {
+    messagesDiv.style.display = 'none';
+  }, delayInMilliseconds);
+</script>
+

@@ -5,7 +5,89 @@ from django.contrib import messages
 from django.db.models import Q
 from .utilities import ppn
 from .decorators import login_required
+from datetime import datetime, timedelta, date
+from django.db.models import Sum
 import json
+from openpyxl import Workbook
+from pytz import utc
+
+
+#Covert To Excel
+
+def detail_barang_excel(request):
+     # Membuat workbook dan worksheet
+    wb = Workbook()
+    ws = wb.active
+
+    # Menambahkan header ke worksheet
+    ws.append(['Detail Barang'])
+    ws.append(['Kode', 'Nama Barang', 'Kelompok Barang', 'Jenis Barang', 'Satuan Barang Kecil', 'Satuan Barang Sedang',
+               'Satuan Barang Besar', 'Tanggal Expire', 'Stok Satuan Kecil', 'Stok Satuan Sedang', 'Stok Satuan Besar',
+               'Nama Gudang', 'Harga Barang Kecil', 'Harga Barang Sedang', 'Harga Barang Besar', 'PPN Barang', 'Diskon Barang', 'Timestamp'])
+
+    # Mengambil data dari tiga tabel
+    data_barang = DataBarang.objects.all()
+    stok_barang = StokBarang.objects.all()
+    harga_barang = HargaBarang.objects.all()
+
+    # Menggunakan dictionary untuk menyimpan harga barang berdasarkan kode
+    harga_barang_dict = {}
+    for harga in harga_barang:
+        harga_barang_dict[harga.kode_barang] = {
+            'harga_satuan_small': harga.harga_satuan_small,
+            'harga_satuan_medium': harga.harga_satuan_medium,
+            'harga_satuan_large': harga.harga_satuan_large,
+            'ppn_barang' : harga.ppn_barang,
+            'diskon_barang' : harga.diskon_barang
+        }
+
+    # Iterasi melalui data barang dan menambahkannya ke worksheet
+    for barang in data_barang:
+        stok = stok_barang.filter(kode_barang=barang.kode_barang).first()
+        harga = harga_barang_dict.get(barang.kode_barang, {})
+
+        # Handling datetime.date without timezone info
+        tgl_expire_barang = barang.tgl_expire_barang if barang.tgl_expire_barang else None
+        timestamp = barang.timestamp if barang.timestamp else None
+
+        # Menghapus informasi zona waktu dari objek datetime jika diperlukan
+        if hasattr(tgl_expire_barang, 'astimezone'):
+            tgl_expire_barang = tgl_expire_barang.astimezone(utc).replace(tzinfo=None)
+        if hasattr(timestamp, 'astimezone'):
+            timestamp = timestamp.astimezone(utc).replace(tzinfo=None)
+
+        ws.append([
+            barang.kode_barang,
+            barang.nama_barang,
+            barang.kelompok_barang,
+            barang.jenis_barang,
+            barang.satuan_barang_small,
+            barang.satuan_barang_medium,
+            barang.satuan_barang_large,
+            tgl_expire_barang,
+            stok.stok_satuan_small if stok else '',
+            stok.stok_satuan_medium if stok else '',
+            stok.stok_satuan_large if stok else '',
+            stok.nama_gudang if stok else '',
+            harga.get('harga_satuan_small', ''),
+            harga.get('harga_satuan_medium', ''),
+            harga.get('harga_satuan_large', ''),
+            harga.get('ppn_barang', ''),
+            harga.get('diskon_barang', ''),
+            timestamp,
+        ])
+      
+        
+
+    # Membuat response HTTP
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=detail_barang.xlsx'
+    
+    # Simpan file Excel
+    wb.save(response)
+
+    return response
+
 
 # Create your views here.
 
@@ -62,7 +144,21 @@ def logout(request):
 
 @login_required()
 def dashboard(request):
-     return render(request, 'dashboard.html')
+     today = date.today()
+     start_of_day = datetime.combine(today, datetime.min.time())
+     end_of_day = datetime.combine(today + timedelta(days=1), datetime.min.time()) - timedelta(seconds=1)
+     
+     jumlah_transaksi_hari_ini = SalesTransactions.objects.filter(timestamp__range=(start_of_day, end_of_day)).count()
+     total_data_barang = DataBarang.objects.count()
+     total_penjualan_hari_ini = SalesTransactions.objects.filter(timestamp__range=(start_of_day, end_of_day)).aggregate(Sum('grand_total_sales'))['grand_total_sales__sum'] or 0
+     
+     context = {
+         'total_data_barang': total_data_barang,
+         'jumlah_transaksi_hari_ini': jumlah_transaksi_hari_ini,
+         'total_penjualan_hari_ini': total_penjualan_hari_ini,
+     }
+      
+     return render(request, 'dashboard.html', context)
 
 # Admins
 
@@ -129,6 +225,55 @@ def delete_admins(request, kode_admin):
      data_admins=Admins.objects.get(kode_admin=kode_admin).delete()
      messages.success(request, 'Berhasil hapus data')
      return redirect('v_admins')
+
+#DetailBarang
+
+def detail_barang(request):
+    # Mengambil data dari tiga tabel
+    data_barang = DataBarang.objects.all()
+    stok_barang = StokBarang.objects.all()
+    harga_barang = HargaBarang.objects.all()
+
+    # Gabungkan data menggunakan primary key (kode_barang)
+    merged_data = []
+
+    for barang in data_barang:
+        stok = stok_barang.filter(kode_barang=barang.kode_barang)
+        harga = harga_barang.filter(kode_barang=barang.kode_barang)
+
+        if stok.exists() and harga.exists():
+            # Ambil semua objek yang sesuai dari stok dan harga
+            stok_data = list(stok.values())
+            harga_data = list(harga.values())
+
+            # Gabungkan data stok dan harga menjadi satu dictionary
+            merged_data.append({
+                'kode_barang': barang.kode_barang,
+                'nama_barang': barang.nama_barang,
+                'kelompok_barang': barang.kelompok_barang,
+                'jenis_barang': barang.jenis_barang,
+                'satuan_barang_small': barang.satuan_barang_small,
+                'satuan_barang_medium': barang.satuan_barang_medium,
+                'satuan_barang_large': barang.satuan_barang_large,
+                'tgl_expire_barang': barang.tgl_expire_barang,
+                'timestamp': barang.timestamp,
+                'stok_satuan_small': stok_data[0]['stok_satuan_small'],  # Misalkan mengambil data pertama
+                'stok_satuan_medium': stok_data[0]['stok_satuan_medium'],
+                'stok_satuan_large': stok_data[0]['stok_satuan_large'],
+                'nama_gudang': stok_data[0]['nama_gudang'],
+                'harga_satuan_small': harga_data[0]['harga_satuan_small'],
+                'harga_satuan_medium': harga_data[0]['harga_satuan_medium'],
+                'harga_satuan_large': harga_data[0]['harga_satuan_large'],
+                'ppn_barang': harga_data[0]['ppn_barang'],
+                'diskon_barang': harga_data[0]['diskon_barang'],
+            })
+
+    context = {
+        'merged_data': merged_data,
+    }
+
+    return render(request, 'data_barang/detail_barang.html', context)
+
 
 # SatuanBarang
 
@@ -880,13 +1025,7 @@ def post_add_salestransactions(request):
                timestamp = timestamp
           )
           data_sales.save()
-<<<<<<< Updated upstream
-          # item_values = nama_barang.split('|')
-          # kode = item_values[0]
-          # nama = item_values[1]
-          # description = item_values[2]
-          # quantity = int(item_values[4])
-=======
+
           for i in range(len(kode_barang_list)):
                data_barang, created = DataBarang.objects.get_or_create(kode_barang=kode_barang_list[i])
                data_sales, created = SalesTransactions.objects.get_or_create(kode_sales=kode_sales)
@@ -910,28 +1049,12 @@ def post_add_salestransactions(request):
                     return redirect('v_salestransactions')
      messages.success(request, 'Berhasil tambah data')
      return redirect('v_salestransactions')
->>>>>>> Stashed changes
 
-          # try:
-          #     with SalesTransactions.atomic():
-          #         stok = StokBarang.objects.get(kode_barang=kode, stok_satuan_small=description)
-          #         # Pastikan stok tidak menjadi negatif
-          #         if stok.stok_satuan_small - quantity >= 0:
-          #             stok.stok_satuan_small -= quantity
-          #             stok.save()
-          #         else:
-          #             # Handle kasus ketika pengurangan stok membuat nilai negatif
-          #             # Misalnya, lemparkan exception atau lakukan tindakan yang sesuai
-          #             pass
-          # except StokBarang.DoesNotExist:
-          #     # Handle ketika objek tidak ditemukan
-          #     pass
-          # except StokBarang.MultipleObjectsReturned:
-          #     # Handle ketika lebih dari satu objek ditemukan
-          #     pass
-          messages.success(request, 'Berhasil tambah data')
-          return redirect(request.META.get('HTTP_REFERER','/'))
-
+def delete_salestransactions(request,kode_sales):
+     data_sales = SalesTransactions.objects.get(kode_sales=kode_sales).delete()
+     messages.success(request, 'Berhasil hapus data')
+     return redirect('v_salestransactions')
+     
 # DataSupplier
 
 def v_datasupplier(request):
