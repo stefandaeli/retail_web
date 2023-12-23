@@ -880,13 +880,6 @@ def post_add_salestransactions(request):
                timestamp = timestamp
           )
           data_sales.save()
-<<<<<<< Updated upstream
-          # item_values = nama_barang.split('|')
-          # kode = item_values[0]
-          # nama = item_values[1]
-          # description = item_values[2]
-          # quantity = int(item_values[4])
-=======
           for i in range(len(kode_barang_list)):
                data_barang, created = DataBarang.objects.get_or_create(kode_barang=kode_barang_list[i])
                data_sales, created = SalesTransactions.objects.get_or_create(kode_sales=kode_sales)
@@ -910,27 +903,6 @@ def post_add_salestransactions(request):
                     return redirect('v_salestransactions')
      messages.success(request, 'Berhasil tambah data')
      return redirect('v_salestransactions')
->>>>>>> Stashed changes
-
-          # try:
-          #     with SalesTransactions.atomic():
-          #         stok = StokBarang.objects.get(kode_barang=kode, stok_satuan_small=description)
-          #         # Pastikan stok tidak menjadi negatif
-          #         if stok.stok_satuan_small - quantity >= 0:
-          #             stok.stok_satuan_small -= quantity
-          #             stok.save()
-          #         else:
-          #             # Handle kasus ketika pengurangan stok membuat nilai negatif
-          #             # Misalnya, lemparkan exception atau lakukan tindakan yang sesuai
-          #             pass
-          # except StokBarang.DoesNotExist:
-          #     # Handle ketika objek tidak ditemukan
-          #     pass
-          # except StokBarang.MultipleObjectsReturned:
-          #     # Handle ketika lebih dari satu objek ditemukan
-          #     pass
-          messages.success(request, 'Berhasil tambah data')
-          return redirect(request.META.get('HTTP_REFERER','/'))
 
 # DataSupplier
 
