@@ -1318,7 +1318,7 @@ def delete_transaksipembelian(request, kode_transaksi_pembelian):
      messages.success(request, 'Berhasil hapus data')
      return redirect('v_transaksipembelian')
 
-<<<<<<< Updated upstream
+
 #Lainnya
 def hutang_piutang(request):
      data_hutang_piutang = SalesTransactions.objects.filter(status='Belum Lunas')
@@ -1326,13 +1326,13 @@ def hutang_piutang(request):
           'data_hutang_piutang' : data_hutang_piutang
      }
      return render(request, 'laporan/hutang_piutang.html',context)
-=======
+
 def detail_transaksi(request,kode_sales):
      data_detailtransaksi = DetailTransaksi.objects.filter(kode_sales=kode_sales)
      context = {
           'data_detail' : data_detailtransaksi
      }
      return render(request, 'sales_transactions/detail_transaksi.html',context )
->>>>>>> Stashed changes
+
      
 
