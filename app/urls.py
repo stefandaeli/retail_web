@@ -115,6 +115,7 @@ urlpatterns = [
     path('v_salestransactions',v_salestransactions,name='v_salestransactions'),
     path('add_salestransactions',add_salestransactions,name='add_salestransactions'),
     path('post_add_salestransactions',post_add_salestransactions,name='post_add_salestransactions'),
+    path('delete_salestransactions/<str:kode_sales>',delete_salestransactions,name='delete_salestransactions'),
     
     # DataSupplier
     path('v_datasupplier',v_datasupplier,name='v_datasupplier'),
@@ -131,9 +132,17 @@ urlpatterns = [
     path('post_update_barangsupplier',post_update_barangsupplier,name='post_update_barangsupplier'),
     path('delete_barangsupplier/<str:kode_supplier>',delete_barangsupplier,name='delete_barangsupplier'),
     
+
     #TransaksiPembelian
     path('v_transaksipembelian',v_transaksipembelian,name='v_transaksipembelian'),
     path('add_transaksipembelian',add_transaksipembelian,name='add_transaksipembelian'),
     path('post_add_transaksipembelian',post_add_transaksipembelian,name="post_add_transaksipembelian"),
-    path('delete_transaksipembelian/<str:kode_transaksi_pembelian>',delete_transaksipembelian,name="delete_transaksipembelian")
+    path('delete_transaksipembelian/<str:kode_transaksi_pembelian>',delete_transaksipembelian,name="delete_transaksipembelian"),
+
+    #Excel
+    path('detail_barang_excel/', detail_barang_excel, name='detail_barang_excel'),
+    
+    #DetailBarang
+    path('detail_barang',detail_barang,name='detail_barang')
+
 ]

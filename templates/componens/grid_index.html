@@ -10,7 +10,6 @@
         grid-template-columns: 1fr;
         grid-template-areas: "navbar navbar"
             "nav_btn nav_btn"
-            "messages messages"
             "content content";
     }
 
@@ -35,17 +34,29 @@
     }
 
     .messages {
-        grid-area: messages;
-
+        position: absolute;
+        display: grid;
+        width: 300px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
     }
-
+    .messages p{
+        text-align: center;
+    }
     a {
         text-decoration: none;
     }
 
     table {
-        max-height: 60vh;
+        max-height: 100vh;
         overflow-x: auto;
         overflow-y: auto;
+    }
+    @media screen and(max-width:568px){
+        table{
+        max-width: 100vh;
+
+        }
     }
 </style>

@@ -12,9 +12,12 @@
         <li class="nav-item">
           <a class="nav-link" aria-current="page" href="{% url 'dashboard'%}">Dashboard</a>
         </li>
+        {% if request.session.status_login == 'Super Admin' %}
+
         <li class="nav-item">
           <a class="nav-link" aria-current="page" href="{% url 'v_admins' %}">Admin</a>
         </li>
+        {% endif %}
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
@@ -28,12 +31,13 @@
             <li><a class="dropdown-item" href="{% url 'v_jenisbarang'%}">Jenis Barang</a></li>
             <li><a class="dropdown-item" href="{% url 'v_databarang' %}">Data Barang</a></li>
             {% if request.session.status_login == 'Super Admin' %}
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="{% url 'v_stokbarang' %}">Stok Barang</a></li>
-              <li><a class="dropdown-item" href="{% url 'v_hargabarang' %}">Harga Barang</a></li>
-            {% endif %} 
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'v_stokbarang' %}">Stok Barang</a></li>
+            <li><a class="dropdown-item" href="{% url 'v_hargabarang' %}">Harga Barang</a></li>
+            <li><a class="dropdown-item" href="{% url 'detail_barang' %}">Detail Barang</a></li>
+            {% endif %}
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -76,15 +80,17 @@
             Report
           </a>
           <ul class="dropdown-menu mt-2 bg-success">
-            <li><a class="dropdown-item" href="#">Laporan Transaksi Penjualan</a></li>
             <li><a class="dropdown-item" href="#">Laporan Transaksi Pembelian</a></li>
             <li><a class="dropdown-item" href="#">Laporan Hutang Piutang</a></li>
 
           </ul>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="{% url 'logout' %}">
+            Logout
+            <i class="fa fa-sign-out"></i>
+          </a>
+        </li>
       </ul>
     </div>
   </div>
