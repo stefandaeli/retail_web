@@ -10,6 +10,17 @@ from django.db.models import Sum
 import json
 from openpyxl import Workbook
 from pytz import utc
+import matplotlib.pyplot as plt
+from io import BytesIO
+from django.db.models.functions import TruncMonth
+from django.http import FileResponse
+import os
+from io import BytesIO
+import base64
+from django.template import loader
+from django.utils import timezone
+
+
 
 
 #Covert To Excel
@@ -147,15 +158,22 @@ def dashboard(request):
      today = date.today()
      start_of_day = datetime.combine(today, datetime.min.time())
      end_of_day = datetime.combine(today + timedelta(days=1), datetime.min.time()) - timedelta(seconds=1)
+     today = timezone.now()
+     start_of_month = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+     end_of_month = (start_of_month + timedelta(days=32)).replace(day=1, hour=0, minute=0, second=0, microsecond=0) - timedelta(seconds=1)
+    
      
      jumlah_transaksi_hari_ini = SalesTransactions.objects.filter(timestamp__range=(start_of_day, end_of_day)).count()
      total_data_barang = DataBarang.objects.count()
      total_penjualan_hari_ini = SalesTransactions.objects.filter(timestamp__range=(start_of_day, end_of_day)).aggregate(Sum('grand_total_sales'))['grand_total_sales__sum'] or 0
      
+     total_penjualan_per_bulan = SalesTransactions.objects.filter(timestamp__range=(start_of_month, end_of_month)).aggregate(Sum('grand_total_sales'))['grand_total_sales__sum'] or 0
+     
      context = {
          'total_data_barang': total_data_barang,
          'jumlah_transaksi_hari_ini': jumlah_transaksi_hari_ini,
          'total_penjualan_hari_ini': total_penjualan_hari_ini,
+         'total_penjualan_per_bulan':total_penjualan_per_bulan
      }
       
      return render(request, 'dashboard.html', context)
@@ -1230,6 +1248,7 @@ def post_update_barangsupplier(request):
 def delete_barangsupplier(request,kode_supplier):
      BarangSupplier.objects.get(kode_supplier=kode_supplier).delete()
      messages.success(request, 'Berhasil hapus data')
+
      return redirect('v_barangsupplier')
 
      # BarangSupplier
@@ -1334,5 +1353,13 @@ def detail_transaksi(request,kode_sales):
      }
      return render(request, 'sales_transactions/detail_transaksi.html',context )
 
-     
+def detail_transaksi(request,kode_sales):
+     data_detailtransaksi = DetailTransaksi.objects.filter(kode_sales=kode_sales)
+     context = {
+          'data_detail' : data_detailtransaksi
+     }
+     return render(request, 'sales_transactions/detail_transaksi.html',context )
+
+
+
 
