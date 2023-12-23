@@ -54,6 +54,7 @@
                                 <label class="form-label">Nama Barang</label>
                                 <select onchange="displaySelectedValue()" class="form-select mb-3" name="nama_barang"
                                     id="nama_barang" aria-label="Default select example">
+                                    <option value="-">-</option>
                                     {% for t in data_barang %}
                                     <option
                                         value="{{t.nama_barang}},{{t.satuan_barang_small}},{{t.satuan_barang_medium}},{{t.satuan_barang_large}},{{t.kode_barang}}">

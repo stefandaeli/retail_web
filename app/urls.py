@@ -129,6 +129,11 @@ urlpatterns = [
     path('post_add_barangsupplier',post_add_barangsupplier,name='post_add_barangsupplier'),
     path('update_barangsupplier/<str:kode_supplier>',update_barangsupplier,name='update_barangsupplier'),
     path('post_update_barangsupplier',post_update_barangsupplier,name='post_update_barangsupplier'),
-    path('delete_barangsupplier/<str:kode_supplier>',delete_barangsupplier,name='delete_barangsupplier')
-
+    path('delete_barangsupplier/<str:kode_supplier>',delete_barangsupplier,name='delete_barangsupplier'),
+    
+    #TransaksiPembelian
+    path('v_transaksipembelian',v_transaksipembelian,name='v_transaksipembelian'),
+    path('add_transaksipembelian',add_transaksipembelian,name='add_transaksipembelian'),
+    path('post_add_transaksipembelian',post_add_transaksipembelian,name="post_add_transaksipembelian"),
+    path('delete_transaksipembelian/<str:kode_transaksi_pembelian>',delete_transaksipembelian,name="delete_transaksipembelian")
 ]

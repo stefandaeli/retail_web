@@ -29,16 +29,16 @@
         <br>
         <br>
         <div class="content">
-            <h5 class="mb-3">Tambah Transaksi Penjualan</h5>
-            <form action="{% url 'post_add_salestransactions'%}" method="POST">
+            <h5 class="mb-3">Tambah Transaksi Pembelian</h5>
+            <form action="{% url 'post_add_transaksipembelian' %}" method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
 
                 <div class="select-box mb-3 bg-success p-3">
                     <div>
-                        <label for="" class="form-label text-white">Nomor Transaksi</label>
-                        <input type="text" class="form-control" name="kode_sales" id="kode_sales"
-                            aria-describedby="emailHelp" maxlength="20" required>
+                        <label for="" class="form-label text-white">Nomor Transaksi Pembelian</label>
+                        <input type="text" class="form-control" name="kode_transaksi_pembelian" id="kode_transaksi_pembelian"
+                            aria-describedby="emailHelp" maxlength="20" required readonly>
                     </div>
                     <div class="input-content">
                         <label for="" class="form-label text-white">Status</label>
@@ -56,28 +56,22 @@
 
                 <div class="select-box">
                     <div class="select-content">
-                        <label class="form-label">Pilih Customers</label>
-                        <select class="form-select mb-3" name="nama_customers" id="nama_customers"
+                        <label class="form-label">Pilih Supplier</label>
+                        <select class="form-select mb-3" name="kode_supplier" id="kode_supplier"
                             aria-label="Default select example">
                             <option value="-">-</option>
-                            {% for t in data_customers %}
-                            <option value="{{t.nama_customers}}">{{t.nama_customers}}</option>
+                            {% for t in data_supplier %}
+                            <option value="{{t.kode_supplier}}">{{t.nama_supplier}}</option>
                             {% endfor %}
                         </select>
                     </div>
-                    <input type="hidden" class="form-control" name="kode_sopir" value="Sopir1" id="kode_sopir"
-                        aria-describedby="emailHelp" maxlength="20" required readonly>
-
-                    <input type="hidden" class="form-control" name="kode_customers" value="customer1" id="kode_customer"
-                        aria-describedby="emailHelp" maxlength="20" required readonly>
-
                     <div class="select-content">
-                        <label class="form-label">Pilih Sopir</label>
-                        <select class="form-select mb-3" name="nama_sopir" id="nama_sopir"
+                        <label class="form-label">Pilih Sataun</label>
+                        <select class="form-select mb-3" name="kode_satuan" id="kode_satuan"
                             aria-label="Default select example">
                             <option value="-">-</option>
-                            {% for t in data_sopir %}
-                            <option value="{{t.nama_sopir}}">{{t.nama_sopir}}</option>
+                            {% for t in data_satuan %}
+                            <option value="{{t.kode_satuan}}">{{t.nama_satuan}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -86,7 +80,7 @@
                         <select onchange="displaySelectedValue()" class="form-select mb-3" id="nama_barang"
                             aria-label="Default select example">
                             <option value="-">-</option>
-                            {% for t in data_mergebarang %}
+                            {% for t in data_hrgbarang %}
                             <option
                                 value="{{t.nama_barang}},{{t.kode_barang}},{{t.satuan_barang_small}},{{t.satuan_barang_medium}},{{t.satuan_barang_large}},{{t.harga_satuan_small}},{{t.harga_satuan_medium}},{{t.harga_satuan_large}}">
                                 {{t.nama_barang}}
@@ -95,9 +89,8 @@
                         </select>
                     </div>
                 </div>
-                <input type="text" name="" id="nama_barang_value" value="">
-                <input type="text" id="hidden_table_data" name="nama_barang" value="">
-
+                <input type="hidden" name="" id="nama_barang_value" value="">
+                <input type="hidden" id="hidden_table_data" name="nama_barang" value="">
 
                 <table class="table table-success mt-2 table-bordered">
                     <thead>
@@ -105,8 +98,9 @@
                             <th scope="col">Kode</th>
                             <th scope="col">Nama</th>
                             <th scope="col">Satuan</th>
-                            <th scope="col">Harga</th>
+                            <th scope="col">Harga Pembelian</th>
                             <th scope="col">Quantity</th>
+                            <th scope="col">Ppn Barang Transaksi</th>
                             <th scope="col">Harga Total</th>
 
                         </tr>
@@ -128,8 +122,8 @@
                     <tbody>
                         <tr>
                             <td>
-                                <input oninput="calculateTotal()" type="number" class="form-control" name="diskon_sales"
-                                    aria-describedby="emailHelp" id="diskon_sales" maxlength="20" required>
+                                <input oninput="calculateTotal()" type="number" class="form-control" name="diskon_transaksi"
+                                    aria-describedby="emailHelp" id="diskon_transaksi" maxlength="20" required>
                             </td>
                             <td>
                                 <input oninput="calculateTotal()" type="number" class="form-control"
@@ -137,8 +131,8 @@
                                     maxlength="20" required>
                             </td>
                             <td>
-                                <input type="number" class="form-control" name="grand_total_sales"
-                                    aria-describedby="emailHelp" id="grand_total_sales" maxlength="20" required
+                                <input type="number" class="form-control" name="total_pembelian"
+                                    aria-describedby="emailHelp" id="total_pembelian" maxlength="20" required
                                     readonly>
                             </td>
                         </tr>
@@ -165,8 +159,8 @@
                             </td>
                             <td>
                                 <input oninput="calculateTotal()" type="number" class="form-control"
-                                    name="total_pembayaran_sales" aria-describedby="emailHelp"
-                                    id="total_pembayaran_sales" maxlength="20" required>
+                                    name="total_pembayaran" aria-describedby="emailHelp"
+                                    id="total_pembayaran" maxlength="20" required>
                             </td>
                             <td>
                                 <input type="number" class="form-control" name="sisa_tagihan"
@@ -188,23 +182,23 @@
 <script>
     //menghitung semua value
     function calculateTotal() {
-        let diskonSales = document.getElementById("diskon_sales").value;
+        let diskonTransaksi = document.getElementById("diskon_transaksi").value;
         let biayaPengiriman = document.getElementById("biaya_pengiriman").value;
-        let totalPembayaran = document.getElementById("total_pembayaran_sales").value;
+        let totalPembayaran = document.getElementById("total_pembayaran").value;
 
-        diskonSales = parseFloat(diskonSales) || 0;
+        diskonTransaksi = parseFloat(diskonTransaksi) || 0;
         biayaPengiriman = parseFloat(biayaPengiriman) || 0;
 
-        let costDiskon = diskonSales + biayaPengiriman;
+        let costDiskon = diskonTransaksi + biayaPengiriman;
         let total = 0;
 
-        let subTotalElements = document.querySelectorAll('[id^="sub_total_sales_"]');
+        let subTotalElements = document.querySelectorAll('[id^="sub_total_"]');
 
         subTotalElements.forEach(function (element) {
             total += parseFloat(element.value) || 0;
         });
 
-        let = grandTotal = document.getElementById('grand_total_sales').value = total - costDiskon;
+        let = grandTotal = document.getElementById('total_pembelian').value = total - costDiskon;
         let sisaTagihan = document.getElementById('sisa_tagihan').value = grandTotal - totalPembayaran;
         let status = document.getElementById("status");
 
@@ -257,7 +251,7 @@
                 <input oninput="subTotalSales(this, '${uniqueIdentifier}')" type="number" class="form-control" name="quantity_sales" id="quantity_sales_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required>
             </td>
             <td>
-                <input type="number" class="form-control" name="sub_total_sales" id="sub_total_sales_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
+                <input type="number" class="form-control" name="sub_total_sales" id="sub_total_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
             </td>
         `;
             document.getElementById("myTableBody").appendChild(newRow);
@@ -286,13 +280,13 @@
             let uniqueIdentifier = Date.now();
             newRow.innerHTML = `
                 <td>
-                    <input type="text" class="form-control" name="kode_barang[]" value="${valuesArray[1]}" aria-describedby="emailHelp" maxlength="20" required readonly>
+                    <input type="text" class="form-control" name="kode_barang" value="${valuesArray[1]}" aria-describedby="emailHelp" maxlength="20" required readonly>
                 </td>
                 <td>
                     <input type="text" class="form-control" name="" value="${valuesArray[0]}" id="nama_barang_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
                 </td>
                 <td>
-                    <select onchange="satuanSelectedValue(this, '${uniqueIdentifier}')" class="form-select mb-3" name="nama_satuan[]" id="nama_satuan_${uniqueIdentifier}" aria-label="Default select example">
+                    <select onchange="satuanSelectedValue(this, '${uniqueIdentifier}')" class="form-select mb-3" name="nama_satuan" id="nama_satuan_${uniqueIdentifier}" aria-label="Default select example">
                         <option value="-">-</option>
                         <option>${valuesArray[2]}</option>
                         <option>${valuesArray[3]}</option>
@@ -300,13 +294,20 @@
                     </select>
                 </td>
                 <td>
-                    <input type="number" class="form-control" name="harga_barang[]" id="harga_barang_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
+                    <input type="number" class="form-control" name="harga_barang" id="harga_barang_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
                 </td>
                 <td>
-                    <input oninput="subTotalSales(this, '${uniqueIdentifier}')" type="number" class="form-control" name="quantity_sales[]" id="quantity_sales_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required>
+                    <input oninput="subTotalSales(this, '${uniqueIdentifier}')" type="number" class="form-control" name="quantity_sales" id="quantity_sales_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required>
                 </td>
                 <td>
-                    <input type="number" class="form-control" name="sub_total_sales" id="sub_total_sales_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
+                    <select class="form-select mb-3" name="ppn_barang_transaksi" id="ppn_barang_transaksi_${uniqueIdentifier}" aria-label="Default select example">
+                        <option value="-">-</option>
+                        <option value="11">Ya</option>
+                        <option value="0">Tidak</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="number" class="form-control" name="sub_total_sales" id="sub_total_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
                 </td>
             `;
 
@@ -377,9 +378,39 @@
         hargaBarang = parseFloat(hargaBarang) || 0;
 
         let subTotalSales = hargaBarang * quantity;
-        let subTotalElement = document.getElementById(`sub_total_sales_${uniqueIdentifier}`);
+        let subTotalElement = document.getElementById(`sub_total_${uniqueIdentifier}`);
         subTotalElement.value = subTotalSales;
         calculateTotal();
     }
 
+</script>
+
+
+<script>
+    // Panggil fungsi generateUniqueID() saat DOM selesai dimuat
+    document.addEventListener('DOMContentLoaded', function () {
+        generateUniqueID();
+    });
+
+    function generateUniqueID() {
+        // Dapatkan objek Date untuk waktu saat ini
+        var currentTime = new Date();
+
+        // Atur zona waktu ke Asia/Jakarta
+        currentTime.toLocaleString('en-US', {timeZone: 'Asia/Jakarta'});
+
+        // Dapatkan komponen waktu
+        var year = currentTime.getFullYear();
+        var month = ('0' + (currentTime.getMonth() + 1)).slice(-2); // Tambahkan 1 karena bulan dimulai dari 0
+        var day = ('0' + currentTime.getDate()).slice(-2);
+        var hours = ('0' + currentTime.getHours()).slice(-2);
+        var minutes = ('0' + currentTime.getMinutes()).slice(-2);
+        var seconds = ('0' + currentTime.getSeconds()).slice(-2);
+
+        // Format ID dengan komponen waktu
+        var autoGeneratedID = 'PMB' + year + month + day + hours + minutes + seconds;
+
+        // Set nilai ID pada elemen dengan ID "kode_sales"
+        document.getElementById('kode_transaksi_pembelian').value = autoGeneratedID;
+    }
 </script>
