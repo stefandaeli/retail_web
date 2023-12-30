@@ -280,13 +280,13 @@
             let uniqueIdentifier = Date.now();
             newRow.innerHTML = `
                 <td>
-                    <input type="text" class="form-control" name="kode_barang" value="${valuesArray[1]}" aria-describedby="emailHelp" maxlength="20" required readonly>
+                    <input type="text" class="form-control" name="kode_barang[]" value="${valuesArray[1]}" aria-describedby="emailHelp" maxlength="20" required readonly>
                 </td>
                 <td>
                     <input type="text" class="form-control" name="" value="${valuesArray[0]}" id="nama_barang_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
                 </td>
                 <td>
-                    <select onchange="satuanSelectedValue(this, '${uniqueIdentifier}')" class="form-select mb-3" name="nama_satuan" id="nama_satuan_${uniqueIdentifier}" aria-label="Default select example">
+                    <select onchange="satuanSelectedValue(this, '${uniqueIdentifier}')" class="form-select mb-3" name="nama_satuan[]" id="nama_satuan_${uniqueIdentifier}" aria-label="Default select example">
                         <option value="-">-</option>
                         <option>${valuesArray[2]}</option>
                         <option>${valuesArray[3]}</option>
@@ -294,13 +294,13 @@
                     </select>
                 </td>
                 <td>
-                    <input type="number" class="form-control" name="harga_barang" id="harga_barang_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
+                    <input type="number" class="form-control" name="harga_barang[]" id="harga_barang_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
                 </td>
                 <td>
-                    <input oninput="subTotalSales(this, '${uniqueIdentifier}')" type="number" class="form-control" name="quantity_sales" id="quantity_sales_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required>
+                    <input oninput="subTotalSales(this, '${uniqueIdentifier}')" type="number" class="form-control" name="quantity_sales[]" id="quantity_sales_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required>
                 </td>
                 <td>
-                    <select class="form-select mb-3" name="ppn_barang_transaksi" id="ppn_barang_transaksi_${uniqueIdentifier}" aria-label="Default select example">
+                    <select class="form-select mb-3" name="ppn_barang_transaksi[]" id="ppn_barang_transaksi_${uniqueIdentifier}" aria-label="Default select example">
                         <option value="-">-</option>
                         <option value="11">Ya</option>
                         <option value="0">Tidak</option>
