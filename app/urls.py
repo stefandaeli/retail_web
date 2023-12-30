@@ -4,10 +4,19 @@ from .views import *
 
 urlpatterns = [
     
+    #Retail
+    
+    path('v_retail',v_retail,name='v_retail'),
+    path('post_update_retail',post_update_retail,name='post_update_retail'),
+    
     #Login
     path('superadmin_login',superadmin_login,name='superadmin_login'),
     path('post_superadmin_login',post_superadmin_login,name='post_superadmin_login'),
     path('logout',logout,name='logout'),
+    
+    #Superadmins
+    
+    path('post_update_superadmins',post_update_superadmins,name='post_update_superadmins'),
     
     #Dashboard
     
@@ -148,13 +157,11 @@ urlpatterns = [
 
     
     #Lainnya
-
-
     path('hutang_piutang',hutang_piutang,name='hutang_piutang'),
-
     path('detail_transaksi/<str:kode_sales>',detail_transaksi,name='detail_transaksi'),
+    path('profile_superadmin',profile_superadmin,name='profile_superadmin')
 
-    #Others
+    
     
 
 

@@ -61,6 +61,28 @@
         max-height: 100vh;
         overflow-x: auto;
         overflow-y: auto;
+        font-size: 12px;
+
+    }
+    .customer-info {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        font-size: 12px;
+
+    }
+    .invoice-header{
+        text-align: center;
+    }
+    .invoice-footer{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        font-size: 12px;
+
+    }
+    p{
+        font-size: 12px;
     }
 
     @media screen and(max-width:568px) {
@@ -68,5 +90,13 @@
             max-width: 100vh;
 
         }
+        .customer-info{
+            grid-template-columns: 1fr;
+        }
+        .invoice-footer{
+            grid-template-columns: 1fr;
+
+        }
     }
+   
 </style>

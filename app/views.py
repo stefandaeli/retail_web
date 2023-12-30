@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import *
 from django.contrib import messages
@@ -19,10 +19,44 @@ from io import BytesIO
 import base64
 from django.template import loader
 from django.utils import timezone
+from django.db import transaction
 
+#Retail
+def v_retail(request):
+     data_retail = Retails.objects.all()
+     context ={
+          'data_retail' : data_retail
+     }
+     return render(request,'v_retail.html',context)
 
+def post_update_retail(request):
+     kode_retail = request.POST['kode_retail']
+     nama_retail = request.POST['nama_retail']
+     alamat_retail = request.POST['alamat_retail']
+     wa_retail = request.POST['wa_retail']
+     desc_retail = request.POST['desc_retail']
+     
+     data_retail = Retails.objects.get(kode_retail=kode_retail)
+     data_retail.nama_retail = nama_retail
+     data_retail.alamat_retail = alamat_retail
+     data_retail.wa_retail = wa_retail
+     data_retail.desc_retail = desc_retail
+     data_retail.save()
+     messages.success(request, 'Berhasil update data')
+     return redirect('v_retail')
+     
 
+# Profile
 
+def profile_superadmin(request):
+     superadmin = SuperAdmins.objects.get(kode_superadmin=request.session.get('kode_superadmin'))
+     data_superadmin = SuperAdmins.objects.filter(kode_superadmin=superadmin.kode_superadmin)
+     
+     context = {
+          'data_superadmin' : data_superadmin
+     }
+     return render(request,'profile_superadmin.html',context)
+     
 #Covert To Excel
 
 def detail_barang_excel(request):
@@ -111,7 +145,11 @@ def detail_barang_excel(request):
 #Login
 
 def superadmin_login(request):
-     return render(request, 'login/superadmin_login.html')
+     data_retail = Retails.objects.all()
+     context = {
+          'data_retail' : data_retail
+     }
+     return render(request, 'login/superadmin_login.html',context)
 
 def post_superadmin_login(request):
      kode_superadmin = request.POST['kode_superadmin'].upper()
@@ -169,14 +207,32 @@ def dashboard(request):
      
      total_penjualan_per_bulan = SalesTransactions.objects.filter(timestamp__range=(start_of_month, end_of_month)).aggregate(Sum('grand_total_sales'))['grand_total_sales__sum'] or 0
      
+    
+     
      context = {
          'total_data_barang': total_data_barang,
          'jumlah_transaksi_hari_ini': jumlah_transaksi_hari_ini,
          'total_penjualan_hari_ini': total_penjualan_hari_ini,
-         'total_penjualan_per_bulan':total_penjualan_per_bulan
+         'total_penjualan_per_bulan':total_penjualan_per_bulan,
+
      }
       
      return render(request, 'dashboard.html', context)
+
+#Superadmins
+
+def post_update_superadmins(request):
+     kode_superadmin = request.POST['kode_superadmin']
+     nama_superadmin = request.POST['nama_superadmin']
+     password_superadmin = request.POST['password_superadmin']
+     data_superadmin = SuperAdmins.objects.get(kode_superadmin=kode_superadmin)
+     
+     data_superadmin.nama_superadmin = nama_superadmin
+     data_superadmin.password_superadmin = password_superadmin
+     data_superadmin.save()
+     messages.success(request, 'Berhasil update data')
+     return redirect('profile_superadmin')
+     
 
 # Admins
 
@@ -1003,69 +1059,70 @@ def add_salestransactions(request):
      return render(request,'sales_transactions/add_salestransactions.html',context)
 
 def post_add_salestransactions(request):
-     kode_sales = request.POST['kode_sales']
-     nama_customers = request.POST['nama_customers']
-     kode_customers = request.POST['kode_customers']
-     nama_sopir = request.POST['nama_sopir']
-     kode_sopir = request.POST['kode_sopir']
-     kode_barang_list = request.POST.getlist('kode_barang[]')
-     nama_satuan_list = request.POST.getlist('nama_satuan[]')
-     harga_barang_list = request.POST.getlist('harga_barang[]')
-     quantity_sales_list = request.POST.getlist('quantity_sales[]')
-     diskon_sales = request.POST['diskon_sales']
-     biaya_pengiriman = request.POST['biaya_pengiriman']
-     sub_total_sales = request.POST['sub_total_sales']
-     grand_total_sales = request.POST['grand_total_sales']
-     jenis_pembayaran = request.POST['jenis_pembayaran']
-     total_pembayaran_sales = request.POST['total_pembayaran_sales']
-     sisa_tagihan = request.POST['sisa_tagihan']
-     status = request.POST['status']
-     timestamp = request.POST['timestamp']
-     
-     if SalesTransactions.objects.filter(kode_sales=kode_sales).exists():
-          messages.error(request, "Kode sudah ada!")
-          return redirect(request.META.get('HTTP_REFERER','/'))
-     else :
-          data_sales = SalesTransactions (
-               kode_sales = kode_sales,
-               nama_customers =nama_customers,
-               kode_customers = kode_customers,
-               nama_sopir = nama_sopir,
-               kode_sopir = kode_sopir,
-               diskon_sales = diskon_sales,
-               biaya_pengiriman = biaya_pengiriman,
-               sub_total_sales = sub_total_sales,
-               grand_total_sales = grand_total_sales,
-               jenis_pembayaran = jenis_pembayaran,
-               total_pembayaran_sales = total_pembayaran_sales,
-               sisa_tagihan = sisa_tagihan,
-               status = status,
-               timestamp = timestamp
-          )
-          data_sales.save()
-          for i in range(len(kode_barang_list)):
-               data_barang, created = DataBarang.objects.get_or_create(kode_barang=kode_barang_list[i])
-               data_sales, created = SalesTransactions.objects.get_or_create(kode_sales=kode_sales)
-               DetailTransaksi.objects.create(
+    kode_sales = request.POST['kode_sales']
+    nama_customers = request.POST['nama_customers']
+    kode_customers = request.POST['kode_customers']
+    nama_sopir = request.POST['nama_sopir']
+    kode_sopir = request.POST['kode_sopir']
+    kode_barang_list = request.POST.getlist('kode_barang[]')
+    nama_satuan_list = request.POST.getlist('nama_satuan[]')
+    harga_barang_list = request.POST.getlist('harga_barang[]')
+    quantity_sales_list = request.POST.getlist('quantity_sales[]')
+    diskon_sales = request.POST['diskon_sales']
+    biaya_pengiriman = request.POST['biaya_pengiriman']
+    sub_total_sales = request.POST['sub_total_sales']
+    grand_total_sales = request.POST['grand_total_sales']
+    jenis_pembayaran = request.POST['jenis_pembayaran']
+    total_pembayaran_sales = request.POST['total_pembayaran_sales']
+    sisa_tagihan = request.POST['sisa_tagihan']
+    status = request.POST['status']
+    timestamp = request.POST['timestamp']
+
+    if SalesTransactions.objects.filter(kode_sales=kode_sales).exists():
+        messages.error(request, "Kode sudah ada!")
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+    else:
+        with transaction.atomic():
+            data_sales = SalesTransactions(
+                kode_sales=kode_sales,
+                nama_customers=nama_customers,
+                kode_customers=kode_customers,
+                nama_sopir=nama_sopir,
+                kode_sopir=kode_sopir,
+                diskon_sales=diskon_sales,
+                biaya_pengiriman=biaya_pengiriman,
+                sub_total_sales=sub_total_sales,
+                grand_total_sales=grand_total_sales,
+                jenis_pembayaran=jenis_pembayaran,
+                total_pembayaran_sales=total_pembayaran_sales,
+                sisa_tagihan=sisa_tagihan,
+                status=status,
+                timestamp=timestamp
+            )
+            data_sales.save()
+
+            for i in range(len(kode_barang_list)):
+                data_barang, created = DataBarang.objects.get_or_create(kode_barang=kode_barang_list[i])
+                DetailTransaksi.objects.create(
                     kode_sales=data_sales,
                     kode_barang=data_barang,
-                    nama_satuan = nama_satuan_list[i],
+                    nama_satuan=nama_satuan_list[i],
                     harga_barang=harga_barang_list[i],
                     quantity_sales=quantity_sales_list[i],
-               
-               # Coba ambil queryset MyModel berdasarkan nomor nota penjualan dan kode barang
-          )
-          my_model_instances = StokBarang.objects.filter(kode_barang=kode_barang_list[i])
-          for instance in my_model_instances:
-               quantity_sales = int(quantity_sales_list[i])
-               if instance.stok_satuan_small > quantity_sales:
-                    instance.stok_satuan_small -= quantity_sales
-                    instance.save()
-               else:
-                    messages.success(request, 'Stock kurang')
-                    return redirect('v_salestransactions')
-     messages.success(request, 'Berhasil tambah data')
-     return redirect('v_salestransactions')
+                )
+
+                my_model_instances = StokBarang.objects.filter(kode_barang=kode_barang_list[i])
+                for instance in my_model_instances:
+                    quantity_sales = int(quantity_sales_list[i])
+                    if instance.stok_satuan_small >= quantity_sales:
+                        instance.stok_satuan_small -= quantity_sales
+                        instance.save()
+                    else:
+                        messages.success(request, 'Stock kurang')
+                        return redirect('v_salestransactions')
+
+    messages.success(request, 'Berhasil tambah data')
+    return redirect('v_salestransactions')
 
 def delete_salestransactions(request,kode_sales):
      data_sales = SalesTransactions.objects.get(kode_sales=kode_sales).delete()
@@ -1341,8 +1398,11 @@ def delete_transaksipembelian(request, kode_transaksi_pembelian):
 #Lainnya
 def hutang_piutang(request):
      data_hutang_piutang = SalesTransactions.objects.filter(status='Belum Lunas')
+     data_customers = Customers.objects.all().order_by('kode_customers')
+
      context = {
-          'data_hutang_piutang' : data_hutang_piutang
+          'data_hutang_piutang' : data_hutang_piutang,
+          'data_cutomers' : data_customers
      }
      return render(request, 'laporan/hutang_piutang.html',context)
 
@@ -1353,13 +1413,25 @@ def detail_transaksi(request,kode_sales):
      }
      return render(request, 'sales_transactions/detail_transaksi.html',context )
 
-def detail_transaksi(request,kode_sales):
-     data_detailtransaksi = DetailTransaksi.objects.filter(kode_sales=kode_sales)
-     context = {
-          'data_detail' : data_detailtransaksi
-     }
-     return render(request, 'sales_transactions/detail_transaksi.html',context )
+def detail_transaksi(request, kode_sales):
+    data_customer = SalesTransactions.objects.get(kode_sales=kode_sales)
+    data_detailtransaksi = DetailTransaksi.objects.filter(kode_sales=kode_sales)
+    data_retail = Retails.objects.all()
+    
+    
+#     if data_detailtransaksi:
+#         # Jika data_detailtransaksi tidak kosong, ambil data SalesTransactions dengan kode_sales yang sama
+#         data_customers = SalesTransactions.objects.filter(kode_sales=kode_sales)
+#     else:
+#         data_customers = None
 
+    context = {
+        'data_detail': data_detailtransaksi,
+        'data_customer': data_customer,
+        'data_retail' : data_retail
+    }
+
+    return render(request, 'sales_transactions/detail_transaksi.html', context)
 
 
 

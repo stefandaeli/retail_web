@@ -48,8 +48,9 @@
             <div class="img">
                 <img src="/static/img/logo.png" alt="logo supride nani">
             </div>
-            <h1 class="text-success">Subdist Batam</h1>
-            <p class="text-success mb-4">Nani</p>
+            {% for retail in data_retail %}
+            <h1 class="text-success">{{retail.nama_retail}}</h1>
+            <p class="text-success mb-4">{{retail.desc_retail}}</p>
             <form action="{% url 'post_superadmin_login'%}" method="POST">
                 {% csrf_token %}
                 <input class="form-control mb-5" type="text" name="kode_superadmin" placeholder="Masukkan Kode Anda"
@@ -58,6 +59,10 @@
                     placeholder="Masukkan Password" maxlength="20" required>
                 <button class="btn btn-success col-12" type="submit">Login</button>
             </form>
+            <p class="mt-2 text-success"><i class="fa fa-whatsapp"></i> {{retail.wa_retail}}</p>
+            <p class="mt-2 text-success"><i class="fa fa-map-marker"></i> {{retail.alamat_retail}}</p>
+
+            {% endfor %}
         </div>
     </div>
 

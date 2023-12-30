@@ -6,7 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include 'componens/bootstrapt.html' %}
     {% include 'componens/grid_index.html'%}
-    <title>Detail Transaksi Penjualan</title>
+    <title>Invoice Retail</title>
+    <style type="text/css" media="print">
+        @page {
+            size: auto;
+            margin: 0mm 0 0mm 0;
+            /* Sesuaikan dengan margin yang Anda inginkan */
+        }
+
+        body {
+            margin: 0 0 0 0;
+            /* Sesuaikan dengan margin yang Anda inginkan */
+        }
+
+        .print-only {
+            position: relative;
+        }
+
+        .print-only * {
+            visibility: visible;
+        }
+
+        body * {
+            visibility: hidden;
+        }
+
+        header,
+        footer {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -17,36 +46,71 @@
         <div class="messages">
             {% include 'componens/messages.html'%}
         </div>
-        <br>
-        <br>
-        <br>
-        
-        <div class="content">
-            
-            <table class="table table-success mt-2 table-bordered">
+        <div class="nav-btn">
+            <button class="btn btn-primary" onclick="printPage()"><i class="fa fa-print"></i> Print</button>
+        </div>
+        <div class="content-detail_sales mt-2 print-only">
+            <div class="invoice-header">
+                {% for t in data_retail%}
+                <p class="fs-5 mb-3"><strong>Invoice {{t.nama_retail}}</strong></p>
+                {% endfor %}
+            </div>
+            <div class="customer-info">
+
+                {% for retail in data_retail %}
+                <div class="">
+                    <p><strong>Tlp</strong> {{retail.wa_retail}}</p>
+                </div>
+                <div class="">
+                    <p><strong>Alamat</strong> {{retail.alamat_retail}}</p>
+                </div>
+                {% endfor %}
+                <div class="">
+                    <p><strong>Customer</strong> {{data_customer.nama_customers}}</p>
+                </div>
+                <p><strong>Kode Transaksi</strong> {{data_customer.kode_sales}}</p>
+
+            </div>
+            <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th scope="col">Nama Sales</th>
                         <th scope="col">Nama Barang</th>
-                        <th scope="col">Nama Satuan</th>
-                        <th scope="col">Harga Barang</th>
-                        <th scope="col">Quantity Sales</th>
+                        <th scope="col">Satuan</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">Harga</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for t in data_detail %}
-                    <tr class="table-light">
-                        <th>{{t.kode_sales.kode_sales}}</th>
+                    <tr>
                         <td>{{t.kode_barang.nama_barang}}</td>
                         <td>{{t.nama_satuan}}</td>
-                        <td>{{t.harga_barang}}</td>
                         <td>{{t.quantity_sales}}</td>
+                        <td>Rp. {{t.harga_barang|floatformat:2}}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+            <div class="invoice-footer">
+                <div class="">
+                    <p><strong>Total</strong> Rp. {{data_customer.sub_total_sales|floatformat:2}}</p>
+                    <p><strong>Biaya Pengiriman</strong> Rp. {{data_customer.biaya_pengiriman|floatformat:2}}</p>
+                    <p><strong>Diskon</strong> Rp. {{data_customer.diskon_sales|floatformat:2}}</p>
+                </div>
+                <div class="">
+                    <p><strong>Dibayar</strong> Rp. {{data_customer.total_pembayaran_sales|floatformat:2}}</p>
+                    <p> <strong>Sisa Tagihan</strong> Rp. {{data_customer.grand_total_sales|floatformat:2}}</p>
+                </div>
+            </div>
+            <p><strong>Tanggal/Waktu</strong> {{data_customer.timestamp}}</p>
         </div>
     </div>
-
 </body>
+
+<script>
+    function printPage() {
+        window.print();
+    }
+</script>
+
 </html>

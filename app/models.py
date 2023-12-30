@@ -1,5 +1,15 @@
 from django.db import models
 
+#Retails
+
+class Retails(models.Model):
+    kode_retail = models.CharField(max_length=20,primary_key=True)
+    nama_retail = models.CharField(max_length=120)
+    alamat_retail = models.CharField(max_length=120)
+    wa_retail = models.CharField(max_length=120,null=True)
+    desc_retail = models.CharField(max_length=120,null=True)
+    timestamp = models.DateTimeField(null=True)
+    
 #SuperAdmins
 
 class SuperAdmins(models.Model):

@@ -23,8 +23,22 @@
         <br>
         <div class="nav-btn">
             <h5 class="text-success mt-4 mb-4">HUTANG PIUTANG (CUSTOMERS)</h5>
+            {% for t in data_customers %}
+            <p>{{t.nama_customers}}</p>
+            {% endfor %}
         </div>
         <div class="content">
+            <form id="customerFilterForm">
+                <label for="customer_filter">Pilih Pelanggan:</label>
+                <select name="" id="customer_filter">
+                    <option value="">Semua Pelanggan</option>
+                    {% for t in data_customers %}
+                    <option value="{{t.nama_customers}}">a{{t.nama_customers}}</option>
+                    {% endfor %}
+                </select>
+                <input type="button" value="Filter" onclick="applyFilter()">
+            </form>
+
             <table id="dataTable" class="table table-success mt-2 table-bordered">
                 <thead>
                     <tr>
@@ -63,3 +77,22 @@
                 </tbody>
             </table>
         </div>
+    </div>
+</body>
+
+</html>
+<script>
+    function applyFilter() {
+        var customerFilter = document.getElementById('customer_filter').value;
+        var rows = document.getElementById('dataTable').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+        for (var i = 0; i < rows.length; i++) {
+            var customerName = rows[i].getElementsByTagName('td')[1].innerHTML; // Ganti indeks sesuai dengan kolom nama pelanggan
+            if (customerFilter === '' || customerFilter === customerName) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    }
+</script>

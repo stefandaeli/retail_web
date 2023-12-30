@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    {% include 'componens/grid_index.html'%}
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            {% include 'componens/navbar.html' %}
+        </div>
+        <div class="messages">
+            {% include 'componens/messages.html'%}
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="content">
+            <form action="{% url 'post_update_retail' %}" method="POST">
+                {% csrf_token %}
+
+                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                    <h5 class="modal-title">Retail</h5>
+                    {% for retail in data_retail%}
+
+                    <div class="mb-3">
+                        <label for="" class="form-label">Kode</label>
+                        <input type="hidden" class="form-control" aria-label="kode_retail"
+                            aria-describedby="basic-addon1" name="kode_retail" id="kode_retail"
+                            value="{{retail.kode_retail}}" readonly>
+                        <label for="" class="form-label">Nama Retail</label>
+                        <input type="text" class="form-control" aria-label="nama_retail" aria-describedby="basic-addon1"
+                            name="nama_retail" id="nama_retail" value="{{retail.nama_retail}}" maxlength="120">
+                        <label for="" class="form-label">Alamat</label>
+                        <input type="text" class="form-control" aria-label="alamat_retail"
+                            aria-describedby="basic-addon1" name="alamat_retail" id="alamat_retail"
+                            value="{{retail.alamat_retail}}" maxlength="120">
+                        <label for="" class="form-label">Wa</label>
+                        <input type="text" class="form-control" aria-label="wa_retail" aria-describedby="basic-addon1"
+                            name="wa_retail" id="wa_retail" value="{{retail.wa_retail}}" maxlength="15">
+                        <label for="" class="form-label">Deskripsi Retail</label>
+                        <div class="form-floating">
+                            <textarea class="form-control" name="desc_retail"
+                                id="desc_retail">{{retail.desc_retail}}</textarea>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <a href="">
+                    <div class="d-grid gap-2 col-4 mx-auto mb-3">
+                        <button type="submit" class="btn btn-warning">Update</button>
+                    </div>
+                </a>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

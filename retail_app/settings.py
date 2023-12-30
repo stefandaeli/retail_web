@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'retail_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dbretail_app',
+        'NAME': 'dbretail_3',
         'USER' : 'root',
         'PASSWORD' : '',
         'HOST' : 'localhost',
