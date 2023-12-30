@@ -1275,6 +1275,7 @@ def update_barangsupplier(request,kode_supplier):
      }
      return render(request, 'barangsupplier/u_barangsupplier.html',context)
 
+
 def post_update_barangsupplier(request):
      kode_supplier = request.POST['kode_supplier']
      kode_barang = request.POST['kode_barang']
@@ -1311,7 +1312,7 @@ def delete_barangsupplier(request,kode_supplier):
      # BarangSupplier
 
 def v_transaksipembelian(request):
-     data_transaksipembelian = TransaksiPembelian.objects.select_related('kode_supplier','kode_barang','kode_satuan').all()
+     data_transaksipembelian = TransaksiPembelian.objects.select_related('kode_supplier').all()
      context = {
           'data_transaksipembelian' : data_transaksipembelian
      }
@@ -1346,11 +1347,11 @@ def add_transaksipembelian(request):
 def post_add_transaksipembelian(request):
      kode_transaksi_pembelian = request.POST['kode_transaksi_pembelian']
      kode_supplier = request.POST['kode_supplier']
-     kode_barang = request.POST['kode_barang']
-     kode_satuan = request.POST['kode_satuan']
-     harga_pembelian = request.POST['harga_barang']
-     quantity = request.POST['quantity_sales']
-     ppn_barang_transaksi = request.POST['ppn_barang_transaksi']
+     kode_barang_list = request.POST.getlist('kode_barang[]')
+     kode_satuan_list = request.POST.getlist('nama_satuan[]')
+     harga_pembelian_list = request.POST.getlist('harga_barang[]')
+     quantity_list = request.POST.getlist('quantity_sales[]')
+     ppn_barang_transaksi_list = request.POST.getlist('ppn_barang_transaksi[]')
      diskon_transaksi = request.POST['diskon_transaksi']
      biaya_pengiriman = request.POST['biaya_pengiriman']
      total_pembelian = request.POST['total_pembelian']
@@ -1360,22 +1361,15 @@ def post_add_transaksipembelian(request):
      status = request.POST['status']
      timestamp = request.POST['timestamp']
      data_supplier, created = DataSupplier.objects.get_or_create(kode_supplier=kode_supplier)
-     data_barang, created = DataBarang.objects.get_or_create(kode_barang=kode_barang)
-     data_satuan, created = SatuanBarang.objects.get_or_create(kode_satuan=kode_satuan)
-     
      
      if TransaksiPembelian.objects.filter(kode_transaksi_pembelian=kode_transaksi_pembelian).exists():
           messages.error(request, "Kode sudah ada!")
           return redirect(request.META.get('HTTP_REFERER','/'))
      else :
-          data_transaksipembelian = TransaksiPembelian(
+          with transaction.atomic():
+            data_transaksipembelian = TransaksiPembelian(
                kode_transaksi_pembelian = kode_transaksi_pembelian,
                kode_supplier = data_supplier,
-               kode_barang = data_barang,
-               kode_satuan = data_satuan,
-               harga_pembelian = harga_pembelian,
-               quantity = quantity,
-               ppn_barang_transaksi = ppn_barang_transaksi,
                diskon_transaksi = diskon_transaksi,
                biaya_pengiriman = biaya_pengiriman,
                total_pembelian = total_pembelian,
@@ -1384,10 +1378,27 @@ def post_add_transaksipembelian(request):
                sisa_tagihan = sisa_tagihan,
                status = status,
                timestamp = timestamp
-          )
-          data_transaksipembelian.save()
-          messages.success(request, 'Berhasil tambah data')
-          return redirect('v_transaksipembelian')
+            )
+            data_transaksipembelian.save()
+            for i in range(len(kode_barang_list)):
+                data_barang, created = DataBarang.objects.get_or_create(kode_barang=kode_barang_list[i])
+                DetailPembelian.objects.create(
+                    kode_transaksi_pembelian=data_transaksipembelian,
+                    kode_barang=data_barang,
+                    nama_satuan=kode_satuan_list[i],
+                    harga_total=harga_pembelian_list[i],
+                    ppn_barang_transaksi=ppn_barang_transaksi_list[i],
+                    quantity=quantity_list[i],
+                )
+
+                my_model_instances = StokBarang.objects.filter(kode_barang=kode_barang_list[i])
+                for instance in my_model_instances:
+                    quantity_sales = int(quantity_list[i])
+                    instance.stok_satuan_small += quantity_sales
+                    instance.save()
+                    
+     messages.success(request, 'Berhasil tambah data')
+     return redirect('v_transaksipembelian')
      
 def delete_transaksipembelian(request, kode_transaksi_pembelian):
      TransaksiPembelian.objects.get(kode_transaksi_pembelian=kode_transaksi_pembelian).delete()
@@ -1406,12 +1417,6 @@ def hutang_piutang(request):
      }
      return render(request, 'laporan/hutang_piutang.html',context)
 
-def detail_transaksi(request,kode_sales):
-     data_detailtransaksi = DetailTransaksi.objects.filter(kode_sales=kode_sales)
-     context = {
-          'data_detail' : data_detailtransaksi
-     }
-     return render(request, 'sales_transactions/detail_transaksi.html',context )
 
 def detail_transaksi(request, kode_sales):
     data_customer = SalesTransactions.objects.get(kode_sales=kode_sales)
@@ -1432,6 +1437,20 @@ def detail_transaksi(request, kode_sales):
     }
 
     return render(request, 'sales_transactions/detail_transaksi.html', context)
+
+
+
+def detail_pembelian(request,kode_transaksi_pembelian):
+     data_pembelian = TransaksiPembelian.objects.select_related('kode_supplier').get(kode_transaksi_pembelian=kode_transaksi_pembelian)
+     data_detailpembelian = DetailPembelian.objects.filter(kode_transaksi_pembelian=kode_transaksi_pembelian)
+     data_retail = Retails.objects.all()
+     context = {
+          'data_detail' : data_detailpembelian,
+          'data_retail' : data_retail,
+          'data_pembelian' : data_pembelian
+     }
+     return render(request, 'transaksipembelian/detail_pembelian.html',context)
+     
 
 
 

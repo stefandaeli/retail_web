@@ -36,10 +36,6 @@
                     <tr>
                         <th scope="col">Kode</th>
                         <th scope="col">Nama Supplier</th>
-                        <th scope="col">Nama Barang</th>
-                        <th scope="col">Nama Satuan</th>
-                        <th scope="col">Harga Pembelian</th>
-                        <th scope="col">Quantity</th>
                         <th scope="col">Diskon Transaksi</th>
                         <th scope="col">Total Pembelian</th>
                         <th scope="col">Total Pembayaran</th>
@@ -54,23 +50,19 @@
                     <tr class="table-light">
                         <td>{{t.kode_transaksi_pembelian}}</td>
                         <td>{{t.kode_supplier.nama_supplier}}</td>
-                        <td>{{t.kode_barang.nama_barang}}</td>
-                        <td>{{t.kode_satuan.nama_satuan}}</td>
-                        <td>{{t.harga_pembelian}}</td>
-                        <td>{{t.quantity}}</td>
                         <td>{{t.diskon_transaksi}}</td>
                         <td>{{t.total_pembelian}}</td>
                         <td>{{t.total_pembayaran}}</td>
                         <td>{{t.status}}</td>
                         <td>{{t.timestamp}}</td>
                         <td>
-                            <a href="" class="btn btn-success mb-1">
-                                <i class="fa fa-folder"></i>
-                            </a>
                             <a onclick="return confirm('apakah anda ingin menghapus data Transaksi {{t.kode_supplier.nama_supplier}} ?')"
-                                href="{% url 'delete_transaksipembelian' t.kode_transaksi_pembelian %}" class="btn btn-success mb-1">
-                                <i class="fa fa-trash-o"></i>
-                            </a>
+                            href="{% url 'delete_transaksipembelian' t.kode_transaksi_pembelian %}" class="btn btn-success mb-1">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                        <a href="{% url 'detail_pembelian' t.kode_transaksi_pembelian %}" class="btn btn-success mb-1">
+                            <i class="fa fa-info-circle"></i>
+                        </a>
 
                         </td>
                     </tr>

@@ -145,13 +145,8 @@ class BarangSupplier(models.Model):
     timestamp = models.DateTimeField(null=True)
     
 class TransaksiPembelian(models.Model):
-    kode_transaksi_pembelian = models.CharField(max_length=120,null=True)
+    kode_transaksi_pembelian = models.CharField(max_length=120,primary_key=True)
     kode_supplier = models.ForeignKey(DataSupplier,on_delete=models.CASCADE)
-    kode_barang = models.ForeignKey(DataBarang,on_delete=models.CASCADE)
-    kode_satuan = models.ForeignKey(SatuanBarang,on_delete=models.CASCADE)
-    harga_pembelian = models.IntegerField(null=True)
-    quantity = models.IntegerField(null=True)
-    ppn_barang_transaksi = models.CharField(max_length=120,null=True)
     status = models.CharField(max_length=120,null=True)
     diskon_transaksi = models.IntegerField(null=True)
     biaya_pengiriman = models.IntegerField(null=True)
@@ -169,6 +164,13 @@ class DetailTransaksi(models.Model):
     harga_barang = models.IntegerField(null=True)
     quantity_sales = models.IntegerField(null=True)
 
+class DetailPembelian(models.Model):
+    kode_transaksi_pembelian = models.ForeignKey(TransaksiPembelian,on_delete=models.CASCADE,null=True)
+    nama_satuan = models.CharField(max_length=120,null=True)
+    kode_barang = models.ForeignKey(DataBarang,on_delete=models.CASCADE,null=True)
+    quantity = models.IntegerField(null=True)
+    ppn_barang_transaksi = models.CharField(max_length=120,null=True)
+    harga_total = models.IntegerField(null=True)
     
     
     

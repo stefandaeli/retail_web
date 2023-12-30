@@ -159,7 +159,8 @@ urlpatterns = [
     #Lainnya
     path('hutang_piutang',hutang_piutang,name='hutang_piutang'),
     path('detail_transaksi/<str:kode_sales>',detail_transaksi,name='detail_transaksi'),
-    path('profile_superadmin',profile_superadmin,name='profile_superadmin')
+    path('profile_superadmin',profile_superadmin,name='profile_superadmin'),
+    path('detail_pembelian/<str:kode_transaksi_pembelian>',detail_pembelian,name='detail_pembelian')
 
     
     
