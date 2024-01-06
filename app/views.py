@@ -20,6 +20,7 @@ import base64
 from django.template import loader
 from django.utils import timezone
 from django.db import transaction
+from decimal import Decimal
 
 #Retail
 def v_retail(request):
@@ -66,9 +67,9 @@ def detail_barang_excel(request):
 
     # Menambahkan header ke worksheet
     ws.append(['Detail Barang'])
-    ws.append(['Kode', 'Nama Barang', 'Kelompok Barang', 'Jenis Barang', 'Satuan Barang Kecil', 'Satuan Barang Sedang',
-               'Satuan Barang Besar', 'Tanggal Expire', 'Stok Satuan Kecil', 'Stok Satuan Sedang', 'Stok Satuan Besar',
-               'Nama Gudang', 'Harga Barang Kecil', 'Harga Barang Sedang', 'Harga Barang Besar', 'PPN Barang', 'Diskon Barang', 'Timestamp'])
+    ws.append(['Kode', 'Nama Barang', 'Kelompok Barang', 'Jenis Barang', 'Satuan Barang Kecil',
+               'Tanggal Expire', 'Stok Barang',
+               'Nama Gudang', 'Harga Barang', 'PPN Barang', 'Diskon Barang', 'Timestamp'])
 
     # Mengambil data dari tiga tabel
     data_barang = DataBarang.objects.all()
@@ -80,8 +81,8 @@ def detail_barang_excel(request):
     for harga in harga_barang:
         harga_barang_dict[harga.kode_barang] = {
             'harga_satuan_small': harga.harga_satuan_small,
-            'harga_satuan_medium': harga.harga_satuan_medium,
-            'harga_satuan_large': harga.harga_satuan_large,
+          #   'harga_satuan_medium': harga.harga_satuan_medium,
+          #   'harga_satuan_large': harga.harga_satuan_large,
             'ppn_barang' : harga.ppn_barang,
             'diskon_barang' : harga.diskon_barang
         }
@@ -107,16 +108,16 @@ def detail_barang_excel(request):
             barang.kelompok_barang,
             barang.jenis_barang,
             barang.satuan_barang_small,
-            barang.satuan_barang_medium,
-            barang.satuan_barang_large,
+          #   barang.satuan_barang_medium,
+          #   barang.satuan_barang_large,
             tgl_expire_barang,
             stok.stok_satuan_small if stok else '',
-            stok.stok_satuan_medium if stok else '',
-            stok.stok_satuan_large if stok else '',
+          #   stok.stok_satuan_medium if stok else '',
+          #   stok.stok_satuan_large if stok else '',
             stok.nama_gudang if stok else '',
             harga.get('harga_satuan_small', ''),
-            harga.get('harga_satuan_medium', ''),
-            harga.get('harga_satuan_large', ''),
+          #   harga.get('harga_satuan_medium', ''),
+          #   harga.get('harga_satuan_large', ''),
             harga.get('ppn_barang', ''),
             harga.get('diskon_barang', ''),
             timestamp,
@@ -133,6 +134,47 @@ def detail_barang_excel(request):
 
     return response
 
+def transaksi_penjualan_excel(request):
+    # Buat workbook dan aktifkan worksheet
+    wb = Workbook()
+    ws = wb.active
+
+    # Tambahkan judul worksheet
+    ws.append(['Transaksi Penjualan'])
+
+    # Tambahkan header kolom
+    ws.append(['Kode Transaksi', 'Customer', 'Sopir', 'Grand Total', 'Status', 'Dibayar',
+               'Sisa Tagihan', 'Timestamp'])
+
+    # Ambil data transaksi penjualan dari model
+    data_sales_transaction = SalesTransactions.objects.all()
+
+    # Tambahkan data ke worksheet
+    for transaction in data_sales_transaction:
+        # Convert to timezone-aware datetime and then remove timezone information
+        timestamp = transaction.timestamp.astimezone(timezone.utc).replace(tzinfo=None)
+
+        ws.append([
+            transaction.kode_sales,
+            transaction.nama_customers,
+            transaction.nama_sopir,
+            transaction.grand_total_sales,
+            transaction.status,
+            transaction.total_pembayaran_sales,
+            transaction.sisa_tagihan,
+            timestamp,
+        ])
+
+    # Buat response HttpResponse
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=sales_transaction.xlsx'
+
+    # Simpan file Excel ke response
+    wb.save(response)
+
+    return response
+     
+     
 
 # Create your views here.
 
@@ -206,14 +248,19 @@ def dashboard(request):
      total_penjualan_hari_ini = SalesTransactions.objects.filter(timestamp__range=(start_of_day, end_of_day)).aggregate(Sum('grand_total_sales'))['grand_total_sales__sum'] or 0
      
      total_penjualan_per_bulan = SalesTransactions.objects.filter(timestamp__range=(start_of_month, end_of_month)).aggregate(Sum('grand_total_sales'))['grand_total_sales__sum'] or 0
+     total_uang_masuk_hari_ini = SalesTransactions.objects.filter(timestamp__range=(start_of_day, end_of_day)).aggregate(Sum('total_pembayaran_sales'))['total_pembayaran_sales__sum'] or 0
+     total_uang_masuk_bulan_ini = SalesTransactions.objects.filter(timestamp__range=(start_of_month, end_of_month)).aggregate(Sum('total_pembayaran_sales'))['total_pembayaran_sales__sum'] or 0
+     sisa_tagihan = SalesTransactions.objects.filter(timestamp__range=(start_of_month,end_of_month)).aggregate(Sum('sisa_tagihan'))['sisa_tagihan__sum'] or 0
      
-    
-     
+
      context = {
          'total_data_barang': total_data_barang,
          'jumlah_transaksi_hari_ini': jumlah_transaksi_hari_ini,
          'total_penjualan_hari_ini': total_penjualan_hari_ini,
          'total_penjualan_per_bulan':total_penjualan_per_bulan,
+         'total_uang_masuk_hari_ini' : total_uang_masuk_hari_ini,
+         'total_uang_masuk_bulan_ini' : total_uang_masuk_bulan_ini,
+         'sisa_tagihan' : sisa_tagihan
 
      }
       
@@ -595,8 +642,8 @@ def post_add_databarang(request):
      kelompok_barang = request.POST['kelompok_barang']
      jenis_barang = request.POST['jenis_barang']
      satuan_barang_small = request.POST['satuan_barang_small']
-     satuan_barang_medium = request.POST['satuan_barang_medium']
-     satuan_barang_large = request.POST['satuan_barang_large']
+     # satuan_barang_medium = request.POST['satuan_barang_medium']
+     # satuan_barang_large = request.POST['satuan_barang_large']
      tgl_expire_barang = request.POST['tgl_expire_barang']
      timestamp = request.POST['timestamp']
      
@@ -610,8 +657,8 @@ def post_add_databarang(request):
                kelompok_barang = kelompok_barang,
                jenis_barang = jenis_barang,
                satuan_barang_small = satuan_barang_small,
-               satuan_barang_medium = satuan_barang_medium,
-               satuan_barang_large = satuan_barang_large,
+               # satuan_barang_medium = satuan_barang_medium,
+               # satuan_barang_large = satuan_barang_large,
                tgl_expire_barang = tgl_expire_barang,
                timestamp= timestamp
           )
@@ -682,8 +729,6 @@ def post_add_stokbarang(request):
      kode_barang = request.POST['kode_barang']
      nama_barang = request.POST['nama_barang']
      stok_satuan_small = request.POST['stok_satuan_small']
-     stok_satuan_medium = request.POST['stok_satuan_medium']
-     stok_satuan_large = request.POST['stok_satuan_large']
      nama_gudang = request.POST['nama_gudang']
      timestamp = request.POST['timestamp']
      
@@ -698,8 +743,6 @@ def post_add_stokbarang(request):
                # mengambil salah satu value :
                nama_barang = nama_barang.split(',')[0],
                stok_satuan_small =stok_satuan_small,
-               stok_satuan_medium = stok_satuan_medium,
-               stok_satuan_large = stok_satuan_large,
                nama_gudang = nama_gudang,
                timestamp = timestamp
           )
@@ -766,8 +809,8 @@ def post_add_hargabarang(request):
      kode_barang = request.POST['kode_barang']
      nama_barang = request.POST['nama_barang']
      harga_satuan_small = request.POST['harga_satuan_small']
-     harga_satuan_medium = request.POST['harga_satuan_medium']
-     harga_satuan_large = request.POST['harga_satuan_large']
+     # harga_satuan_medium = request.POST['harga_satuan_medium']
+     # harga_satuan_large = request.POST['harga_satuan_large']
      ppn_barang = request.POST['ppn_barang']
      diskon_barang = request.POST['diskon_barang']
      timestamp = request.POST['timestamp']
@@ -782,8 +825,8 @@ def post_add_hargabarang(request):
                kode_barang = kode_barang,
                nama_barang = nama_barang.split(',')[0],
                harga_satuan_small = harga_satuan_small,
-               harga_satuan_medium = harga_satuan_medium,
-               harga_satuan_large = harga_satuan_large,
+               # harga_satuan_medium = harga_satuan_medium,
+               # harga_satuan_large = harga_satuan_large,
                ppn_barang = ppn_barang,
                diskon_barang =diskon_barang,
                timestamp = timestamp
@@ -1370,8 +1413,8 @@ def post_add_transaksipembelian(request):
             data_transaksipembelian = TransaksiPembelian(
                kode_transaksi_pembelian = kode_transaksi_pembelian,
                kode_supplier = data_supplier,
-               diskon_transaksi = diskon_transaksi,
                biaya_pengiriman = biaya_pengiriman,
+               diskon_transaksi = diskon_transaksi,
                total_pembelian = total_pembelian,
                jenis_pembayaran = jenis_pembayaran,
                total_pembayaran = total_pembayaran,
@@ -1405,17 +1448,52 @@ def delete_transaksipembelian(request, kode_transaksi_pembelian):
      messages.success(request, 'Berhasil hapus data')
      return redirect('v_transaksipembelian')
 
+# Operasional
 
+def v_operasional(request):
+     data_operasional = Operasional.objects.all().order_by('kode_operasional')
+     context = {
+          'data_operasional' : data_operasional
+     }
+     return render(request,'operasional/v_operasional.html',context)
+
+def post_add_operasional(request):
+     kode_operasional = request.POST['kode_operasional']
+     lokasi_awal = request.POST['lokasi_awal']
+     lokasi_tujuan = request.POST['lokasi_tujuan']
+     jenis_transportasi = request.POST['jenis_transportasi']
+     timestamp = request.POST['timestamp']
+     
+     if Operasional.objects.filter(kode_operasional=kode_operasional).exists():
+          messages.error(request, "Kode sudah ada!")
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     else :
+          data_operasioal = Operasional (
+               kode_operasional = kode_operasional,
+               lokasi_awal =lokasi_awal,
+               lokasi_tujuan = lokasi_tujuan,
+               jenis_transportasi = jenis_transportasi,
+               timestamp = timestamp
+          )
+          data_operasioal.save()
+          messages.success(request, 'Berhasil tambah data')
+          return redirect(request.META.get('HTTP_REFERER','/'))
+     
+def delete_operasional(request,kode_operasional):
+     data_operasional = Operasional.objects.get(kode_operasional=kode_operasional).delete()
+     messages.success(request, 'Berhasil hapus data')
+     return redirect('v_operasional')
 #Lainnya
 def hutang_piutang(request):
-     data_hutang_piutang = SalesTransactions.objects.filter(status='Belum Lunas')
-     data_customers = Customers.objects.all().order_by('kode_customers')
+    data_hutang_piutang = SalesTransactions.objects.filter(sisa_tagihan__gt=0)
+    data_customers = Customers.objects.all()
 
-     context = {
-          'data_hutang_piutang' : data_hutang_piutang,
-          'data_cutomers' : data_customers
-     }
-     return render(request, 'laporan/hutang_piutang.html',context)
+    context = {
+        'data_hutang_piutang': data_hutang_piutang,
+        'data_customers': data_customers
+    }
+    return render(request, 'laporan/hutang_piutang.html', context)
+
 
 
 def detail_transaksi(request, kode_sales):
@@ -1450,6 +1528,33 @@ def detail_pembelian(request,kode_transaksi_pembelian):
           'data_pembelian' : data_pembelian
      }
      return render(request, 'transaksipembelian/detail_pembelian.html',context)
+
+def bayar_piutang(request,kode_sales):
+     data_piutang = SalesTransactions.objects.get(kode_sales=kode_sales)
+     context = {
+          'data_piutang' :data_piutang
+     }
+     return render(request,'v_bayarpiutang.html',context)
+
+def post_bayar_piutang(request):
+    kode_sales = request.POST['kode_sales']
+    bayar_tagihan = Decimal(request.POST['bayar_tagihan'])
+    data_piutang = SalesTransactions.objects.get(kode_sales=kode_sales)
+    
+    # Tambahkan nilai ke total_pembayaran_sales
+    data_piutang.total_pembayaran_sales += bayar_tagihan
+    
+    # Kurangkan nilai dari sisa_tagihan
+    data_piutang.sisa_tagihan -= bayar_tagihan
+    
+    # Simpan perubahan ke database
+    data_piutang.save()
+    
+    messages.success(request, 'Berhasil Bayar Piutang')
+    return redirect('hutang_piutang')
+
+     
+
      
 
 

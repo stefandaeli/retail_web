@@ -236,7 +236,7 @@
             total += parseFloat(element.value) || 0;
         });
 
-        let = grandTotal = document.getElementById('grand_total_sales').value = total - costDiskon;
+        let = grandTotal = document.getElementById('grand_total_sales').value = total - diskonSales + biayaPengiriman;
         let sisaTagihan = document.getElementById('sisa_tagihan').value = grandTotal - totalPembayaran;
         let status = document.getElementById("status");
 
@@ -247,7 +247,7 @@
             status.value = "Belum Lunas";
         }
     }
-    let rowDataArray = []; // Variabel untuk menyimpan data dari setiap baris
+    let rowDataArray = []; 
 
     function displaySelectedValue() {
         let selectElement = document.getElementById("nama_barang");

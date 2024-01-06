@@ -57,12 +57,17 @@
                         <td>{{t.timestamp}}</td>
                         <td>
                             <a onclick="return confirm('apakah anda ingin menghapus data Transaksi {{t.kode_supplier.nama_supplier}} ?')"
-                            href="{% url 'delete_transaksipembelian' t.kode_transaksi_pembelian %}" class="btn btn-success mb-1">
-                            <i class="fa fa-trash-o"></i>
-                        </a>
-                        <a href="{% url 'detail_pembelian' t.kode_transaksi_pembelian %}" class="btn btn-success mb-1">
-                            <i class="fa fa-info-circle"></i>
-                        </a>
+                                href="{% url 'delete_transaksipembelian' t.kode_transaksi_pembelian %}"
+                                class="btn btn-success mb-1">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                            <a href="{% url 'detail_pembelian' t.kode_transaksi_pembelian %}"
+                                class="btn btn-success mb-1">
+                                <i class="fa fa-info-circle"></i>
+                            </a>
+                            <a href="" class="btn btn-success mb-1">
+                                <i class="fa fa-exchange "></i>
+                            </a>
 
                         </td>
                     </tr>
@@ -73,4 +78,5 @@
     </div>
 
 </body>
+
 </html>

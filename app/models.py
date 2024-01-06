@@ -73,8 +73,8 @@ class HargaBarang(models.Model):
     kode_barang = models.CharField(max_length=20,null=True)
     nama_barang = models.CharField(max_length=120)
     harga_satuan_small = models.IntegerField()
-    harga_satuan_medium = models.IntegerField()
-    harga_satuan_large = models.IntegerField()
+    harga_satuan_medium = models.IntegerField(null=True)
+    harga_satuan_large = models.IntegerField(null=True)
     ppn_barang = models.IntegerField(null=True)
     diskon_barang = models.IntegerField()
     timestamp = models.DateTimeField(null=True)
@@ -171,6 +171,21 @@ class DetailPembelian(models.Model):
     quantity = models.IntegerField(null=True)
     ppn_barang_transaksi = models.CharField(max_length=120,null=True)
     harga_total = models.IntegerField(null=True)
+    
+class Operasional(models.Model):
+    kode_operasional = models.CharField(max_length=120,primary_key=True)
+    lokasi_awal = models.CharField(max_length=120)
+    lokasi_tujuan = models.CharField(max_length=120)
+    jenis_transportasi = models.CharField(max_length=120)
+    timestamp = models.DateTimeField(null=True)
+    
+class Pengiriman(models.Model):
+    kode_pengiriman = models.CharField(max_length=120,primary_key=True)
+    jalur_pengiriman = models.CharField(max_length=120)
+    biaya_pengiriman = models.IntegerField(null=True)
+    timestamp = models.DateTimeField(null=True)
+
+
     
     
     

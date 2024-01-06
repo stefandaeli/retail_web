@@ -65,8 +65,8 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="select-content">
-                        <label class="form-label">Pilih Sataun</label>
+                    <!-- <div class="select-content">
+                        <label class="form-label">Pilih Satuan</label>
                         <select class="form-select mb-3" name="kode_satuan" id="kode_satuan"
                             aria-label="Default select example">
                             <option value="-">-</option>
@@ -74,7 +74,7 @@
                             <option value="{{t.kode_satuan}}">{{t.nama_satuan}}</option>
                             {% endfor %}
                         </select>
-                    </div>
+                    </div> -->
                     <div class="select-content">
                         <label class="form-label">Tambah Barang</label>
                         <select onchange="displaySelectedValue()" class="form-select mb-3" id="nama_barang"
@@ -110,7 +110,7 @@
 
                     </tbody>
                 </table>
-                <button type="button" id="tombol_tambah">Tambah</button>
+                <button class="btn btn-primary" type="button" id="tombol_tambah">Tambah</button>
                 <table class="table table-success mt-2 table-bordered">
                     <thead>
                         <tr>
@@ -198,7 +198,7 @@
             total += parseFloat(element.value) || 0;
         });
 
-        let = grandTotal = document.getElementById('total_pembelian').value = total - costDiskon;
+        let = grandTotal = document.getElementById('total_pembelian').value = total - diskonTransaksi + biayaPengiriman;
         let sisaTagihan = document.getElementById('sisa_tagihan').value = grandTotal - totalPembayaran;
         let status = document.getElementById("status");
 

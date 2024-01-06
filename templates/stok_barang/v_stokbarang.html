@@ -62,25 +62,9 @@
                                 </select>
 
                                 <div class="mb-3">
-                                    <label id="l_small" for="" class="form-label">Stok Satuan Kecil</label>
+                                    <label id="l_small" for="" class="form-label">Isi Stok</label>
                                     <input type="number" class="form-control" name="stok_satuan_small"
                                         id="stok_satuan_small" aria-describedby="emailHelp" maxlength="20" required>
-                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                                    </div> -->
-                                </div>
-
-                                <div class="mb-3">
-                                    <label id="l_medium" for="" class="form-label">Stok Satuan Sedang</label>
-                                    <input type="number" class="form-control" name="stok_satuan_medium"
-                                        id="stok_satuan_medium" aria-describedby="emailHelp" maxlength="20" required>
-                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                                    </div> -->
-                                </div>
-
-                                <div class="mb-3">
-                                    <label id="l_large" for="" class="form-label">Stok Satuan Besar</label>
-                                    <input type="number" class="form-control" name="stok_satuan_large"
-                                        id="stok_satuan_large" aria-describedby="emailHelp" maxlength="20" required>
                                     <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
                                     </div> -->
                                 </div>
@@ -98,8 +82,6 @@
                                     <input type="datetime" class="form-control" name="timestamp" id="timestamp"
                                         aria-describedby="emailHelp" maxlength="50" value="{% now 'Y-m-d H:i:s' %}"
                                         readonly>
-                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                                    </div> -->
                                 </div>
 
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -115,9 +97,7 @@
                         <th scope="col">Kode Barang</th>
                         <th scope="col">Nama Barang</th>
                         <th scope="col">Gudang</th>
-                        <th scope="col">Stok (Kecil)</th>
-                        <th scope="col">Stok (Sedang)</th>
-                        <th scope="col">Stok (Besar)</th>
+                        <th scope="col">Stok</th>
                         <th scope="col">Timestamp</th>
                         <th scope="col">Aksi</th>
 
@@ -130,8 +110,6 @@
                         <td>{{t.nama_barang}}</td>
                         <td>{{t.nama_gudang}}</td>
                         <td>{{t.stok_satuan_small}}</td>
-                        <td>{{t.stok_satuan_medium}}</td>
-                        <td>{{t.stok_satuan_large}}</td>
                         <td>{{t.timestamp}}</td>
                         <td>
                             <a href="{% url 'update_stokbarang' t.kode_stok %}" class="btn btn-success mb-1">
@@ -160,8 +138,8 @@
         let space = 0 + " ";
         let valuesArray = selectedValue.split(',');
         document.getElementById("l_small").textContent = "Stok Satuan Kecil (" + valuesArray[1] + ")";
-        document.getElementById("l_medium").textContent = "Stok Satuan Sedang (" + valuesArray[2] + ")";
-        document.getElementById("l_large").textContent = "Stok Satuan Besar (" + valuesArray[3] + ")";
+        /*document.getElementById("l_medium").textContent = "Stok Satuan Sedang (" + valuesArray[2] + ")";
+        document.getElementById("l_large").textContent = "Stok Satuan Besar (" + valuesArray[3] + ")";*/
         document.getElementById("kode_barang").value = valuesArray[4];
     }
 </script>

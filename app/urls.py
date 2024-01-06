@@ -147,20 +147,25 @@ urlpatterns = [
     path('add_transaksipembelian',add_transaksipembelian,name='add_transaksipembelian'),
     path('post_add_transaksipembelian',post_add_transaksipembelian,name="post_add_transaksipembelian"),
     path('delete_transaksipembelian/<str:kode_transaksi_pembelian>',delete_transaksipembelian,name="delete_transaksipembelian"),
+    
+    # Operasional
+    path('v_operasional',v_operasional,name='v_operasional'),
+    path('post_add_operasional',post_add_operasional,name='post_add_operasional'),
+    path('delete_operasional/<str:kode_operasional>',delete_operasional,name='delete_operasional'),
 
     #Excel
     path('detail_barang_excel/', detail_barang_excel, name='detail_barang_excel'),
+    path('transaksi_penjualan_excel/',transaksi_penjualan_excel,name='transaksi_penjualan_excel'),
     
-
-    #DetailBarang
-    path('detail_barang',detail_barang,name='detail_barang'),
-
     
     #Lainnya
     path('hutang_piutang',hutang_piutang,name='hutang_piutang'),
+    path('detail_barang',detail_barang,name='detail_barang'),
     path('detail_transaksi/<str:kode_sales>',detail_transaksi,name='detail_transaksi'),
     path('profile_superadmin',profile_superadmin,name='profile_superadmin'),
-    path('detail_pembelian/<str:kode_transaksi_pembelian>',detail_pembelian,name='detail_pembelian')
+    path('detail_pembelian/<str:kode_transaksi_pembelian>',detail_pembelian,name='detail_pembelian'),
+    path('bayar_piutang/<kode_sales>',bayar_piutang,name='bayar_piutang'),
+    path('post_bayar_piutang',post_bayar_piutang,name='post_bayar_piutang')
 
     
     

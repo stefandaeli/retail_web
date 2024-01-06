@@ -1,119 +1,139 @@
-<nav class="nav navbar navbar-expand-lg bg-body-primary navbar fixed-top">
-  <!-- <nav class="navbar navbar-expand-lg bg-body-tertinary navbar navbar-dark bg-primary navbar fixed-top bg-body-success"> -->
-  <div class="container-fluid">
-    <h4 class="title" href="#">Sunpride Nani</h4>
-    <button class="navbar-toggler btn btn-warning" type="button" data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-      aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="{% url 'dashboard'%}">Dashboard</a>
-        </li>
-        {% if request.session.status_login == 'Super Admin' %}
-
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="{% url 'v_admins' %}">Admin</a>
-        </li>
-        {% endif %}
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
-            aria-expanded="false">
-            Barang
-          </a>
-          <ul class="dropdown-menu mt-2 bg-success">
-            <li><a class="dropdown-item" href="{% url 'v_satuanbarang' %}">Satuan Barang</a></li>
-            <li><a class="dropdown-item" href="{% url 'v_kelompokbarang' %}">Kelompok Barang</a></li>
-            <li><a class="dropdown-item" href="{% url 'v_gudang' %}">Gudang</a></li>
-            <li><a class="dropdown-item" href="{% url 'v_jenisbarang'%}">Jenis Barang</a></li>
-            <li><a class="dropdown-item" href="{% url 'v_databarang' %}">Data Barang</a></li>
-            {% if request.session.status_login == 'Super Admin' %}
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" href="{% url 'v_stokbarang' %}">Stok Barang</a></li>
-            <li><a class="dropdown-item" href="{% url 'v_hargabarang' %}">Harga Barang</a></li>
-            <li><a class="dropdown-item" href="{% url 'detail_barang' %}">Detail Barang</a></li>
-            {% endif %}
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
-            aria-expanded="false">
-            Supplier
-          </a>
-          <ul class="dropdown-menu mt-2 bg-success">
-            <li><a class="dropdown-item" href="{% url 'v_datasupplier' %}">Data Supplier</a></li>
-            <li><a class="dropdown-item" href="{% url 'v_barangsupplier' %}">Barang Supplier</a></li>
-
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
-            aria-expanded="false">
-            Customer
-          </a>
-          <ul class="dropdown-menu mt-2 bg-success">
-            <li><a class="dropdown-item" href="{% url 'v_jeniscustomers' %}">Jenis Customer</a></li>
-            <li><a class="dropdown-item" href="{% url 'v_customers'%}">Data Customer</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="{% url 'v_sopir' %}">Data Sopir</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
-            aria-expanded="false">
-            Transaksi
-          </a>
-          <ul class="dropdown-menu mt-2 bg-success">
-            <li><a class="dropdown-item" href="{% url 'v_salestransactions'%}">Transaksi Penjualan</a></li>
-            <li><a class="dropdown-item" href="{% url 'v_transaksipembelian' %}">Transaksi Pembelian</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
-            aria-expanded="false">
-            Report
-          </a>
-          <ul class="dropdown-menu mt-2 bg-success">
-
-            <!-- <li><a class="dropdown-item" href="#">Laporan Transaksi Pembelian</a></li> -->
-
-            <li><a class="dropdown-item" href="#">Laporan Transaksi Pembelian</a></li>
-
-            <li><a class="dropdown-item" href="{% url 'hutang_piutang'%}">Laporan Hutang Piutang</a></li>
-
-          </ul>
-        </li>
-        {% if request.session.status_login == 'Super Admin' %}
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="{% url 'profile_superadmin' %}">
-            Profil
-            <i class="fa fa-user"></i>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="{% url 'v_retail' %}">
-            Retail
-            <i class="fa fa-shopping-cart"></i>
-          </a>
-        </li>
-        {% endif %}
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="{% url 'logout' %}">
-            Logout
-            <i class="fa fa-sign-out"></i>
-          </a>
-        </li>
-        
-      </ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+</head>
+<body>
+  <nav class="nav navbar navbar-expand-lg bg-body-primary navbar fixed-top">
+    <!-- <nav class="navbar navbar-expand-lg bg-body-tertinary navbar navbar-dark bg-primary navbar fixed-top bg-body-success"> -->
+    <div class="container-fluid">
+      <h4 class="title" href="#">Sunpride Nani</h4>
+      <button class="navbar-toggler btn btn-warning" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'dashboard'%}">Dashboard</a>
+          </li>
+          {% if request.session.status_login == 'Super Admin' %}
+  
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'v_admins' %}">Admin</a>
+          </li>
+          {% endif %}
+  
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
+              aria-expanded="false">
+              Barang
+            </a>
+            <ul class="dropdown-menu mt-2 bg-success">
+              <li><a class="dropdown-item" href="{% url 'v_satuanbarang' %}">Satuan Barang</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_kelompokbarang' %}">Kelompok Barang</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_gudang' %}">Gudang</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_jenisbarang'%}">Jenis Barang</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_databarang' %}">Data Barang</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_stokbarang' %}">Stok Barang</a></li>
+              {% if request.session.status_login == 'Super Admin' %}
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="{% url 'v_hargabarang' %}">Harga Barang</a></li>
+              <li><a class="dropdown-item" href="{% url 'detail_barang' %}">Detail Barang</a></li>
+              {% endif %}
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
+              aria-expanded="false">
+              Supplier
+            </a>
+            <ul class="dropdown-menu mt-2 bg-success">
+              <li><a class="dropdown-item" href="{% url 'v_datasupplier' %}">Data Supplier</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_barangsupplier' %}">Barang Supplier</a></li>
+  
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
+              aria-expanded="false">
+              Customer
+            </a>
+            <ul class="dropdown-menu mt-2 bg-success">
+              <li><a class="dropdown-item" href="{% url 'v_jeniscustomers' %}">Jenis Customer</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_customers'%}">Data Customer</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
+              aria-expanded="false">
+              Operasional
+            </a>
+            <ul class="dropdown-menu mt-2 bg-success">
+              <li><a class="dropdown-item" href="{% url 'v_sopir' %}">Data Sopir <i class="fa fa-car"></i>
+              </a></li>
+              <li><a class="dropdown-item" href="{% url 'v_operasional'%}">Operasional <i class="fa fa-ship"></i></a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
+              aria-expanded="false">
+              Transaksi
+            </a>
+            <ul class="dropdown-menu mt-2 bg-success">
+              <li><a class="dropdown-item" href="{% url 'v_salestransactions'%}">Transaksi Penjualan</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_transaksipembelian' %}">Transaksi Pembelian</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
+              aria-expanded="false">
+              Report
+            </a>
+            <ul class="dropdown-menu mt-2 bg-success">
+  
+              <!-- <li><a class="dropdown-item" href="#">Laporan Transaksi Pembelian</a></li> -->
+  
+              <li><a class="dropdown-item" href="#">Laporan Transaksi Pembelian</a></li>
+  
+              <li><a class="dropdown-item" href="{% url 'hutang_piutang'%}">Laporan Hutang Piutang</a></li>
+  
+            </ul>
+          </li>
+          {% if request.session.status_login == 'Super Admin' %}
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'profile_superadmin' %}">
+              Profil
+              <i class="fa fa-user"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'v_retail' %}">
+              Retail
+              <i class="fa fa-shopping-cart"></i>
+            </a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'logout' %}">
+              Logout
+              <i class="fa fa-sign-out"></i>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</body>
+</html>
+
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');

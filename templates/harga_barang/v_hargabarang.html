@@ -63,28 +63,24 @@
                                 </select>
 
                                 <div class="mb-3">
-                                    <label id="l_small" for="" class="form-label">Harga Satuan Kecil</label>
+                                    <label id="l_small" for="" class="form-label">Masukkan Harga</label>
                                     <input type="number" class="form-control" name="harga_satuan_small"
                                         id="harga_satuan_small" aria-describedby="emailHelp" maxlength="20" required>
-                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                                    </div> -->
                                 </div>
 
-                                <div class="mb-3">
+                                <!-- <div class="mb-3">
                                     <label id="l_medium" for="" class="form-label">Harga Satuan Sedang</label>
                                     <input type="number" class="form-control" name="harga_satuan_medium"
                                         id="harga_satuan_medium" aria-describedby="emailHelp" maxlength="20" required>
-                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                                    </div> -->
+                                    
                                 </div>
 
                                 <div class="mb-3">
                                     <label id="l_large" for="" class="form-label">Harga Satuan Besar</label>
                                     <input type="number" class="form-control" name="harga_satuan_large"
                                         id="harga_satuan_large" aria-describedby="emailHelp" maxlength="20" required>
-                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                                    </div> -->
-                                </div>
+
+                                </div> -->
 
                                 <div class="form-check form-switch mb-3">
                                     <input name="ppn_barang" class="form-check-input" type="checkbox" id="ppn_barang">
@@ -122,9 +118,9 @@
                     <tr>
                         <th scope="col">Kode Barang</th>
                         <th scope="col">Nama Barang</th>
-                        <th scope="col">Harga (Kecil)</th>
-                        <th scope="col">Harga (Sedang)</th>
-                        <th scope="col">Harga (Besar)</th>
+                        <th scope="col">Harga</th>
+                        <!-- <th scope="col">Harga (Sedang)</th>
+                        <th scope="col">Harga (Besar)</th> -->
                         <th scope="col">PPN</th>
                         <th scope="col">Diskon</th>
                         <th scope="col">Timestamp</th>
@@ -138,8 +134,8 @@
                         <td>{{t.kode_barang}}</td>
                         <td>{{t.nama_barang}}</td>
                         <td>Rp. {{t.harga_satuan_small}}</td>
-                        <td>Rp. {{t.harga_satuan_medium}}</td>
-                        <td>Rp. {{t.harga_satuan_large}}</td>
+                        <!-- <td>Rp. {{t.harga_satuan_medium}}</td>
+                        <td>Rp. {{t.harga_satuan_large}}</td> -->
                         <td>{{t.ppn_barang}}%</td>
                         <td>Rp. {{t.diskon_barang}}</td>
                         <td>{{t.timestamp}}</td>
@@ -168,8 +164,8 @@
         let space = 0 + " ";
         let valuesArray = selectedValue.split(',');
         document.getElementById("l_small").textContent = "Harga Satuan (" + valuesArray[1] + ")";
-        document.getElementById("l_medium").textContent = "Harga Satuan (" + valuesArray[2] + ")";
-        document.getElementById("l_large").textContent = "Harga Satuan (" + valuesArray[3] + ")";
+        /*document.getElementById("l_medium").textContent = "Harga Satuan (" + valuesArray[2] + ")";
+        document.getElementById("l_large").textContent = "Harga Satuan (" + valuesArray[3] + ")";*/
         document.getElementById("kode_barang").value = valuesArray[4];
     }
     /*jika di swithces maka akan mengubah nilai ppn_barang*/

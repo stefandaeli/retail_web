@@ -50,16 +50,6 @@
                 <div class="col">
                     <div class="card h-100 bg-success text-white">
                         <div class="card-body">
-                            <h5 class="card-title">TOTAL TRANSAKSI HARI INI <i class="fa fa-history"></i></h5>
-                            <p class="card-text fs-1">
-                                {{jumlah_transaksi_hari_ini}}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100 bg-success text-white">
-                        <div class="card-body">
                             <h5 class="card-title">JUMLAH BARANG <i class="fa fa-briefcase"></i></h5>
                             <p class="card-text fs-1">
                                 {{total_data_barang}}
@@ -70,7 +60,17 @@
                 <div class="col">
                     <div class="card h-100 bg-success text-white">
                         <div class="card-body">
-                            <h5 class="card-title">TOTAL PENJUALAN HARI INI <i class="fa fa-shopping-cart"></i></h5>
+                            <h5 class="card-title">TOTAL TRANSAKSI/HARI <i class="fa fa-history"></i></h5>
+                            <p class="card-text fs-1">
+                                {{jumlah_transaksi_hari_ini}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">TOTAL PENJUALAN/HARI <i class="fa fa-shopping-cart"></i></h5>
                             <p class="card-text fs-1">
                                 Rp. {{total_penjualan_hari_ini}}
                             </p>
@@ -80,14 +80,43 @@
                 <div class="col">
                     <div class="card h-100 bg-success text-white">
                         <div class="card-body">
-                            <h5 class="card-title">TOTAL PENJUALAN BULAN INI <i class="fa fa-money"></i></h5>
+                            <h5 class="card-title">TOTAL PEMASUKAN/HARI <i class="fa fa-shopping-cart"></i></h5>
+                            <p class="card-text fs-1">
+                                Rp. {{total_uang_masuk_hari_ini}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">TOTAL PENJUALAN/BULAN <i class="fa fa-money"></i></h5>
                             <p class="card-text fs-1">
                                 Rp. {{total_penjualan_per_bulan}}
                             </p>
                         </div>
                     </div>
                 </div>
-                
+                <div class="col">
+                    <div class="card h-100 bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">TOTAL PEMASUKAN/BULAN <i class="fa fa-balance-scale"></i></h5>
+                            <p class="card-text fs-1">
+                                Rp. {{total_uang_masuk_bulan_ini}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">SISA TAGIHAN <i class="fa fa-file-text-o"></i></h5>
+                            <p class="card-text fs-1">
+                                Rp. {{sisa_tagihan}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
             </div>
 

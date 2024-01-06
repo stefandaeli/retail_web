@@ -78,7 +78,7 @@
                                     {% endfor %}
                                 </select>
 
-                                <label class="form-label">Satuan Barang Sedang</label>
+                                <!-- <label class="form-label">Satuan Barang Sedang</label>
                                 <select class="form-select mb-3" name="satuan_barang_medium" id="satuan_barang_medium"
                                     aria-label="Default select example">
                                     <option value="-">-</option>
@@ -94,7 +94,7 @@
                                     {% for t in data_satuanbarang %}
                                     <option value="{{t.nama_satuan}}">{{t.nama_satuan}}</option>
                                     {% endfor %}
-                                </select>
+                                </select> -->
 
                                 <div class="mb-3">
                                     <label for="" class="form-label">Tanggal Expire Barang</label>
@@ -128,8 +128,6 @@
                         <th scope="col">Kelompok</th>
                         <th scope="col">Jenis</th>
                         <th scope="col">Satuan Kecil</th>
-                        <th scope="col">Satuan Sedang</th>
-                        <th scope="col">Satuan Besar</th>
                         <th scope="col">Tanggal Expire</th>
                         <th scope="col">Timestamp</th>
                         <th scope="col">Aksi</th>
@@ -144,8 +142,6 @@
                         <td>{{t.kelompok_barang}}</td>
                         <td>{{t.jenis_barang}}</td>
                         <td>{{t.satuan_barang_small}}</td>
-                        <td>{{t.satuan_barang_medium}}</td>
-                        <td>{{t.satuan_barang_large}}</td>
                         <td>{{t.tgl_expire_barang}}</td>
                         <td>{{t.timestamp}}</td>
                         <td>
