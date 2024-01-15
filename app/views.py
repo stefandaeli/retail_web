@@ -195,7 +195,7 @@ def superadmin_login(request):
 
 def post_superadmin_login(request):
      kode_superadmin = request.POST['kode_superadmin'].upper()
-     password_superadmin = request.POST['password_superadmin'].upper()
+     password_superadmin = request.POST['password_superadmin']
      
      if SuperAdmins.objects.filter(kode_superadmin=kode_superadmin).exists():
           superadmin = SuperAdmins.objects.get(kode_superadmin=kode_superadmin)
