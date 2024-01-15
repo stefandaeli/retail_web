@@ -1,71 +1,69 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include 'componens/bootstrapt.html' %}
-    {% include 'componens/grid_index.html'%}
-    <link rel="icon" href="/static/img/logo.png" type="image/x-icon">
-
-    <title>Subdist Batam</title>
+    <title>Document</title>
 </head>
-<style>
-    .content-login {
-        margin: 3vh auto;
-        width: 40%;
-    }
-
-    h1,
-    p {
-        text-align: center;
-        margin: 0;
-    }
-
-    input {
-        height: 50px;
-    }
-
-    .img {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    @media screen and (max-width:568px) {
-        .content-login {
-            width: 90%;
-        }
-    }
-</style>
-
 <body>
-    <div class="container">
-        <div class="messages">
-            {% include 'componens/messages.html'%}
-        </div>
-        <div class="content-login">
-            <div class="img">
-                <img src="/static/img/logo.png" alt="logo supride nani">
+    <style>
+        .content-login {
+            margin: 3vh auto;
+            width: 40%;
+        }
+    
+        h1,
+        p {
+            text-align: center;
+            margin: 0;
+        }
+    
+        input {
+            height: 50px;
+        }
+    
+        .img {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    
+        @media screen and (max-width:568px) {
+            .content-login {
+                width: 90%;
+            }
+        }
+    </style>
+    
+    <body>
+        <div class="container">
+            <div class="messages">
+                {% include 'componens/messages.html'%}
             </div>
-            {% for retail in data_retail %}
-            <h1 class="text-success">{{retail.nama_retail}}</h1>
-            <p class="text-success mb-4">{{retail.desc_retail}}</p>
-            <form action="{% url 'post_superadmin_login'%}" method="POST">
-                {% csrf_token %}
-                <input class="form-control mb-5" type="text" name="kode_superadmin" placeholder="Masukkan Kode Anda"
-                    maxlength="20" autocomplete="off" required>
-                <input class="form-control mb-5" type="password" name="password_superadmin"
-                    placeholder="Masukkan Password" maxlength="20" required>
-                <button class="btn btn-success col-12" type="submit">Login</button>
-            </form>
-            <p class="mt-2 text-success"><i class="fa fa-whatsapp"></i> {{retail.wa_retail}}</p>
-            <p class="mt-2 text-success"><i class="fa fa-map-marker"></i> {{retail.alamat_retail}}</p>
-
-            {% endfor %}
+            <div class="content-login">
+                <div class="img">
+                    <img src="/static/img/logo.png" alt="logo supride nani">
+                </div>
+                {% for retail in data_retail %}
+                <h1 class="text-success">{{retail.nama_retail}}</h1>
+                <p class="text-success mb-4">{{retail.desc_retail}}</p>
+                <form action="{% url 'post_superadmin_login'%}" method="POST">
+                    {% csrf_token %}
+                    <input class="form-control mb-5" type="text" name="kode_superadmin" placeholder="Masukkan Kode Anda"
+                        maxlength="20" autocomplete="off" required>
+                    <input class="form-control mb-5" type="password" name="password_superadmin"
+                        placeholder="Masukkan Password" maxlength="20" required>
+                    <button class="btn btn-success col-12" type="submit">Login</button>
+                </form>
+                <p class="mt-2 text-success"><i class="fa fa-whatsapp"></i> {{retail.wa_retail}}</p>
+                <p class="mt-2 text-success"><i class="fa fa-map-marker"></i> {{retail.alamat_retail}}</p>
+    
+                {% endfor %}
+            </div>
         </div>
-    </div>
-
-</body>
-
-</html>
+    
+    </body>
+    
+    </html>

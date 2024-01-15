@@ -157,15 +157,22 @@ urlpatterns = [
     path('detail_barang_excel/', detail_barang_excel, name='detail_barang_excel'),
     path('transaksi_penjualan_excel/',transaksi_penjualan_excel,name='transaksi_penjualan_excel'),
     
+    # HutangPiutang
+    
+    path('hutang_piutang',hutang_piutang,name='hutang_piutang'),
+    path('hutang_to_supp',hutang_to_supp,name='hutang_to_supp'),
+    path('bayar_piutang/<kode_sales>',bayar_piutang,name='bayar_piutang'),
+    path('post_bayar_piutang',post_bayar_piutang,name='post_bayar_piutang'),
+    path('bayar_hutang/<str:kode_transaksi_pembelian>',bayar_hutang,name='bayar_hutang'),
+    path('post_bayar_hutang',post_bayar_hutang,name='post_bayar_hutang'),
     
     #Lainnya
-    path('hutang_piutang',hutang_piutang,name='hutang_piutang'),
     path('detail_barang',detail_barang,name='detail_barang'),
     path('detail_transaksi/<str:kode_sales>',detail_transaksi,name='detail_transaksi'),
     path('profile_superadmin',profile_superadmin,name='profile_superadmin'),
     path('detail_pembelian/<str:kode_transaksi_pembelian>',detail_pembelian,name='detail_pembelian'),
-    path('bayar_piutang/<kode_sales>',bayar_piutang,name='bayar_piutang'),
-    path('post_bayar_piutang',post_bayar_piutang,name='post_bayar_piutang')
+    path('biaya_operasional/<str:kode_transaksi_pembelian>',biaya_operasional,name='biaya_operasional'),
+    path('post_biaya_operasional',post_biaya_operasional,name='post_biaya_operasional')
 
     
     

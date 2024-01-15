@@ -29,18 +29,18 @@
                 <button class="btn btn-danger"><i class="fa fa-money"></i> Hutang</button>
             </a>
 
-            <h5 class="text-success mt-4 mb-4">PIUTANG</h5>
-            <p>Piutang ke customer, dapat di tagih !</p>
+            <h5 class="text-success mt-4 mb-4">HUTANG</h5>
+            <p>Hutang ke supplier, dapat di bayar !</p>
             <div class="ms-4 col-4">
                 <label for="customers_option">Filter <i class="fa fa-filter"></i></label>
                 <select class="form-select  mb-3" name="customers_option" id="customers_option"
                     onchange="applyFilter()">
                     <option value="all">Semua</option>
-                    {% for t in data_customers %}
-                    <option value="{{t.nama_customers}}">{{t.nama_customers}}</option>
+                    {% for t in data_supplier %}
+                    <option value="{{t.nama_supplier}}">{{t.nama_supplier}}</option>
                     {% endfor %}
                 </select>
-                <p>Total Sisa Tagihan: Rp. <span id="totalSisaTagihan">0</span></p>
+                <p>Total Sisa Hutang: Rp. <span id="totalSisaTagihan">0</span></p>
             </div>
         </div>
         <div class="content">
@@ -49,7 +49,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Kode Transaction</th>
-                        <th scope="col">Nama Customer</th>
+                        <th scope="col">Supplier</th>
                         <th scope="col">Total Pembelian</th>
                         <th scope="col">Jenis Pembayaran</th>
                         <th scope="col">Total Pembayaran</th>
@@ -57,24 +57,24 @@
                         <th scope="col">Sisa Tagihan</th>
                         <th scope="col">Timestamp</th>
                         <th scope="col">Aksi</th>
+
                     </tr>
                 </thead>
                 <tbody>
-                    {% for t in data_hutang_piutang %}
+                    {% for t in data_hutang %}
                     <tr class="table-light">
-                        <th>{{t.kode_sales}}</th>
-                        <td>{{t.nama_customers}}</td>
-                        <td>Rp. {{t.grand_total_sales}}</td>
+                        <th>{{t.kode_transaksi_pembelian}}</th>
+                        <td>{{t.kode_supplier.nama_supplier}}</td>
+                        <td>Rp. {{t.total_pembelian}}</td>
                         <td>{{t.jenis_pembayaran}}</td>
-                        <td>Rp. {{t.total_pembayaran_sales}}</td>
+                        <td>{{t.total_pembayaran}}</td>
                         <td>Rp. {{t.tagihan_awal}}</td>
                         <td>{{t.sisa_tagihan}}</td>
                         <td>{{t.timestamp}}</td>
                         <td>
-                            <a href="{% url 'bayar_piutang' t.kode_sales %}">
-                                <button class="btn btn-success"><i class="fa fa-credit-card "></i>
-                                </button>
-                            </a>
+                            <a href="{% url 'bayar_hutang' t.kode_transaksi_pembelian%}"><button class="btn btn-success">
+                                <i class="fa fa-credit-card"></i>
+                            </button></a>
                         </td>
 
                     </tr>

@@ -105,6 +105,28 @@
                 </div>
             </div>
             <p><strong>Tanggal/Waktu</strong> {{data_pembelian.timestamp}}</p>
+
+        </div>
+        <br>
+        <div class="data-pengiriman">
+            <h4>Informasi Biaya Pengiriman</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Operasional</th>
+                        <th scope="col">Biaya Operasional</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% for t in data_pengiriman %}
+                        <td>{{t.jalur_pengiriman}}</td>
+                        <td>Rp. {{t.biaya_pengiriman}}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+            <p>{{t.kode_pengiriman}}</p>
         </div>
     </div>
 </body>

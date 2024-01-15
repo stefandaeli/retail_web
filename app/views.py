@@ -1117,6 +1117,7 @@ def post_add_salestransactions(request):
     grand_total_sales = request.POST['grand_total_sales']
     jenis_pembayaran = request.POST['jenis_pembayaran']
     total_pembayaran_sales = request.POST['total_pembayaran_sales']
+    tagihan_awal = request.POST['sisa_tagihan']
     sisa_tagihan = request.POST['sisa_tagihan']
     status = request.POST['status']
     timestamp = request.POST['timestamp']
@@ -1138,6 +1139,7 @@ def post_add_salestransactions(request):
                 grand_total_sales=grand_total_sales,
                 jenis_pembayaran=jenis_pembayaran,
                 total_pembayaran_sales=total_pembayaran_sales,
+                tagihan_awal = tagihan_awal,
                 sisa_tagihan=sisa_tagihan,
                 status=status,
                 timestamp=timestamp
@@ -1400,6 +1402,7 @@ def post_add_transaksipembelian(request):
      total_pembelian = request.POST['total_pembelian']
      jenis_pembayaran = request.POST['jenis_pembayaran']
      total_pembayaran = request.POST['total_pembayaran']
+     tagihan_awal = request.POST['sisa_tagihan']
      sisa_tagihan = request.POST['sisa_tagihan']
      status = request.POST['status']
      timestamp = request.POST['timestamp']
@@ -1418,6 +1421,7 @@ def post_add_transaksipembelian(request):
                total_pembelian = total_pembelian,
                jenis_pembayaran = jenis_pembayaran,
                total_pembayaran = total_pembayaran,
+               tagihan_awal = tagihan_awal,
                sisa_tagihan = sisa_tagihan,
                status = status,
                timestamp = timestamp
@@ -1494,6 +1498,16 @@ def hutang_piutang(request):
     }
     return render(request, 'laporan/hutang_piutang.html', context)
 
+def hutang_to_supp(request):
+     data_hutang = TransaksiPembelian.objects.filter(sisa_tagihan__gt=0)
+     data_supplier = DataSupplier.objects.all()
+     
+     context ={
+          'data_hutang' : data_hutang,
+          'data_supplier' : data_supplier
+     }
+     return render(request,'laporan/hutang_to_supp.html',context)
+
 
 
 def detail_transaksi(request, kode_sales):
@@ -1521,11 +1535,13 @@ def detail_transaksi(request, kode_sales):
 def detail_pembelian(request,kode_transaksi_pembelian):
      data_pembelian = TransaksiPembelian.objects.select_related('kode_supplier').get(kode_transaksi_pembelian=kode_transaksi_pembelian)
      data_detailpembelian = DetailPembelian.objects.filter(kode_transaksi_pembelian=kode_transaksi_pembelian)
+     data_pengiriman = Pengiriman.objects.filter(kode_pengiriman=kode_transaksi_pembelian) 
      data_retail = Retails.objects.all()
      context = {
           'data_detail' : data_detailpembelian,
           'data_retail' : data_retail,
-          'data_pembelian' : data_pembelian
+          'data_pembelian' : data_pembelian,
+          'data_pengiriman' : data_pengiriman
      }
      return render(request, 'transaksipembelian/detail_pembelian.html',context)
 
@@ -1535,6 +1551,13 @@ def bayar_piutang(request,kode_sales):
           'data_piutang' :data_piutang
      }
      return render(request,'v_bayarpiutang.html',context)
+
+def bayar_hutang(request,kode_transaksi_pembelian):
+     data_hutang = TransaksiPembelian.objects.get(kode_transaksi_pembelian=kode_transaksi_pembelian)
+     context = {
+          'data_hutang' : data_hutang
+     }
+     return render(request,'v_bayarhutang.html',context)
 
 def post_bayar_piutang(request):
     kode_sales = request.POST['kode_sales']
@@ -1549,10 +1572,49 @@ def post_bayar_piutang(request):
     
     # Simpan perubahan ke database
     data_piutang.save()
-    
     messages.success(request, 'Berhasil Bayar Piutang')
     return redirect('hutang_piutang')
 
+def post_bayar_hutang(request):
+     kode_transaksi_pembelian = request.POST['kode_transaksi_pembelian']
+     bayar_hutang = Decimal(request.POST['bayar_hutang'])
+     data_hutang = TransaksiPembelian.objects.get(kode_transaksi_pembelian=kode_transaksi_pembelian)
+     
+     data_hutang.total_pembayaran += bayar_hutang
+     data_hutang.sisa_tagihan -= bayar_hutang
+     data_hutang.save()
+     messages.success(request, 'Berhasil Bayar Hutang')
+     return redirect('hutang_to_supp')
+     
+     
+     
+
+def biaya_operasional(request,kode_transaksi_pembelian):
+     data_transaksipembelian = TransaksiPembelian.objects.get(kode_transaksi_pembelian=kode_transaksi_pembelian)
+     data_operasional = Operasional.objects.all().order_by('kode_operasional')
+     data_pengiriman = Pengiriman.objects.all().order_by('kode_pengiriman')
+     context = {
+          'data_transaksipembelian' : data_transaksipembelian,
+          'data_operasional' : data_operasional,
+          'data_pengiriman' : data_pengiriman
+     }
+     return render(request,'biaya_operasional.html',context)
+
+def post_biaya_operasional(request):
+     kode_pengiriman = request.POST['kode_pengiriman']
+     jalur_pengiriman = request.POST['jalur_pengiriman']
+     biaya_pengiriman = request.POST['biaya_pengiriman']
+     timestamp = request.POST['timestamp']
+     
+     data_pengiriman = Pengiriman (
+               kode_pengiriman = kode_pengiriman,
+               jalur_pengiriman =jalur_pengiriman,
+               biaya_pengiriman = biaya_pengiriman,
+               timestamp = timestamp
+          )
+     data_pengiriman.save()
+     messages.success(request, 'Berhasil tambah data')
+     return redirect(request.META.get('HTTP_REFERER','/'))
      
 
      

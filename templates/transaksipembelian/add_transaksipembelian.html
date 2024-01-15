@@ -65,16 +65,7 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <!-- <div class="select-content">
-                        <label class="form-label">Pilih Satuan</label>
-                        <select class="form-select mb-3" name="kode_satuan" id="kode_satuan"
-                            aria-label="Default select example">
-                            <option value="-">-</option>
-                            {% for t in data_satuan %}
-                            <option value="{{t.kode_satuan}}">{{t.nama_satuan}}</option>
-                            {% endfor %}
-                        </select>
-                    </div> -->
+
                     <div class="select-content">
                         <label class="form-label">Tambah Barang</label>
                         <select onchange="displaySelectedValue()" class="form-select mb-3" id="nama_barang"
@@ -91,6 +82,7 @@
                 </div>
                 <input type="hidden" name="" id="nama_barang_value" value="">
                 <input type="hidden" id="hidden_table_data" name="nama_barang" value="">
+                <button class="btn btn-primary" type="button" id="tombol_tambah">Tambah</button>
 
                 <table class="table table-success mt-2 table-bordered">
                     <thead>
@@ -110,12 +102,11 @@
 
                     </tbody>
                 </table>
-                <button class="btn btn-primary" type="button" id="tombol_tambah">Tambah</button>
                 <table class="table table-success mt-2 table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Diskon</th>
-                            <th scope="col">Biaya Pengiriman</th>
+                            <th scope="col">Biaya Lainnya</th>
                             <th scope="col">TOTAL</th>
                         </tr>
                     </thead>
@@ -209,58 +200,6 @@
             status.value = "Belum Lunas";
         }
     }
-
-    //tambah innerhtml
-    // Inisialisasi array untuk menyimpan nilai terpilih
-    /*let selectedValuesArray = [];
-
-    function displaySelectedValue() {
-        let selectElement = document.getElementById("nama_barang");
-        let selectedValue = selectElement.value;
-
-        if (selectedValuesArray.indexOf(selectedValue) === -1) {
-            // Jika nilai belum ada dalam array, tambahkan ke array
-            selectedValuesArray.push(selectedValue);
-
-            // Tampilkan nilai terpilih di dalam input
-            document.getElementById("nama_barang_value").value = selectedValuesArray.join('|');
-
-            // Buat dan tambahkan baris baru ke dalam tabel
-            let valuesArray = selectedValue.split(',');
-            let newRow = document.createElement("tr");
-            let uniqueIdentifier = Date.now();
-            newRow.innerHTML = `
-            <td>
-                <input type="text" class="form-control" name="kode_barang" value="${valuesArray[1]}" aria-describedby="emailHelp" maxlength="20" required readonly>
-            </td>
-            <td>
-                <input type="text" class="form-control" name="" value="${valuesArray[0]}" id="nama_barang_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
-            </td>
-            <td>
-                <select onchange="satuanSelectedValue(this, '${uniqueIdentifier}')" class="form-select mb-3" name="nama_satuan" id="nama_satuan_${uniqueIdentifier}" aria-label="Default select example">
-                    <option value="-">-</option>
-                    <option>${valuesArray[2]}</option>
-                    <option>${valuesArray[3]}</option>
-                    <option>${valuesArray[4]}</option>
-                </select>
-            </td>
-            <td>
-                <input type="number" class="form-control" name="harga_barang" id="harga_barang_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
-            </td>
-            <td>
-                <input oninput="subTotalSales(this, '${uniqueIdentifier}')" type="number" class="form-control" name="quantity_sales" id="quantity_sales_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required>
-            </td>
-            <td>
-                <input type="number" class="form-control" name="sub_total_sales" id="sub_total_${uniqueIdentifier}" aria-describedby="emailHelp" maxlength="20" required readonly>
-            </td>
-        `;
-            document.getElementById("myTableBody").appendChild(newRow);
-        }
-    }
-
-    // Menambahkan event listener untuk mendengarkan perubahan pada elemen <select>
-    document.getElementById("nama_barang_value").addEventListener("change", displaySelectedValue);
-    */
     let rowDataArray = []; // Variabel untuk menyimpan data dari setiap baris
 
     function displaySelectedValue() {

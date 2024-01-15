@@ -113,6 +113,7 @@ class SalesTransactions(models.Model):
     grand_total_sales = models.IntegerField(null=True)
     jenis_pembayaran = models.CharField(max_length=120,null=True)
     total_pembayaran_sales = models.IntegerField(null=True)
+    tagihan_awal = models.IntegerField(null=True)
     sisa_tagihan = models.IntegerField(null=True)
     status = models.CharField(max_length=120,null=True)
     timestamp = models.DateTimeField(null=True)
@@ -153,8 +154,8 @@ class TransaksiPembelian(models.Model):
     total_pembelian = models.IntegerField(null=True)
     jenis_pembayaran = models.CharField(max_length=120,null=True)
     total_pembayaran = models.IntegerField(null=True)
+    tagihan_awal = models.IntegerField(null=True)
     sisa_tagihan = models.IntegerField(null=True)
-    sisa_tagihan = models.CharField(max_length=20,null=True)
     timestamp = models.DateTimeField(null=True)
 
 class DetailTransaksi(models.Model):

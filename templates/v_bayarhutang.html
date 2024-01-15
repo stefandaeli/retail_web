@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'componens/bootstrapt.html' %}
+    <title>Bayar Piutang</title>
+</head>
+
+<body>
+    <form action="{% url 'post_bayar_hutang' %}" method="POST">
+        {% csrf_token %}
+        <div class="d-grid gap-2 col-6 mx-auto mb-3">
+            <h5 class="modal-title">Bayar Piutang {{data_hutang.kode_supplier.nama_supplier}} </h5>
+            <h6>Sisa Tagihan {{data_hutang.sisa_tagihan}}</h6>
+            <div class="mb-3">
+                <label for="" class="form-label">Kode Sales : {{data_hutang.kode_transaksi_pembelian}}</label>
+                <input type="hidden" class="form-control" aria-label="kode_transaksi_pembelian" aria-describedby="basic-addon1"
+                    name="kode_transaksi_pembelian" id="kode_transaksi_pembelian" value="{{data_hutang.kode_transaksi_pembelian}}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Bayar tagihan</label>
+                <input type="number" class="form-control" aria-label="bayar_hutang" aria-describedby="basic-addon1"
+                    name="bayar_hutang" id="bayar_hutang" value="" required>
+            </div>
+            <a href="">
+                <div class="d-grid gap-2 col-4 mx-auto mb-3">
+                    <button type="submit" class="btn btn-success">Simpan</button>
+                </div>
+            </a>
+            <a href="{% url 'hutang_to_supp'%}">
+                <div class="d-grid gap-2 col-4 mx-auto mb-5">
+                    <button type="button" class="btn btn-secondary">Kembali</button>
+                </div>
+            </a>
+        </div>
+    </form>
+
+</body>
+
+</html>
