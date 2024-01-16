@@ -8,14 +8,6 @@
     {% include 'componens/grid_index.html'%}
     <title>transaksi pnejualan</title>
 </head>
-<style>
-    p{
-        margin: 0;
-    }
-    h3{
-        color: rgba(36, 36, 192, 0.733);
-    }
-</style>
 
 <body>
     <div class="container">
@@ -28,12 +20,7 @@
         <br>
         <br>
         <br>
-
         <div class="nav-btn">
-            <h3>Transaksi Penjualan</h3>
-            <p>Ini adalah data transaksi penjualan setelah penambahan transaksi.Untuk menginput piutang silahkan akses Report->Hutang Piutang.</p>
-            <p>Untuk melihat detail setiap transaksi klik tombol info '<i class="fa fa-info-circle"></i>'.</p>
-
             <a href="{% url 'add_salestransactions'%}">
                 <button class="btn btn-primary mt-3">
                     Tambah <i class="fa fa-plus-circle"></i>

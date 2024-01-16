@@ -8,14 +8,6 @@
     {% include 'componens/grid_index.html'%}
     <title>Transaksi Pembelian</title>
 </head>
-<style>
-    p{
-        margin: 0;
-    }
-    h3{
-        color: rgba(36, 36, 192, 0.733);
-    }
-</style>
 
 <body>
     <div class="container">
@@ -28,13 +20,7 @@
         <br>
         <br>
         <br>
-        <div class="nav-btn">
-            <h3>Transaksi Pembelian</h3>
-            <p>Ini adalah data transaksi pembelian setelah penambahan transaksi.Untuk melunasi hutang silahkan akses
-                Report->Hutang Piutang</p>
-            <p>Untuk melihat detail setiap transaksi klik tombol info '<i class="fa fa-info-circle"></i>'.</p>
-            <p>Untuk menginput biaya operasional klik tombol exchange '<i class="fa fa-exchange"></i>'.</p>
-
+        <div class="content">
             <a href="{% url 'add_transaksipembelian' %}">
                 <button class="btn btn-primary mt-3">
                     Tambah <i class="fa fa-plus-circle"></i>
@@ -45,8 +31,6 @@
                     Excel <i class="fa fa-file-excel-o"></i>
                 </button>
             </a>
-        </div>
-        <div class="content">
             <table class="table table-success mt-2 table-bordered">
                 <thead>
                     <tr>
@@ -81,8 +65,7 @@
                                 class="btn btn-success mb-1">
                                 <i class="fa fa-info-circle"></i>
                             </a>
-                            <a href="{% url 'biaya_operasional' t.kode_transaksi_pembelian %}"
-                                class="btn btn-success mb-1">
+                            <a href="{% url 'biaya_operasional' t.kode_transaksi_pembelian %}" class="btn btn-success mb-1">
                                 <i class="fa fa-exchange "></i>
                             </a>
 

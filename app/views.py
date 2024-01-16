@@ -151,8 +151,8 @@ def transaksi_penjualan_excel(request):
 
     # Tambahkan data ke worksheet
     for transaction in data_sales_transaction:
-        # Format timestamp sebagai string yang dapat dipahami Excel
-        timestamp_excel_format = transaction.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+        # Convert to timezone-aware datetime and then remove timezone information
+        timestamp = transaction.timestamp.astimezone(timezone.utc).replace(tzinfo=None)
 
         ws.append([
             transaction.kode_sales,
@@ -162,7 +162,7 @@ def transaksi_penjualan_excel(request):
             transaction.status,
             transaction.total_pembayaran_sales,
             transaction.sisa_tagihan,
-            timestamp_excel_format,
+            timestamp,
         ])
 
     # Buat response HttpResponse
