@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+  <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+  <!--Get your code at fontawesome.com-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+    integrity="sha512-aa+uHSAKdZ2vS3kxWUMq2HWCqAm3Dp7WHMiDpxdqY87vYuwBXliNWMu32PsTpFG02/D2UjaA5L6Zd4XA+Oe0jQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+    integrity="sha512-aa+uHSAKdZ2vS3kxWUMq2HWCqAm3Dp7WHMiDpxdqY87vYuwBXliNWMu32PsTpFG02/D2UjaA5L6Zd4XA+Oe0jQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
+
 <body>
   <nav class="nav navbar navbar-expand-lg bg-body-primary navbar fixed-top">
     <!-- <nav class="navbar navbar-expand-lg bg-body-tertinary navbar navbar-dark bg-primary navbar fixed-top bg-body-success"> -->
@@ -22,12 +33,12 @@
             <a class="nav-link" aria-current="page" href="{% url 'dashboard'%}">Dashboard</a>
           </li>
           {% if request.session.status_login == 'Super Admin' %}
-  
+
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="{% url 'v_admins' %}">Admin</a>
           </li>
           {% endif %}
-  
+
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
               aria-expanded="false">
@@ -57,7 +68,7 @@
             <ul class="dropdown-menu mt-2 bg-success">
               <li><a class="dropdown-item" href="{% url 'v_datasupplier' %}">Data Supplier</a></li>
               <li><a class="dropdown-item" href="{% url 'v_barangsupplier' %}">Barang Supplier</a></li>
-  
+
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -77,9 +88,9 @@
             </a>
             <ul class="dropdown-menu mt-2 bg-success">
               <li><a class="dropdown-item" href="{% url 'v_sopir' %}"><i class="fa fa-car"></i> Data Sopir
-              </a></li>
+                </a></li>
               <li><a class="dropdown-item" href="{% url 'v_operasional'%}"><i class="fa fa-ship"></i> Operasional
-              </a></li>
+                </a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -98,26 +109,24 @@
               Report
             </a>
             <ul class="dropdown-menu mt-2 bg-success">
-  
+
               <!-- <li><a class="dropdown-item" href="#">Laporan Transaksi Pembelian</a></li> -->
-  
+
               <li><a class="dropdown-item" href="#">Laporan Transaksi Pembelian</a></li>
-  
+
               <li><a class="dropdown-item" href="{% url 'hutang_piutang'%}">Laporan Hutang Piutang</a></li>
-  
+
             </ul>
           </li>
           {% if request.session.status_login == 'Super Admin' %}
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="{% url 'profile_superadmin' %}">
-              Profil
-              <i class="fa fa-user"></i>
+              <i class="fa fa-user"></i> Profil
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="{% url 'v_retail' %}">
-              Retail
-              <i class="fa fa-shopping-cart"></i>
+              <i class="fa fa-building"></i> Retail
             </a>
           </li>
           {% endif %}
@@ -127,12 +136,13 @@
               <i class="fa fa-sign-out"></i>
             </a>
           </li>
-          
+
         </ul>
       </div>
     </div>
   </nav>
 </body>
+
 </html>
 
 
