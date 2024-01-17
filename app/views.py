@@ -685,8 +685,8 @@ def post_update_databarang(request):
      kelompok_barang = request.POST['kelompok_barang']
      jenis_barang = request.POST['jenis_barang']
      satuan_barang_small = request.POST['satuan_barang_small']
-     satuan_barang_medium = request.POST['satuan_barang_medium']
-     satuan_barang_large = request.POST['satuan_barang_large']
+     # satuan_barang_medium = request.POST['satuan_barang_medium']
+     # satuan_barang_large = request.POST['satuan_barang_large']
      tgl_expire_barang = request.POST['tgl_expire_barang']
      timestamp = request.POST['timestamp']
      
@@ -695,8 +695,8 @@ def post_update_databarang(request):
      data_barang.kelompok_barang = kelompok_barang
      data_barang.jenis_barang = jenis_barang
      data_barang.satuan_barang_small = satuan_barang_small
-     data_barang.satuan_barang_medium = satuan_barang_medium
-     data_barang.satuan_barang_large = satuan_barang_large
+     # data_barang.satuan_barang_medium = satuan_barang_medium
+     # data_barang.satuan_barang_large = satuan_barang_large
      data_barang.tgl_expire_barang = tgl_expire_barang
      data_barang.timestamp = timestamp
      data_barang.save()
@@ -766,8 +766,8 @@ def post_update_stokbarang(request):
      kode_barang = request.POST['kode_barang']
      nama_barang = request.POST['nama_barang']
      stok_satuan_small = request.POST['stok_satuan_small']
-     stok_satuan_medium = request.POST['stok_satuan_medium']
-     stok_satuan_large = request.POST['stok_satuan_large']
+     # stok_satuan_medium = request.POST['stok_satuan_medium']
+     # stok_satuan_large = request.POST['stok_satuan_large']
      nama_gudang = request.POST['nama_gudang']
      timestamp = request.POST['timestamp']
      
@@ -775,8 +775,8 @@ def post_update_stokbarang(request):
      data_stokbarang.kode_barang = kode_barang
      data_stokbarang.nama_barang = nama_barang
      data_stokbarang.stok_satuan_small = stok_satuan_small
-     data_stokbarang.stok_satuan_medium = stok_satuan_medium
-     data_stokbarang.stok_satuan_large = stok_satuan_large
+     # data_stokbarang.stok_satuan_medium = stok_satuan_medium
+     # data_stokbarang.stok_satuan_large = stok_satuan_large
      data_stokbarang.nama_gudang = nama_gudang
      data_stokbarang.timestamp = timestamp
      
@@ -850,8 +850,8 @@ def post_update_hargabarang(request):
      kode_barang = request.POST['kode_barang']
      nama_barang = request.POST['nama_barang']
      harga_satuan_small = request.POST['harga_satuan_small']
-     harga_satuan_medium = request.POST['harga_satuan_medium']
-     harga_satuan_large = request.POST['harga_satuan_large']
+     # harga_satuan_medium = request.POST['harga_satuan_medium']
+     # harga_satuan_large = request.POST['harga_satuan_large']
      ppn_barang = request.POST['ppn_barang']
      diskon_barang = request.POST['diskon_barang']
      timestamp = request.POST['timestamp']
@@ -860,8 +860,8 @@ def post_update_hargabarang(request):
      data_hargabarang.kode_barang = kode_barang
      data_hargabarang.nama_barang = nama_barang
      data_hargabarang.harga_satuan_small = harga_satuan_small
-     data_hargabarang.harga_satuan_medium = harga_satuan_medium
-     data_hargabarang.harga_satuan_large = harga_satuan_large
+     # data_hargabarang.harga_satuan_medium = harga_satuan_medium
+     # data_hargabarang.harga_satuan_large = harga_satuan_large
      data_hargabarang.ppn_barang = ppn_barang
      data_hargabarang.diskon_barang = diskon_barang
      data_hargabarang.timestamp = timestamp
