@@ -8,6 +8,16 @@
     {% include 'componens/grid_index.html'%}
     <title>data barang</title>
 </head>
+<style>
+    .nav-link{
+        color: black;
+    }
+    .dropdown-item:hover{
+        background-color: gray;
+    }
+  
+  
+</style>
 
 <body>
     <div class="container">
@@ -21,7 +31,21 @@
         <br>
         <br>
         <div class="nav-btn">
-            <button type="button" class="add-btn btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#add-modal">
+            <li class="nav-item dropdown">
+                
+                <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
+                    aria-expanded="false">
+                    <button class="btn btn-secondary">ISI FIELD</button>
+                </a>
+                <ul class="dropdown-menu mt-2 ">
+                    <li><a class="dropdown-item" href="{% url 'v_satuanbarang' %}">Tampilkan Satuan Barang</a></li>
+                    <li><a class="dropdown-item" href="{% url 'v_kelompokbarang' %}">Tampilkan Kelompok Barang</a></li>
+                    <li><a class="dropdown-item" href="{% url 'v_jenisbarang'%}">Tampilkan Jenis Barang</a></li>
+                    <li><a class="dropdown-item" href="{% url 'v_stokbarang' %}">Tampilkan Stok Barang</a></li>
+                </ul>
+            </li>
+            <button type="button" class="add-btn btn btn-primary mt-3" data-bs-toggle="modal"
+                data-bs-target="#add-modal">
                 Tambah <i class="fa fa-plus-circle"></i>
             </button>
         </div>

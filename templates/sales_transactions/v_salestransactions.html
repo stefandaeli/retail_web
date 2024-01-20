@@ -8,6 +8,15 @@
     {% include 'componens/grid_index.html'%}
     <title>transaksi pnejualan</title>
 </head>
+<style>
+    h3{
+        color: rgb(116, 6, 241);
+    }
+    p{
+        font-size: 14px;
+        margin: 0;
+    }
+</style>
 
 <body>
     <div class="container">
@@ -21,6 +30,11 @@
         <br>
         <br>
         <div class="nav-btn">
+            <h3>Transaksi Penjualan</h3>
+            <p>Memuat semua data transaksi penjualan baik yang lunas maupun yang tidak lunas pembayarannya.</p>
+            <p>Untuk melihat detail transaksi klik tombok <i class="fa fa-info-circle"></i>.</p>
+            <!-- <p>Memuat semua data transaksi penjualan</p>
+            <p>Untuk melihat detail klik tombol '<i class="fa fa-info-circle">'</p> -->
             <a href="{% url 'add_salestransactions'%}">
                 <button class="btn btn-primary mt-3">
                     Tambah <i class="fa fa-plus-circle"></i>
@@ -33,7 +47,7 @@
             </a>
         </div>
         <div class="content">
-            
+
             <table class="table table-success mt-2 table-bordered">
                 <thead>
                     <tr>
@@ -71,4 +85,5 @@
     </div>
 
 </body>
+
 </html>

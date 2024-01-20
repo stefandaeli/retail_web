@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
     integrity="sha512-aa+uHSAKdZ2vS3kxWUMq2HWCqAm3Dp7WHMiDpxdqY87vYuwBXliNWMu32PsTpFG02/D2UjaA5L6Zd4XA+Oe0jQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 
 </head>
 
@@ -30,7 +32,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="{% url 'dashboard'%}">Dashboard</a>
+            <a class="nav-link" aria-current="page" href="{% url 'dashboard'%}"><i class="fa fa-tachometer "></i> Dashboard</a>
           </li>
           {% if request.session.status_login == 'Super Admin' %}
 
@@ -45,18 +47,14 @@
               Barang
             </a>
             <ul class="dropdown-menu mt-2 bg-success">
-              <li><a class="dropdown-item" href="{% url 'v_satuanbarang' %}">Satuan</a></li>
-              <li><a class="dropdown-item" href="{% url 'v_kelompokbarang' %}">Kelompok</a></li>
-              <li><a class="dropdown-item" href="{% url 'v_gudang' %}">Gudang</a></li>
-              <li><a class="dropdown-item" href="{% url 'v_jenisbarang'%}">Jenis</a></li>
-              <li><a class="dropdown-item" href="{% url 'v_databarang' %}">Data</a></li>
-              <li><a class="dropdown-item" href="{% url 'v_stokbarang' %}">Stok</a></li>
+
+              <li><a class="dropdown-item" href="{% url 'v_databarang' %}"><i class="fa fa-product-hunt"></i> Data Barang</a></li>
               {% if request.session.status_login == 'Super Admin' %}
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item" href="{% url 'v_hargabarang' %}">Harga</a></li>
-              <li><a class="dropdown-item" href="{% url 'detail_barang' %}">Detail</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_hargabarang' %}"><i class="fa fa-money"></i> Harga</a></li>
+              <li><a class="dropdown-item" href="{% url 'detail_barang' %}"><i class="fa fa-info-circle"></i> Detail</a></li>
               {% endif %}
             </ul>
           </li>
@@ -66,8 +64,8 @@
               Supplier
             </a>
             <ul class="dropdown-menu mt-2 bg-success">
-              <li><a class="dropdown-item" href="{% url 'v_datasupplier' %}">Data Supplier</a></li>
-              <li><a class="dropdown-item" href="{% url 'v_barangsupplier' %}">Barang Supplier</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_datasupplier' %}"> <i class="fa fa-industry "></i> Data Supplier</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_barangsupplier' %}"><i class="fa fa-cubes"></i> Barang Supplier</a></li>
 
             </ul>
           </li>
@@ -77,8 +75,8 @@
               Customer
             </a>
             <ul class="dropdown-menu mt-2 bg-success">
-              <li><a class="dropdown-item" href="{% url 'v_jeniscustomers' %}">Jenis Customer</a></li>
-              <li><a class="dropdown-item" href="{% url 'v_customers'%}">Data Customer</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_jeniscustomers' %}"><i class="fa fa-users"></i> Jenis Customer</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_customers'%}"><i class="fa fa-vcard"></i> Data Customer</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -99,8 +97,10 @@
               Transaksi
             </a>
             <ul class="dropdown-menu mt-2 bg-success">
-              <li><a class="dropdown-item" href="{% url 'v_salestransactions'%}"><i class="fa fa-balance-scale"></i> Transaksi Penjualan</a></li>
-              <li><a class="dropdown-item" href="{% url 'v_transaksipembelian' %}">Transaksi Pembelian</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_salestransactions'%}"><i class="fa fa-calculator"></i>
+                  Transaksi Penjualan</a></li>
+              <li><a class="dropdown-item" href="{% url 'v_transaksipembelian' %}"><i class="fa fa-shopping-cart"></i>
+                Transaksi Pembelian</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -109,32 +109,23 @@
               Report
             </a>
             <ul class="dropdown-menu mt-2 bg-success">
-
-
-
               <li><a class="dropdown-item" href="{% url 'hutang_piutang'%}">Laporan Hutang Piutang</a></li>
-
             </ul>
           </li>
-          {% if request.session.status_login == 'Super Admin' %}
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="{% url 'profile_superadmin' %}">
-              <i class="fa fa-user"></i> Profil
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page"
+              aria-expanded="false">
+              Settings
             </a>
+            <ul class="dropdown-menu mt-2 bg-success">
+              {% if request.session.status_login == 'Super Admin' %}
+              <li><a class="dropdown-item" href="{% url 'profile_superadmin' %}"><i class="fa fa-user"></i> Profil</a>
+              </li>
+              <li><a class="dropdown-item" href="{% url 'v_retail' %}"><i class="fa fa-building"></i> Retail</a></li>
+              {% endif %}
+              <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a></li>
+            </ul>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="{% url 'v_retail' %}">
-              <i class="fa fa-building"></i> Retail
-            </a>
-          </li>
-          {% endif %}
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="{% url 'logout' %}">
-              Logout
-              <i class="fa fa-sign-out"></i>
-            </a>
-          </li>
-
         </ul>
       </div>
     </div>

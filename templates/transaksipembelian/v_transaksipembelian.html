@@ -8,6 +8,15 @@
     {% include 'componens/grid_index.html'%}
     <title>Transaksi Pembelian</title>
 </head>
+<style>
+    h3{
+        color: rgb(116, 6, 241);
+    }
+    p{
+        font-size: 14px;
+        margin: 0;
+    }
+</style>
 
 <body>
     <div class="container">
@@ -22,14 +31,12 @@
         <br>
         <div class="nav-btn">
             <h3>Transaksi Pembelian</h3>
+            <p>Memuat semua data transaksi pembelian baik yang lunas maupun yang tidak lunas pembayarannya.</p>
+            <p>Untuk melihat detail transaksi klik tombok <i class="fa fa-info-circle"></i>.</p>
+            <p>Untuk Mengisi biaya biaya operasional klik tombol <i class="fa fa-exchange"></i> .</p>
             <a href="{% url 'add_transaksipembelian' %}">
                 <button class="btn btn-primary mt-3">
                     Tambah <i class="fa fa-plus-circle"></i>
-                </button>
-            </a>
-            <a href="">
-                <button class="btn btn-success mt-3">
-                    Excel <i class="fa fa-file-excel-o"></i>
                 </button>
             </a>
         </div>
