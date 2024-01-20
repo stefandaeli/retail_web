@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,9 +43,9 @@
                 {% include 'componens/messages.html'%}
             </div>
             <div class="content-login">
-                <!-- <div class="img">
-                    <img src="/static/img/logo.png" alt="logo supride nani">
-                </div> -->
+                <div class="img">
+                    <img src="{% static "img/logo.png"%}" alt="logo supride nani">
+                </div>
                 {% for retail in data_retail %}
                 <h1 class="text-success">{{retail.nama_retail}}</h1>
                 <p class="text-success mb-4">{{retail.desc_retail}}</p>
