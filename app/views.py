@@ -21,6 +21,8 @@ from django.template import loader
 from django.utils import timezone
 from django.db import transaction
 from decimal import Decimal
+from django.db.models import F
+
 
 #Retail
 def v_retail(request):
@@ -253,7 +255,9 @@ def dashboard(request):
      sisa_tagihan = SalesTransactions.objects.filter(timestamp__range=(start_of_month,end_of_month)).aggregate(Sum('sisa_tagihan'))['sisa_tagihan__sum'] or 0
      
      
-     data_stokbarang = StokBarang.objects.all()
+
+     data_stokbarang = StokBarang.objects.all().order_by('-stok_satuan_small')[:5]
+
 
      context = {
          'total_data_barang': total_data_barang,

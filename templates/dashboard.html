@@ -32,7 +32,8 @@
         width: 90%;
         margin: 0 auto;
     }
-    .content-stok{
+
+    .content-stok {
         width: 90%;
         margin: 0 auto;
     }
@@ -40,7 +41,6 @@
     .card {
         border: none;
     }
-
 </style>
 
 <body>
@@ -141,13 +141,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            {% for t in data_stokbarang %}
+                        {% for t in data_stokbarang %}
+                        <tr class="table-light">
                             <td>{{t.nama_barang}}</td>
                             <td>{{t.stok_satuan_small}}</td>
                             <td>{{t.nama_gudang}}</td>
-                            {% endfor %}
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
                 <a href="{% url 'v_stokbarang' %}">
