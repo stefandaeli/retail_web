@@ -252,6 +252,8 @@ def dashboard(request):
      total_uang_masuk_bulan_ini = SalesTransactions.objects.filter(timestamp__range=(start_of_month, end_of_month)).aggregate(Sum('total_pembayaran_sales'))['total_pembayaran_sales__sum'] or 0
      sisa_tagihan = SalesTransactions.objects.filter(timestamp__range=(start_of_month,end_of_month)).aggregate(Sum('sisa_tagihan'))['sisa_tagihan__sum'] or 0
      
+     
+     data_stokbarang = StokBarang.objects.all()
 
      context = {
          'total_data_barang': total_data_barang,
@@ -260,7 +262,8 @@ def dashboard(request):
          'total_penjualan_per_bulan':total_penjualan_per_bulan,
          'total_uang_masuk_hari_ini' : total_uang_masuk_hari_ini,
          'total_uang_masuk_bulan_ini' : total_uang_masuk_bulan_ini,
-         'sisa_tagihan' : sisa_tagihan
+         'sisa_tagihan' : sisa_tagihan,
+         'data_stokbarang' : data_stokbarang
 
      }
       
